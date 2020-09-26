@@ -1,0 +1,33 @@
+:host {
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.mat-form-field {
+  width: 100%;
+  min-width: 300px;
+}
+mat-card-title,
+mat-card-content {
+  display: flex;
+  justify-content: center;
+}
+
+.width-button {
+  width: 100%;
+}
+
+.invalid-feedback {
+  color: red;
+}
+
+section {
+  display: table;
+}
+
+.btn {
+  margin: 10px auto;
+}
