@@ -1,0 +1,23 @@
+<a mat-list-item [ngStyle]="{'padding-left': (depth * 12) + 'px'}" (click)="onItemSelected(item)"
+   [ngClass]="{'active': item.route ? router.isActive(item.route, true): false, 'expanded': expanded}"
+   class="menu-list-item">
+  <mat-icon class="routeIcon">{{item.iconName}}</mat-icon>
+  <span>{{item.displayName}}</span>
+  <span fxFlex *ngIf="item.children && item.children.length">
+    <span fxFlex></span>
+    <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
+      expand_more
+    </mat-icon>
+  </span>
+  <button mat-icon-button #trigger=matMenuTrigger [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+ </button>
+</a>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item routerLink="/catalog/create-category">Create Category</button>
+  <button mat-menu-item>Add contact</button>
+</mat-menu>
+<div *ngIf="expanded">
+  <app-menu-list *ngFor="let child of item.children" [item]="child" [depth]="depth+1">
+  </app-menu-list>
+</div>

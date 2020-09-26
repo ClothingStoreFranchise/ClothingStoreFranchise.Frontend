@@ -1,0 +1,56 @@
+<div class="example-container">
+  <mat-toolbar color="primary">
+    <!-- <button mat-icon-button (click)="snav.toggle()" class="example-icon"> -->
+    <!-- <button mat-icon-button class="example-icon"> -->
+    <button mat-icon-button (click)="snav.toggle()" class="example-icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1>Clothing My World</h1>
+    <span class = filler></span>
+    <button mat-icon-button class="account-icon" routerLink="/account/login">
+      <mat-icon>account_circle</mat-icon>
+      Perfil
+    </button>
+    <button mat-icon-button class="cart-icon" routerLink="/otro">
+      <mat-icon matBadge="15" matBadgeColor="accent">add_shopping_cart</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="example-sidenav-container"
+                         [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56"
+                 opened="true" (mouseenter)="mouseenter()" (mouseleave)="mouseleave()">
+
+      <mat-nav-list>
+        <app-menu-list *ngFor="let item of navItems" [item]="item"></app-menu-list>
+        <!--
+        <mat-list-item (click)="showSubmenu = !showSubmenu" class="parent" >
+          <span class="full-width" >Catálogo</span>
+          <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}" *ngIf="isExpanded || isShowing">expand_more</mat-icon>
+        </mat-list-item>
+        <div class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isShowing || isExpanded" >
+          <a mat-list-item [routerLink]="nav.route" *ngFor="let nav of fillerNav">{{nav.name}}</a>
+          <mat-list-item (click)="showSubSubMenu = !showSubSubMenu" class="parent">
+            <span class="full-width" *ngIf="isExpanded || isShowing">Nested Menu</span>
+            <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubSubMenu}" *ngIf="isExpanded || isShowing">expand_more</mat-icon>
+          </mat-list-item>
+          <div class="submenu" [ngClass]="{'expanded' : showSubSubMenu}" *ngIf="isShowing || isExpanded">
+            <mat-list-item>SubSubmenu Item 1</mat-list-item>
+            <mat-list-item>SubSubmenu Item 2</mat-list-item>
+          </div>
+        </div>
+-->
+      </mat-nav-list>
+
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+<!--
+        <a mat-list-item [routerLink]="nav.route" *ngFor="let nav of fillerNav">{{nav.name}}</a>
+        -->
