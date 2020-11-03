@@ -1,0 +1,31 @@
+<h1 *ngIf="building==='warehouses'" mat-dialog-title><strong>Asignar producto a alamacenes:</strong></h1>
+<h1 *ngIf="building==='shops'" mat-dialog-title><strong>Asignar producto a tiendas:</strong></h1>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div mat-dialog-content>
+
+      <mat-list>
+        <mat-list-item formArrayName="elements" *ngFor="let element of elementsFormArray.controls; let i = index">
+          <mat-checkbox [formControlName]="i">
+            {{elementsData[i].address}}
+          </mat-checkbox>
+        </mat-list-item>
+      </mat-list>
+
+      <div *ngIf="!elementsData.length && building==='shops'">
+        El producto ya esta asignado a todas las tiendas.
+      </div>
+      <div *ngIf="!elementsData.length && building==='warehouses'">
+        El producto ya esta asignado a todos los almacenes.
+      </div>
+  </div>
+
+  <div mat-dialog-actions>
+
+    <button mat-button [disabled]="!form.valid" mat-flat-button color="accent">Asignar</button>
+
+  </div>
+
+</form>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancelar</button>
+</div>

@@ -1,0 +1,37 @@
+<h1>Productos</h1>
+<div class="container text-center">
+  <mat-table [dataSource]="products" class="my-table mat-elevation-z8">
+
+    <ng-container matColumnDef="image">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let element">
+        <img [src]="element.pictureUrl">
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID. </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{element.id}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <mat-header-cell *matHeaderCellDef> Tipo de Talla </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.clothingSizeType}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="unit_price">
+      <mat-header-cell *matHeaderCellDef> Precio Unidad(€) </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.unitPrice}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row matRipple *matRowDef="let row; columns: displayedColumns;" (click)="openDialog(row)"></mat-row>
+  </mat-table>
+</div>

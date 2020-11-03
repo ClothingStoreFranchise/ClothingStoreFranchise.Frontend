@@ -1,0 +1,25 @@
+#add-button{
+  top: auto;
+  right: 30px;
+  bottom: 20px;
+  left: auto;
+  position: fixed;
+}
+
+table {
+  width: 100%;
+}
+
+h1{
+  color:white;
+  font-size:35px;
+  text-align:center;
+  display:inline-block;
+  position:relative;
+  width:100%;
+  top: 10px;
+ }
+
+ a{
+   color: mediumvioletred;
+ }

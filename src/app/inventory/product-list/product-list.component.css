@@ -1,0 +1,16 @@
+mat-table {
+  width: 100%;
+}
+
+mat-table mat-row.mat-row{
+  cursor: pointer;
+}
+
+img {
+  width: 80px;
+  height: 80px;
+}
+
+.mat-row {
+  height: 100px;
+}

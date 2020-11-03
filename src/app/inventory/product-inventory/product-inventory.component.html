@@ -1,0 +1,160 @@
+<mat-dialog-content>
+  <mat-divider></mat-divider>
+  <mat-grid-list cols="3" rowHeight="250px">
+    <mat-grid-tile class="g1" colspan="1" rowspan="1">
+      <img [src]="product.pictureUrl" />
+    </mat-grid-tile>
+    <mat-grid-tile class="g2" colspan="2" rowspan="1">
+          <UL class="ul-description">
+            <h1>
+              <LI> Nombre: {{product.name}} </LI>
+            </h1>
+            <h1>
+              <LI> ID: {{product.id}} </LI>
+            </h1>
+            <h1>
+              <LI> Precio Unidad(€): {{product.unitPrice}} </LI>
+            </h1>
+          </UL>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-divider></mat-divider>
+  <hr>
+
+  <h1 class="inline">Almacenes con existencias</h1> <button mat-button mat-flat-button (click)="addShopsOrWarehouses('warehouses')" color="primary">Asignar a Almacenes</button>
+  <table mat-table [dataSource]="warehousesDataSource" multiTemplateDataRows>
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID.</th>
+      <td mat-cell mat-cell *matCellDef="let element">
+        {{element.id}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef> Adress </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.address}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+
+        <div class="row element-detail" [@detailExpand]="element.isExpanded ? 'expanded' : 'collapsed'">
+
+          <table>
+            <tr>
+              <td>
+                <h3>Talla</h3>
+              </td>
+              <td *ngFor="let stock of element.warehouseStocks">
+                <h3 *ngIf="checkSizeType(product.clothingSizeType)">{{this.sizesDictionary[stock.idSize]}}</h3>
+                <h3 *ngIf="!checkSizeType(product.clothingSizeType)">{{stock.idSize}}</h3>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <h3>Existencias</h3>
+              </td>
+              <td *ngFor="let stock of element.warehouseStocks">{{stock.stock}}</td>
+            </tr>
+          </table>
+        </div>
+
+      </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;" (click)="element.isExpanded = !element.isExpanded"
+      class="element-row" [class.student-expanded-row]="element.isExpanded"></tr>
+
+    <!-- Extra row to show detail content column -->
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+  </table>
+
+  <mat-expansion-panel (opened)="panelOpenState = true"
+                       (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Existencias totales del producto en Almacenes
+      </mat-panel-title>
+
+    </mat-expansion-panel-header>
+    <table>
+      <tr>
+        <td>
+          <h3>Talla</h3>
+        </td>
+        <td *ngFor="let stock of totalWarehoseStock">
+          <h3 *ngIf="checkSizeType(product.clothingSizeType)">{{this.sizesDictionary[stock.idSize]}}</h3>
+          <h3 *ngIf="!checkSizeType(product.clothingSizeType)">{{stock.idSize}}</h3>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h3>Existencias</h3>
+        </td>
+        <td *ngFor="let stock of totalWarehoseStock">{{stock.stock}}</td>
+      </tr>
+    </table>
+  </mat-expansion-panel>
+
+  <hr>
+
+  <h1 class="inline">Tiendas con existencias</h1><button mat-button mat-flat-button (click)="addShopsOrWarehouses('shops')" color="primary">Asignar a Tiendas</button>
+  <table mat-table [dataSource]="shopsDataSource" multiTemplateDataRows>
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID.</th>
+      <td mat-cell mat-cell *matCellDef="let element">
+        {{element.id}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef> Adress </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.address}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+
+        <div class="row element-detail" [@detailExpand]="element.isExpanded ? 'expanded' : 'collapsed'">
+
+          <table>
+            <tr>
+              <td>
+                <h3>Talla</h3>
+              </td>
+              <td *ngFor="let stock of element.shopStocks">
+                <h3 *ngIf="checkSizeType(product.clothingSizeType)">{{this.sizesDictionary[stock.idSize]}}</h3>
+                <h3 *ngIf="!checkSizeType(product.clothingSizeType)">{{stock.idSize}}</h3>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <h3>Existencias</h3>
+              </td>
+              <td *ngFor="let stock of element.shopStocks">{{stock.stock}}</td>
+            </tr>
+          </table>
+        </div>
+
+      </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;" (click)="element.isExpanded = !element.isExpanded"
+      class="element-row" [class.student-expanded-row]="element.isExpanded"></tr>
+
+    <!-- Extra row to show detail content column -->
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+
+  </table>
+
+</mat-dialog-content>
