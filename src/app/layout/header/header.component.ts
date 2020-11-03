@@ -1,14 +1,17 @@
-import { Component, ChangeDetectorRef, OnDestroy, AfterViewInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, ChangeDetectorRef, OnDestroy, AfterViewInit, ViewChild, ElementRef, Input, OnInit } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { NavService } from 'src/app/shared/services/nav.service';
-import { NavItem } from 'src/app/shared/models/nav-item';
+import { NavItem } from '../../shared/models/nav-item';
+import { NavService } from '../../shared/services/nav.service';
+import { CatalogService } from '../../shared/services/catalog.service';
+import { Category } from '../../shared/models/category.model';
+import { AccountService } from 'src/app/shared/services/account.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnDestroy, AfterViewInit {
+export class HeaderComponent implements OnInit, AfterViewInit {
   @ViewChild('snav') snav: ElementRef;
   mobileQuery: MediaQueryList;
 
@@ -17,34 +20,47 @@ export class HeaderComponent implements OnDestroy, AfterViewInit {
   isExpanded = true;
   isShowing = false;
 
-  //fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
-  /*fillerNav = [
-    {name: "Mujer", route:"."},
-    {name: "Hombre", route:"."},
-    {name: "Zapatos Mujer", route:"."},
-    {name: "Zapatos Hombre", route:"."}
-  ]*/
+  count: number;
+  cartCounter: number;
 
-  private _mobileQueryListener: () => void;
+  categoriesNavItem: NavItem[] = [];
 
   hidden = false;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public navService: NavService) {
+  constructor(
+    media: MediaMatcher,
+    public navService: NavService,
+    private catalogService: CatalogService,
+    private accountService: AccountService
+    ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   toggleBadgeVisibility() {
     this.hidden = !this.hidden;
   }
 
-  ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
+  ngOnInit(): void {
+
+    this.catalogService.loadCategories();
+
+    this.categoriesNavItem.push(new NavItem("Añadir Categoría", "create-category"));
+    this.catalogService.categoriesSubject
+      .pipe()
+      .subscribe(categories => {
+        this.converToNavItem(categories);
+      });
+
+    this.accountService.cartCounterSubject
+      .pipe()
+      .subscribe(counter => {
+        this.cartCounter = counter;
+      })
   }
 
   ngAfterViewInit() {
     this.navService.snav = this.snav;
+
   }
 
   mouseenter() {
@@ -59,178 +75,55 @@ export class HeaderComponent implements OnDestroy, AfterViewInit {
     }
   }
 
+  converToNavItem(categories: Category[]) {
+    this.categoriesNavItem = [];
+
+    for(var category of categories){
+      var subcategories = [];
+      if(category.subcategories.length>0){
+        for(var sub of category.subcategories){
+          var subcategory = new NavItem(sub.name, category.name, sub.id, category.id, null);
+          subcategories.push(subcategory);
+        }
+      }
+      var item = new NavItem(category.name, null, category.id, null, subcategories);
+      this.categoriesNavItem.push(item);
+    }
+
+    for(var item of this.navItems){
+      if(item.displayName == "Catálogo"){
+        item.children = this.categoriesNavItem;
+        break;
+      }
+    }
+  }
+
   navItems: NavItem[] = [
     {
       displayName: 'Catálogo',
       iconName: 'recent_actors',
-      route: 'catalog',
-      children: [
-        {
-          displayName: 'Añadir Categoría',
-          iconName: 'group',
-          //route: 'devfestfl/speakers',
-          children: [
-            {
-              displayName: 'Michael Prentice',
-              iconName: 'person',
-              route: 'devfestfl/speakers/michael-prentice',
-              children: [
-                {
-                  displayName: 'Create Enterprise UIs',
-                  iconName: 'star_rate',
-                  route: 'devfestfl/speakers/michael-prentice/material-design'
-                }
-              ]
-            },
-            {
-              displayName: 'Stephen Fluin',
-              iconName: 'person',
-              route: 'devfestfl/speakers/stephen-fluin',
-              children: [
-                {
-                  displayName: 'What\'s up with the Web?',
-                  iconName: 'star_rate',
-                  route: 'devfestfl/speakers/stephen-fluin/what-up-web'
-                }
-              ]
-            },
-            {
-              displayName: 'Mike Brocchi',
-              iconName: 'person',
-              route: 'devfestfl/speakers/mike-brocchi',
-              children: [
-                {
-                  displayName: 'My ally, the CLI',
-                  iconName: 'star_rate',
-                  route: 'devfestfl/speakers/mike-brocchi/my-ally-cli'
-                },
-                {
-                  displayName: 'Become an Angular Tailor',
-                  iconName: 'star_rate',
-                  route: 'devfestfl/speakers/mike-brocchi/become-angular-tailor'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          displayName: 'Sessions',
-          iconName: 'speaker_notes',
-          route: 'devfestfl/sessions',
-          children: [
-            {
-              displayName: 'Create Enterprise UIs',
-              iconName: 'star_rate',
-              route: 'devfestfl/sessions/material-design'
-            },
-            {
-              displayName: 'What\'s up with the Web?',
-              iconName: 'star_rate',
-              route: 'devfestfl/sessions/what-up-web'
-            },
-            {
-              displayName: 'My ally, the CLI',
-              iconName: 'star_rate',
-              route: 'devfestfl/sessions/my-ally-cli'
-            },
-            {
-              displayName: 'Become an Angular Tailor',
-              iconName: 'star_rate',
-              route: 'devfestfl/sessions/become-angular-tailor'
-            }
-          ]
-        },
-        {
-          displayName: 'Add Category',
-          iconName: 'feedback',
-          route: '/catalog/create-category'
-        }
-      ]
+      route: 'catalog/',
+      parentId: null
     },
     {
       displayName: 'Inventario',
       iconName: 'videocam',
-      route: 'disney',
+      route: 'inventory',
       children: [
         {
-          displayName: 'Speakers',
+          displayName: 'Existencias de Productos',
           iconName: 'group',
-          route: 'disney/speakers',
-          children: [
-            {
-              displayName: 'Michael Prentice',
-              iconName: 'person',
-              route: 'disney/speakers/michael-prentice',
-              children: [
-                {
-                  displayName: 'Create Enterprise UIs',
-                  iconName: 'star_rate',
-                  route: 'disney/speakers/michael-prentice/material-design'
-                }
-              ]
-            },
-            {
-              displayName: 'Stephen Fluin',
-              iconName: 'person',
-              route: 'disney/speakers/stephen-fluin',
-              children: [
-                {
-                  displayName: 'What\'s up with the Web?',
-                  iconName: 'star_rate',
-                  route: 'disney/speakers/stephen-fluin/what-up-web'
-                }
-              ]
-            },
-            {
-              displayName: 'Mike Brocchi',
-              iconName: 'person',
-              route: 'disney/speakers/mike-brocchi',
-              children: [
-                {
-                  displayName: 'My ally, the CLI',
-                  iconName: 'star_rate',
-                  route: 'disney/speakers/mike-brocchi/my-ally-cli'
-                },
-                {
-                  displayName: 'Become an Angular Tailor',
-                  iconName: 'star_rate',
-                  route: 'disney/speakers/mike-brocchi/become-angular-tailor'
-                }
-              ]
-            }
-          ]
+          route: 'inventory/products/'
         },
         {
-          displayName: 'Sessions',
+          displayName: 'Almacenes',
+          iconName: 'group',
+          route: 'inventory/warehouses'
+        },
+        {
+          displayName: 'Tiendas',
           iconName: 'speaker_notes',
-          route: 'disney/sessions',
-          children: [
-            {
-              displayName: 'Create Enterprise UIs',
-              iconName: 'star_rate',
-              route: 'disney/sessions/material-design'
-            },
-            {
-              displayName: 'What\'s up with the Web?',
-              iconName: 'star_rate',
-              route: 'disney/sessionswhat-up-web'
-            },
-            {
-              displayName: 'My ally, the CLI',
-              iconName: 'star_rate',
-              route: 'disney/sessionsmy-ally-cli'
-            },
-            {
-              displayName: 'Become an Angular Tailor',
-              iconName: 'star_rate',
-              route: 'disney/sessionsbecome-angular-tailor'
-            }
-          ]
-        },
-        {
-          displayName: 'Feedback',
-          iconName: 'feedback',
-          route: 'disney/feedback'
+          route: 'inventory/shops'
         }
       ]
     },

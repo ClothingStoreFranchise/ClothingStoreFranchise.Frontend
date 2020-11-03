@@ -31,17 +31,6 @@ import { SharedModule } from './shared/shared.module';
     AppComponent,
   ],
   imports: [
-    /*BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatNativeDateModule,
-    MatToolbarModule,
-    //SharedModule,
-    //LayoutModule,
-    RouterModule.forRoot(appRoutes)
-   // AccountModule,
-    //AppRoutingModule*/
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
@@ -53,7 +42,7 @@ import { SharedModule } from './shared/shared.module';
     AppRoutingModule
   ],
   providers: [
-    //{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
+    //{ provide: ClothingSizesConstant, useValue: TSHIRT_JACKETS_PANTS },
   ],
   bootstrap: [AppComponent]
 })

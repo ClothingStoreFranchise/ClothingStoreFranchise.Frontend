@@ -9,13 +9,18 @@
       expand_more
     </mat-icon>
   </span>
-  <button mat-icon-button #trigger=matMenuTrigger [matMenuTriggerFor]="menu">
-    <mat-icon>more_vert</mat-icon>
- </button>
+  <span fxFlex *ngIf="item.route.includes('catalog/') && item.parentId == null">
+
+    <button mat-icon-button #trigger=matMenuTrigger [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+  </span>
+
 </a>
+
 <mat-menu #menu="matMenu">
   <button mat-menu-item routerLink="/catalog/create-category">Create Category</button>
-  <button mat-menu-item>Add contact</button>
+  <button mat-menu-item routerLink="/catalog/create-subcategory/{{item.displayName}}/{{item.id}}">Create Subcategory</button>
 </mat-menu>
 <div *ngIf="expanded">
   <app-menu-list *ngFor="let child of item.children" [item]="child" [depth]="depth+1">

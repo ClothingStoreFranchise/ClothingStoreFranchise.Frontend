@@ -11,6 +11,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { HeaderComponent } from './header/header.component';
 import { MenuListComponent } from './menu-list/menu-list.component';
+import { SharedModule } from '../shared/shared.module';
 
 const accountRoutes: Routes = [
   //{path: 'prueba', component: PruebaComponent}
@@ -37,6 +38,7 @@ const accountRoutes: Routes = [
     MatListModule,
     MatBadgeModule,
     MatMenuModule,
+    SharedModule,
     RouterModule
   ],
   exports: [
