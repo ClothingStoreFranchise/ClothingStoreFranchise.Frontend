@@ -24,10 +24,6 @@ mat-card-content {
   color: red;
 }
 
-section {
-  display: table;
-}
-
 .btn {
   margin: 10px auto;
 }
