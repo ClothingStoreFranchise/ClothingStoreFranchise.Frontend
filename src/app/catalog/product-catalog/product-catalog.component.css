@@ -1,0 +1,12 @@
+#add-button{
+  top: auto;
+  right: 30px;
+  bottom: 20px;
+  left: auto;
+  position: fixed;
+}
+
+img {
+  width: 70%;
+  height: 90%;
+}

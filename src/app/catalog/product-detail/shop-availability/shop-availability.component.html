@@ -1,0 +1,22 @@
+<h1 mat-dialog-title><strong>Existencias en tienda</strong></h1>
+<mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Dirección de la tienda</mat-label>
+    <mat-select [(value)]="selectedStock">
+      <mat-option *ngFor="let shop of shops" [value]="shop.shopStocks">
+        {{shop.address}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <h3 style="color:lime" *ngIf="available == true">Actualmente se encuentea disponible en la tienda.</h3>
+  <h3 style="color:red" *ngIf="available == false">No se encuentra disponible actualmente en la tienda.</h3>
+
+
+</mat-dialog-content>
+<mat-card-footer>
+  <button mat-raised-button [disabled]="selectedStock===undefined"
+    color="accent" (click)="checkAvailable(selectedStock)">
+     Consultar disponibilidad
+  </button>
+</mat-card-footer>

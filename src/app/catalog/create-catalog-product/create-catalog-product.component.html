@@ -1,0 +1,53 @@
+<h1> Create a new Product</h1>
+ <div class="split left">
+  <div class="centered">
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <div id="form-container" class="mat-elevation-z8">
+        <mat-form-field>
+          <mat-label>Product name</mat-label>
+          <input matInput placeholder="productname" name="productname" formControlName="productname" required>
+        </mat-form-field>
+        <div *ngIf="submitted && f.productname.errors" class="invalid-feedback">
+          <div *ngIf="f.productname.errors.required">Category name is required</div>
+        </div>
+
+        <mat-form-field>
+          <mat-label>Unit Price (€)</mat-label>
+          <input matInput placeholder="unit_price" name="unit_price"
+            formControlName="unit_price" required>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Picture url</mat-label>
+          <input matInput type="text" name="pictureUrl" placeholder="pictureUrl"
+            [(ngModel)]="pictureUrl" [ngModelOptions]="{standalone: true}" required>
+        </mat-form-field>
+
+
+          <button class="width-button" [disabled]="loading" type="submit" mat-raised-button color="primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Create
+          </button>
+        <hr>
+
+          <button class="width-button" mat-raised-button color="accent" routerLink="../">Cancel</button>
+
+        </div>
+      </form>
+  </div>
+</div>
+
+
+
+<div class="split right">
+  <div class="centered">
+    <div id="image-container" class="mat-elevation-z8">
+      <h2 *ngIf=!pictureUrl>Picture Preview</h2>
+
+    <img *ngIf=pictureUrl [src]="pictureUrl" alt="Error loading picture">
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,22 @@
+<div style="display:flex;flex-wrap: wrap; background:primary;justify-content: space-around;">
+  <div *ngFor="let product of catalogProducts" class="onLoad">
+    <div
+      style="display:flex; flex-direction:column;justify-content: center;align-items: center; margin-bottom: 20px; cursor: pointer;">
+      <img [src]="product.pictureUrl" (click)="imageClick(product.id)">
+      <ul style="list-style:none; display:flex; padding: 0px;">
+        <li class="color-item"
+          style="background-color:black; border-color: black; box-shadow: none; margin-right: 10px;"></li>
+        <li class="color-item" style="background-color:grey; border-color: grey;  box-shadow: none"></li>
+      </ul>
+      <span style="font-size: 16px;font-weight: bold; cursor: pointer">{{product.name}}</span>
+      <span style="font-size: 16px; color: skyblue; font-weight: bold;">{{product.unitPrice}} €</span>
+      <span style="font-size: 14px; font-weight: 500;">With BLU Smartphone Lenses</span>
+      <button mat-raised-button color="accent" routerLink="../register">Register</button>
+    </div>
+    <div>
+      <button mat-fab color="primary" id="add-button" matTooltip="Add new product" routerLink="create-product-catalog">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

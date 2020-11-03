@@ -1,0 +1,69 @@
+<mat-grid-list cols="7" rowHeight="100%">
+  <mat-grid-tile class="g1" colspan="4" rowspan="1">
+    <img [src]="product.pictureUrl" />
+  </mat-grid-tile>
+  <mat-grid-tile class="g2" colspan="3" rowspan="1">
+
+    <div class="containers">
+    <mat-card >
+      <mat-card-content>
+        <h4>Categoría:   <a href="">{{category}}/{{subcategory}}</a></h4>
+
+        <h2>{{product.name}}</h2>
+
+        <h3>Precio: {{product.unitPrice}} €</h3>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <h4 style="color:lime" *ngIf="available">Disponible en la tienda online</h4>
+        <h4 style="color:red" *ngIf="!available">No se encuentra disponible en la tienda online</h4>
+      </mat-card-header>
+
+      <mat-card-content>
+         <h3> <mat-icon>query_builder</mat-icon> Stock limitado en tallas seleccionadas</h3>
+
+         <mat-form-field class="selected" appearance="fill">
+          <mat-label>Talla</mat-label>
+          <mat-select [(value)]="selectedSize">
+            <mat-option *ngFor="let size of product.totalWarehouseStock" [value]="size.idSize">
+              <span *ngIf="product.clothingSizeType === sizeType.tshirtsJacketsPants"> {{sizesDictionary[size.idSize]}}</span>
+              <span *ngIf="product.clothingSizeType === sizeType.footwear"> {{size.idSize}}</span>
+            </mat-option>
+          </mat-select>
+
+        </mat-form-field>
+
+        <mat-form-field class="selected" appearance="fill">
+          <mat-label>Cantidad</mat-label>
+          <mat-select [disabled]="selectedSize===undefined || !available" [(value)]="selectedQuantity">
+            <mat-option *ngFor="let quantity of [1,2,3,4,5,6,7,8]" [value]="quantity">
+              {{quantity}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <h4 style="color:red" *ngIf="selectedSize!=undefined && checkSizeTotalWarehouseStock(selectedSize)">No hay existencias de la talla seleccionada.</h4>
+
+        <button mat-raised-button [disabled]="selectedSize===undefined || !available"
+          color="primary" (click)="addProductToCart(product)">
+          <mat-icon>add_shopping_cart</mat-icon> Añadir al carro
+        </button>
+      </mat-card-content>
+
+    </mat-card>
+    <mat-card>
+    <mat-card-content>
+      <button mat-raised-button [disabled]="selectedSize===undefined"
+        color="accent" (click)="showShopsAvailability(selectedSize, product.shops)">
+        <mat-icon>location_on</mat-icon> Consultar disponibilidad en tiendas
+      </button>
+    </mat-card-content>
+  </mat-card>
+  </div>
+  </mat-grid-tile>
+</mat-grid-list>
+
+
+
