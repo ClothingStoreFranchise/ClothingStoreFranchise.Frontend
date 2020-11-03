@@ -8,11 +8,15 @@ import { catchError, first, map } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LocalStorageService } from './local-storage.service';
 import { Customer } from '../models/customer.model';
+import { CartProduct } from '../models/cart-product.model';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
   private userSubject: BehaviorSubject<User>;
   public user: Observable<User>;
+  public cartSubject: BehaviorSubject<CartProduct[]>;
+  public cartCounterSubject: BehaviorSubject<number>;
+  private cart: CartProduct[] = [];
 
   constructor(
     private router: Router,
@@ -21,15 +25,34 @@ export class AccountService {
   ) {
     this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.get('userData')));
     this.user = this.userSubject.asObservable();
+
+    this.cartSubject = new BehaviorSubject<CartProduct[]>(localStorage.get('cart'));
+
+    var numberCartProducts:number = this.localStorage.get('cartCounter');
+    if(numberCartProducts == null){
+      this.localStorage.set('cart', []);
+      this.localStorage.set('cartCounter', 0);
+      this.cartCounterSubject = new BehaviorSubject<number>(0);
+    }else{
+      this.cartCounterSubject = new BehaviorSubject<number>(numberCartProducts);
+    }
   }
 
   public get userValue(): User {
     return this.userSubject.value;
   }
 
+  public get cartValue(): CartProduct[] {
+    return this.cartSubject.value;
+  }
+
+  public get cartCounterValue(): number {
+    return this.cartCounterSubject.value;
+  }
+
   login(username: string, password: string) {
 
-    return this.http.post('/auth/login', { username, password }, { observe: 'response' })
+    return this.http.post<Response>('/auth/login', { username, password }, { observe: 'response' })
       .pipe(
         map(resp => {
 
@@ -55,7 +78,7 @@ export class AccountService {
   }
 
   private setAccountCustomer(username: string) {
-    this.http.get<Customer>(`/customers/customers/william/${username}`)
+    this.http.get<Customer>(`/customers/customers/${username}`)
       .pipe(first())
       .subscribe(user => {
         this.localStorage.set('userData', user);
@@ -69,5 +92,20 @@ export class AccountService {
 
   getById(id: string) {
     return this.http.get(`/auth/identifieduser/${id}`)
+  }
+
+  addProductToCart(product: CartProduct) {
+    //console.log("cart "+this.localStorage.get('cart'));
+    //console.log("cart "+this.localStorage.get('jwt'));
+    /*console.log("holabccccc "+ this.localStorage.get('cartCounter'));*/
+    /*this.cart = this.localStorage.get('cart');
+    this.cart.push(product);
+
+    this.localStorage.set('cart', this.cart);
+    var cartCounter = this.localStorage.get('cartCounter');
+    cartCounter += product.quantity;
+
+    this.localStorage.set('cartCounter', cartCounter);
+    this.cartCounterSubject.next(cartCounter);*/
   }
 }

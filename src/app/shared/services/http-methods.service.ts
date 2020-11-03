@@ -25,17 +25,16 @@ export class HttpMethodsService {
         return this.doPost(url, data, true, params);
     }
 
-    post(url: string, data: any, params?: any): Observable<Response> {
-        return this.doPost(url, data, false, params);
+    post<T>(url: string, data: any, params?: any): Observable<T> {
+        return this.doPost<T>(url, data, false, params);
     }
 
-    putWithId(url: string, data: any, params?: any): Observable<Response> {
-        return this.doPut(url, data, true, params);
+    put<T>(url: string, data: any, params?: any): Observable<T> {
+        return this.doPut<T>(url, data, params);
     }
 
-    private doPost(url: string, data: any, needId: boolean, params?: any): Observable<Response> {
-
-        return this.http.post(`${environment.apiUrl}`+url, data, params)
+    private doPost<T>(url: string, data: T, needId: boolean, params?: any): Observable<T> {
+        return this.http.post<T>(`${environment.apiUrl}`+url, data, params)
             .pipe(
               tap((res: any) => {
                 return res;
@@ -44,16 +43,13 @@ export class HttpMethodsService {
     }
 
     delete(url: string, params?: any) {
-
         this.http.delete(`${environment.apiUrl}`+url, params)
             .subscribe((res) => {console.log('deleted');
         });
     }
 
-
-    private doPut(url: string, data: any, needId: boolean, params?: any): Observable<Response> {
-
-        return this.http.put(`${environment.apiUrl}`+url, data, params)
+    private doPut<T>(url: string, data: any, params?: any): Observable<T> {
+        return this.http.put<T>(`${environment.apiUrl}`+url, data, params)
         .pipe(
           tap((res: any) => {
             return res;

@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { APP_INITIALIZER, ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,8 +8,6 @@ import {MatListModule} from '@angular/material/list'
 import {MatBadgeModule} from '@angular/material/badge'
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 
-import { ListTaskComponent } from './components/list-task/list-task.component';
-import { CreateTaskComponent } from './components/create-task/create-task.component'
 import { SharedRoutingModule } from './shared-routing.module';
 import { AccountService } from './services/account.service';
 import { AlertService } from './services/alert.service';
@@ -18,21 +16,23 @@ import { LocalStorageService } from './services/local-storage.service';
 import { SecurityService } from './services/security.service';
 import { HttpClientJsonpModule, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptorService } from './services/http-interceptor.service';
+import { CatalogService } from './services/catalog.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+
+export function catalogProviderFactory(provider: CatalogService) {
+  return () => provider.loadCategories();
+}
 
 @NgModule({
   declarations: [
-    ListTaskComponent,
-    CreateTaskComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
     MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatListModule,
-    MatBadgeModule,
-    MatSnackBarModule,
+    MatTooltipModule,
     SharedRoutingModule
   ],
   exports: [

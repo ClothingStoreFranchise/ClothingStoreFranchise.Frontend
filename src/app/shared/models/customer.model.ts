@@ -1,3 +1,4 @@
+import { CartProduct } from './cart-product.model';
 import { User } from './user.model'
 
 export interface Customer extends User {
@@ -7,4 +8,5 @@ export interface Customer extends User {
   country: string;
   phoneNumber: string;
   email: string;
+  cart: CartProduct[];
 }
