@@ -11,12 +11,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-/*
-  constructor() { }
 
-  ngOnInit(): void {
-  }
-  */
   form: FormGroup;
   loading = false;
   submitted = false;

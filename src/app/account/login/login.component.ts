@@ -53,11 +53,8 @@ export class LoginComponent implements OnInit {
     this.accountService.login(this.f.username.value, this.f.password.value)
       .pipe(first())
       .subscribe(resp => {
-        // Here, resp is of type HttpResponse<MyJsonData>.
-        // You can inspect its headers:
 
         this.router.navigate([this.returnUrl])
-        // And access the body directly, which is typed as MyJsonData as requested.
         },
         error => {
           this.alertService.error(error);
