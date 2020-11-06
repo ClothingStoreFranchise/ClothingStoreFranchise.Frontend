@@ -10,13 +10,16 @@
       </ul>
       <span style="font-size: 16px;font-weight: bold; cursor: pointer">{{product.name}}</span>
       <span style="font-size: 16px; color: skyblue; font-weight: bold;">{{product.unitPrice}} €</span>
-      <span style="font-size: 14px; font-weight: 500;">With BLU Smartphone Lenses</span>
-      <button mat-raised-button color="accent" routerLink="../register">Register</button>
-    </div>
-    <div>
-      <button mat-fab color="primary" id="add-button" matTooltip="Add new product" routerLink="create-product-catalog">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
+      <div>
+        <button mat-raised-button color="accent" (click)="openDialog('Update', product)">Editar</button>
+        <button mat-raised-button color="accent" (click)="openDialog('Delete', product)">Eliminar</button>
+      </div>
+      </div>
+
+  </div>
+  <div>
+    <button mat-fab color="primary" id="add-button" matTooltip="Add new product" routerLink="create-product-catalog">
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
 </div>

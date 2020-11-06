@@ -21,6 +21,9 @@ export class CreateCatalogProductComponent implements OnInit {
   returnUrl: string;
   pictureUrl;
 
+  category: string;
+  subcategory: string;
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -32,6 +35,8 @@ export class CreateCatalogProductComponent implements OnInit {
 
   ngOnInit() {
     this.subcategoryId = this.route.snapshot.params['id'];
+    this.category = decodeURIComponent(this.route.snapshot.params['parentname']);
+    this.subcategory = decodeURIComponent(this.route.snapshot.params['name']);
 
     this.form = this.formBuilder.group({
       productname: ['', Validators.required],

@@ -32,6 +32,7 @@ export class CatalogService {
 }
 
   loadCategories(){
+
     this.count = new BehaviorSubject(this.counter);
     this.http.get<Category[]>(`/catalog/category/`)
     .pipe(first())
@@ -42,7 +43,6 @@ export class CatalogService {
   }
 
   createCategory(category: Category){
-    console.log(category);
     //this.count.next(++this.counter);
     this.http.post<Category[]>(`/catalog/category/`, category)
     .pipe(first())
@@ -58,5 +58,13 @@ export class CatalogService {
 
   addProductToSubcatedory(product: Product) {
     return this.http.post<Product>(`/catalog/catalog_products/`, product);
+  }
+
+  updateProduct(product: Product) {
+    return this.http.put<Product>(`/catalog/catalog_products/`, product);
+  }
+
+  deleteProduct(productId: number) {
+    this.http.delete(`/catalog/catalog_products/${productId}`);
   }
 }

@@ -48,16 +48,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addProductToCart(product: Product) {
-    var cartProduct: CartProduct = {
-      id: product.id,
-      name: product.name,
-      quantity: this.selectedQuantity,
-      unitPrice: product.unitPrice,
-      pictureUrl: product.pictureUrl,
-      clothingSizeType: product.clothingSizeType,
-      size: this.selectedSize
-    }
-
+    var cartProduct = new CartProduct(product.id, this.selectedQuantity, this.selectedSize);
     this.accountService.addProductToCart(cartProduct);
   }
 

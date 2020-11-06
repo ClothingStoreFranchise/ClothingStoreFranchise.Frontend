@@ -6,7 +6,6 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list'
 import {MatBadgeModule} from '@angular/material/badge'
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { SharedRoutingModule } from './shared-routing.module';
 import { AccountService } from './services/account.service';
@@ -20,6 +19,7 @@ import { CatalogService } from './services/catalog.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 export function catalogProviderFactory(provider: CatalogService) {
   return () => provider.loadCategories();
@@ -33,6 +33,7 @@ export function catalogProviderFactory(provider: CatalogService) {
     FormsModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatSnackBarModule,
     SharedRoutingModule
   ],
   exports: [

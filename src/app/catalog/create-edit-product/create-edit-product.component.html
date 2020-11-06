@@ -1,0 +1,43 @@
+<h1 mat-dialog-title> Crear producto para la categoría</h1>
+<mat-dialog-content>
+  <mat-grid-list cols="2" >
+    <mat-grid-tile colspan="1" rowspan="1">
+
+      <mat-card>
+        <mat-card-content>
+
+              <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+                <mat-label>Product name</mat-label>
+                <input matInput placeholder="{{action}}" [(ngModel)]="product.name" required>
+              </mat-form-field>
+
+
+              <mat-form-field *ngIf="action != 'Delete'">
+                <mat-label>Unit Price (€)</mat-label>
+                <input matInput placeholder="{{action}}" [(ngModel)]="product.unitPrice" required>
+              </mat-form-field>
+
+              <mat-form-field *ngIf="action != 'Delete'">
+                <mat-label>Picture url</mat-label>
+                <input matInput placeholder="{{action}}" [(ngModel)]="product.pictureUrl" required>
+              </mat-form-field>
+
+              <ng-template #elseTemplate>
+                Estas seguro de borrar <b>{{product.name}}</b>?
+              </ng-template>
+        </mat-card-content>
+        <mat-card-footer>
+          <button mat-button class="width-button" (click)="doAction()" mat-raised-button color="accent">{{action}}</button>
+          <hr>
+          <button mat-button class="width-button" (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+        </mat-card-footer>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" rowspan="1">
+        <h2 *ngIf="!product.pictureUrl">Picture Preview</h2>
+
+        <img *ngIf="product.pictureUrl" [src]="product.pictureUrl" alt="Error loading picture">
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>
+
