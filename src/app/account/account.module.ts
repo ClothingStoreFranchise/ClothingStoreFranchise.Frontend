@@ -21,7 +21,6 @@ import { MatDividerModule } from '@angular/material/divider';
     RegisterComponent,
     LoginComponent,
     CartComponent
-
   ],
   imports: [
     CommonModule,

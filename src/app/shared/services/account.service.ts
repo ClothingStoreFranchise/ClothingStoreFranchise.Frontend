@@ -10,6 +10,12 @@ import { LocalStorageService } from './local-storage.service';
 import { Customer } from '../models/customer.model';
 import { CartProduct } from '../models/cart-product.model';
 
+interface CartProductLocalStorage {
+  id: number,
+  selectedQuantity: number,
+  selectedSize: number
+}
+
 @Injectable({ providedIn: 'root' })
 export class AccountService {
   private userSubject: BehaviorSubject<User>;
@@ -95,6 +101,12 @@ export class AccountService {
   }
 
   addProductToCart(product: CartProduct) {
+    if(this.userValue != null){
+      //var productAdded = this.http.post<CartProduct>(`/customers/cart/`, product);
+    }else{
+      console.log("Adios");
+    }
+
     //console.log("cart "+this.localStorage.get('cart'));
     //console.log("cart "+this.localStorage.get('jwt'));
     /*console.log("holabccccc "+ this.localStorage.get('cartCounter'));*/

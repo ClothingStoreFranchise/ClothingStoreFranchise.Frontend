@@ -4,7 +4,6 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { CartComponent } from './cart/cart.component';
 
-
 const accountRoutes: Routes = [
   {
     path: '',
