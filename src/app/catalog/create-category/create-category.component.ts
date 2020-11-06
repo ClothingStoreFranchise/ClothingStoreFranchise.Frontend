@@ -55,7 +55,6 @@ export class CreateCategoryComponent implements OnInit {
     this.loading = true;
 
     var category = new Category(this.f.categoryname.value);
-    console.log(category);
     this.catalogService.createCategory(category);
   }
 }

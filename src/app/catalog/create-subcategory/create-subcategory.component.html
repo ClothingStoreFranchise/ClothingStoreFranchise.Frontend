@@ -14,8 +14,8 @@
 
         <mat-form-field appearance="fill">
           <mat-label>Choose type of clothing size</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let sizeType of clothingSizeType" [value]="sizeTypeSelected">
+          <mat-select [(value)]="selectedSizeType">
+            <mat-option *ngFor="let sizeType of clothingSizeType" [value]="sizeType.value">
               {{sizeType.viewValue}}
             </mat-option>
 
@@ -23,13 +23,13 @@
         </mat-form-field>
       </div>
       <p>
-      <button class="width-button" [disabled]="loading" type="submit" mat-raised-button color="primary">
+      <button class="width-button" [disabled]="loading||selectedSizeType==undefined" type="submit" mat-raised-button color="primary">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
         Create
       </button>
     </p>
     <p>
-      <button class="width-button" mat-raised-button color="accent" routerLink="../register">Cancel</button>
+      <button class="width-button" mat-raised-button color="accent" routerLink="/">Cancel</button>
     </p>
 
     </form>

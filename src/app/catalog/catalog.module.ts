@@ -20,9 +20,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CreateCatalogProductComponent } from './create-catalog-product/create-catalog-product.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ShopAvailabilityComponent } from './product-detail/shop-availability/shop-availability.component';
+import { CreateEditProductComponent } from './create-edit-product/create-edit-product.component';
 
 @NgModule({
-  declarations: [CreateCategoryComponent, CreateSubcategoryComponent, ProductCatalogComponent, CreateCatalogProductComponent, ProductDetailComponent, ShopAvailabilityComponent],
+  declarations: [CreateCategoryComponent, CreateSubcategoryComponent, ProductCatalogComponent, CreateCatalogProductComponent, ProductDetailComponent, ShopAvailabilityComponent, CreateEditProductComponent],
   imports: [
     CommonModule,
     CatalogRoutingModule,

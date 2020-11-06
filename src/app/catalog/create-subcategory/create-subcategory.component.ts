@@ -18,7 +18,7 @@ export class CreateSubcategoryComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  sizeTypeSelected;
+  selectedSizeType: number;
 
   clothingSizeType = [
     { viewValue: 'Camisetas, Chaquetas y Pantalones', value: ClothingSizeType.tshirtsJacketsPants},
@@ -61,7 +61,7 @@ export class CreateSubcategoryComponent implements OnInit {
     }
     this.loading = true;
 
-    var subcategory = new Category(this.f.subcategoryname.value, undefined, this.parentId, this.sizeTypeSelected);
+    var subcategory = new Category(this.f.subcategoryname.value, undefined, this.parentId, this.selectedSizeType);
     this.catalogService.createCategory(subcategory);
     //this.appService.nextCount();
     /*.pipe(first())
