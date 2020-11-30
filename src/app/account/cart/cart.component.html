@@ -20,7 +20,7 @@
 
             <mat-form-field class="selected" appearance="fill">
               <mat-label>Cantidad</mat-label>
-              <mat-select [(value)]="product.quantity">
+              <mat-select [(value)]="product.quantity" (selectionChange)="updateQuantity(product)">
                 <mat-option *ngFor="let quantity of [1,2,3,4,5,6,7,8]" [value]="quantity">
                   {{quantity}}
                 </mat-option>
@@ -39,11 +39,11 @@
 <mat-card>
   <mat-card-content>
   <div class="table-box">
-    <span style="font-size: 16px;font-weight: 700; color:E91E63">2nd FRAME DISCOUNT APPLIED</span>
-    <div *ngFor="let product of cartProducts"><span>{{product.name}}</span><span class="price">{{getSubtotal(product)}} €</span></div>
+    <span style="font-size: 16px;font-weight: 700; color:E91E63">Factura</span>
+    <div *ngFor="let product of cartProducts"><span>{{product.name}} ....... x  {{product.quantity}}</span><span class="price">{{getSubtotal(product)}} €</span></div>
     <div class="total-text">
         <span style="font-size: 16px;font-weight: 700; color:#E91E63">Total</span>
-        <span style="font-size: 16px;font-weight: 700; color:#E91E63" class="price">{{getTotal()}} €</span>
+        <span style="font-size: 16px;font-weight: 700; color:#E91E63" class="price">{{getTotalPrice()}} €</span>
     </div>
   </div>
 </mat-card-content>

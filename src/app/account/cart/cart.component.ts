@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ClothingSizeType, TSHIRT_JACKETS_PANTS } from 'src/app/shared/constants/clothing-sizes.constant';
 import { CartProduct } from 'src/app/shared/models/cart-product.model';
 import { AccountService } from 'src/app/shared/services/account.service';
+import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
   selector: 'app-cart',
@@ -14,41 +14,26 @@ export class CartComponent implements OnInit {
   displayedColumns: string[] = ['image', 'name', 'quantity', 'price', 'size', 'action'];
   sizesDictionary = TSHIRT_JACKETS_PANTS;
   cartProducts: CartProduct[];
-  selectedQuantity: number;
 
   constructor(
     private accountService: AccountService
     ) { }
 
   ngOnInit(): void {
+
+    this.accountService.loadCart();
     this.accountService.cartSubject
-      .pipe()
       .subscribe(cartProducts => {
         this.cartProducts = cartProducts;
       });
   }
 
-  openDialog(action,obj) {
-    obj.action = action;
-    /*const dialogRef = this.dialog.open(CreateWarehouseShopComponent, {
-      width: '250px',
-      data:obj
-    });
-    */
-   /*
-    dialogRef.afterClosed().subscribe(result => {
-      if(result.event == 'Add'){
-        this.addWarehouse(result.data);
-      }else if(result.event == 'Update'){
-        this.updateWarehouse(result.data);
-      }else if(result.event == 'Delete'){
-        this.deleteWarehouse(result.data);
-      }
-    });*/
+  updateQuantity(cartProduct: CartProduct) {
+    this.accountService.updateCartProductQuantity(cartProduct);
   }
 
-  delete(product: CartProduct){
-
+  delete(cartProduct: CartProduct){
+    this.accountService.removeCartProduct(cartProduct);
   }
 
   checkSizeType(typeId: number): boolean {
@@ -59,7 +44,7 @@ export class CartComponent implements OnInit {
     return cartProduct.unitPrice * cartProduct.quantity;
   }
 
-  getTotal(): number {
+  getTotalPrice(): number {
     var total = 0
     for(let product of this.cartProducts){
 
