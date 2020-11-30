@@ -15,12 +15,15 @@ import { MatTableModule } from '@angular/material/table';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
+import { CreateAccountComponent } from './create-account/create-account.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
     RegisterComponent,
     LoginComponent,
-    CartComponent
+    CartComponent,
+    CreateAccountComponent
   ],
   imports: [
     CommonModule,
@@ -35,6 +38,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSelectModule,
     MatInputModule,
     MatDividerModule,
+    MatDialogModule,
     SharedModule,
     AccountRoutingModule
   ],

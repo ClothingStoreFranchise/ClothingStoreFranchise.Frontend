@@ -17,7 +17,7 @@
           <input matInput placeholder="password" name="password" formControlName="password">
         </mat-form-field>
         <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-          <div *ngIf="f.password.errors.required">Password is required {{f.password.errors}}</div>
+          <div *ngIf="f.password.errors.required">Password is required</div>
         </div>
       </div>
 
@@ -28,7 +28,7 @@
         </button>
       </p>
       <p>
-        <button mat-raised-button color="accent" routerLink="../register">Register</button>
+        <button mat-raised-button color="accent" routerLink="../register/CUSTOMER">Register</button>
       </p>
     </form>
   </mat-card-content>
