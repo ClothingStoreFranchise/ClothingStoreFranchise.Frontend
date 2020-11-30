@@ -1,0 +1,38 @@
+<h1 mat-dialog-title *ngIf="action == 'Delete'"><strong> Borrar Empleado </strong></h1>
+<h1 mat-dialog-title *ngIf="action == 'Update'"><strong> Editar Empleado </strong></h1>
+<h1 mat-dialog-title *ngIf="action == 'Add'"><strong> Crear Empleado</strong></h1>
+<mat-dialog-content>
+  <mat-card>
+    <mat-card-content>
+      <div *ngIf="action != 'Delete'; else elseTemplate">
+      <mat-form-field >
+        <input placeholder="Nombre" matInput [(ngModel)]="local_data.firstName">
+      </mat-form-field>
+      <mat-form-field>
+        <input placeholder="Apellido" matInput [(ngModel)]="local_data.lastName">
+      </mat-form-field>
+      <mat-form-field>
+        <input placeholder="Email" matInput [(ngModel)]="local_data.email">
+      </mat-form-field>
+      <mat-form-field>
+        <input placeholder="Número Seguridad Social" matInput [(ngModel)]="local_data.sSecurityNumber">
+      </mat-form-field>
+      <mat-form-field>
+        <input placeholder="Salario (€)" matInput [(ngModel)]="local_data.salary">
+      </mat-form-field>
+      <mat-form-field>
+        <input placeholder="Número de cuenta" matInput [(ngModel)]="local_data.accountNumber">
+      </mat-form-field>
+    </div>
+
+      <ng-template #elseTemplate>
+        Estas seguro de borrar <b>{{local_data.name}}</b>?
+      </ng-template>
+
+    </mat-card-content>
+    <mat-card-footer>
+      <button mat-button (click)="doAction()">{{action}}</button>
+      <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+    </mat-card-footer>
+  </mat-card>
+</mat-dialog-content>

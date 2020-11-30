@@ -1,0 +1,7 @@
+mat-table mat-row.mat-row{
+  cursor: pointer;
+}
+
+.mat-row:hover {
+  background-color:  gray;;
+}

@@ -1,0 +1,68 @@
+<mat-card>
+  <mat-card-title>
+    <strong *ngIf="!isShop">Empleados Almacén </strong>
+    <strong *ngIf="isShop">Empleados Tienda </strong>
+  </mat-card-title>
+  <mat-card-content>
+    ID: {{building.id}}
+    <br>
+    Dirección: {{building.address}}
+    <br>
+    Móvil: {{building.phone}}
+  </mat-card-content>
+</mat-card>
+<div class="container text-center">
+  <mat-table [dataSource]="employees" class="my-table mat-elevation-z8">
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID. </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{element.id}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="username">
+      <mat-header-cell *matHeaderCellDef> Username </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.username}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="firstName">
+      <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.firstName}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="lastName">
+      <mat-header-cell *matHeaderCellDef> Apellido </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.lastName}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="salary">
+      <mat-header-cell *matHeaderCellDef> Salario (€) </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.salary}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="add">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell  *matCellDef="let element" class="action-link">
+        <button mat-button color="primary" (click)="openDialog('Update',element)">Ampliar</button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell  *matCellDef="let element" class="action-link">
+        <button mat-button color="primary" (click)="openDialog('Delete',element)">Eliminar</button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row matRipple *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <button mat-button mat-flat-button color="primary" (click)="registerEmployee()">Añadir nuevo Empleado</button>
+</div>

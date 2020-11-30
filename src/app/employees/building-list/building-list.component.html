@@ -1,0 +1,31 @@
+<h1 *ngIf="isShop">Selecciona Tienda</h1>
+<h1 *ngIf="!isShop">Selecciona Almacén</h1>
+<div class="container text-center">
+  <mat-table [dataSource]="buildings" class="my-table mat-elevation-z8">
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID. </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{element.id}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="address">
+      <mat-header-cell *matHeaderCellDef> Dirección </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.address}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <mat-header-cell *matHeaderCellDef> Movil </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="employeesNumber">
+      <mat-header-cell *matHeaderCellDef> Num. Empleados </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.employeeCount}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row matRipple *matRowDef="let row; columns: displayedColumns;" (click)="seeEmployees(row.id)"></mat-row>
+  </mat-table>
+</div>
