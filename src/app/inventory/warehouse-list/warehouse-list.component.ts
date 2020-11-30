@@ -19,7 +19,11 @@ export class WarehouseListComponent implements OnInit {
 
   @ViewChild(MatTable,{static:false}) table: MatTable<any>;
 
-  constructor(public router: Router, public dialog: MatDialog, private inventoryService: InventoryService) {}
+  constructor(
+    public router: Router,
+    public dialog: MatDialog,
+    private inventoryService: InventoryService
+  ) {}
 
   ngOnInit(): void {
     this.inventoryService.loadWarehouses()

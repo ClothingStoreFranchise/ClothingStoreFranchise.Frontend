@@ -27,9 +27,9 @@
          <mat-form-field class="selected" appearance="fill">
           <mat-label>Talla</mat-label>
           <mat-select [(value)]="selectedSize">
-            <mat-option *ngFor="let size of product.totalWarehouseStock" [value]="size.idSize">
-              <span *ngIf="product.clothingSizeType === sizeType.tshirtsJacketsPants"> {{sizesDictionary[size.idSize]}}</span>
-              <span *ngIf="product.clothingSizeType === sizeType.footwear"> {{size.idSize}}</span>
+            <mat-option *ngFor="let size of product.totalWarehouseStock" [value]="size.size">
+              <span *ngIf="product.clothingSizeType === sizeType.tshirtsJacketsPants"> {{sizesDictionary[size.size]}}</span>
+              <span *ngIf="product.clothingSizeType === sizeType.footwear"> {{size.size}}</span>
             </mat-option>
           </mat-select>
 

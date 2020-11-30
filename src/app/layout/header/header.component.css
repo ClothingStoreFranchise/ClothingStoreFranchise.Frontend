@@ -8,6 +8,13 @@
   right: 0;
 }
 
+.img-responsive {
+  display: block;
+  cursor: pointer;
+  width: 20%;
+  height: 100%;
+}
+
 .account-icon{
   margin: 25px
 }

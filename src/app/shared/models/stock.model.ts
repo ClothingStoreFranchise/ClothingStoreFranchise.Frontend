@@ -3,7 +3,8 @@ import { Product } from './product.model';
 export interface Stock{
   shopId: number,
   warehouseId: number,
+  productId: number,
   product: Product,
-  idSize: any,
-  stock:number
+  size: any,
+  stock: number
 }

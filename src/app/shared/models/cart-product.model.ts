@@ -1,7 +1,8 @@
 import { TSHIRT_JACKETS_PANTS } from '../constants/clothing-sizes.constant';
 
 export class CartProduct {
-  id?: number;
+  id: number;
+  productId?: number;
   name: string;
   quantity: number;
   unitPrice: number;
@@ -9,8 +10,8 @@ export class CartProduct {
   clothingSizeType: number;
   size: number;
 
-  constructor(id: number, quantity: number, size: number) {
-    this.id = id;
+  constructor(productId: number, quantity: number, size: number) {
+    this.productId = productId;
     this.quantity = quantity;
     this.size = size;
   }

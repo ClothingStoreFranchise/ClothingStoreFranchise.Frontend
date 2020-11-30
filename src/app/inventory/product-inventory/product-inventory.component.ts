@@ -38,13 +38,12 @@ export class ProductInventoryComponent {
   sizesDictionary = TSHIRT_JACKETS_PANTS;
 
   product: Product;
-  totalWarehoseStock: Stock[];
+  totalWarehoseStock: Stock[] = [];
   shopsDataSource = new MatTableDataSource();
   warehousesDataSource = new MatTableDataSource();
 
   constructor(
     public dialog: MatDialog,
-    //public dialogRef: MatDialogRef<ProductInventoryComponent>,
     private inventoryService: InventoryService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: Product) {
     this.product = { ...data };

@@ -1,3 +1,4 @@
+import { Employee } from './employee.model';
 import { Stock } from './stock.model';
 
 export class Shop {
@@ -6,4 +7,6 @@ export class Shop {
   phone: string;
   shopStocks: Stock[];
   isExpanded: boolean = false;
+  employeeCount: number;
+  shopEmployees: Employee[];
 }

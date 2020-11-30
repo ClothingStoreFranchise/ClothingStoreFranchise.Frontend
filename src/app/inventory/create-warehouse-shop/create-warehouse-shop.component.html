@@ -1,5 +1,7 @@
-<h1 mat-dialog-title>Row Action :: <strong>{{action}}</strong></h1>
-<div mat-dialog-content>
+<h1 mat-dialog-title *ngIf="action == 'Delete'"><strong> Borrar </strong></h1>
+<h1 mat-dialog-title *ngIf="action == 'Add'"><strong> Crear </strong></h1>
+<h1 mat-dialog-title *ngIf="action == 'Update'"><strong> Editar </strong></h1>
+<mat-dialog-content>
   <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
     <input placeholder="{{action}} Address" matInput [(ngModel)]="local_data.address">
   </mat-form-field>
@@ -9,8 +11,8 @@
   <ng-template #elseTemplate>
     Estas seguro de borrar <b>{{local_data.name}}</b>?
   </ng-template>
-</div>
-<div mat-dialog-actions>
+</mat-dialog-content>
+<mat-dialog-actions>
   <button mat-button (click)="doAction()">{{action}}</button>
   <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
-</div>
+</mat-dialog-actions>

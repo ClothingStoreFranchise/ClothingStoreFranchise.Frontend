@@ -1,38 +1,38 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-
+import { StatusCodes } from 'http-status-codes';
 import { HttpMethodsService } from './http-methods.service'
 import { User } from '../models/user.model'
-import { catchError, first, map } from 'rxjs/operators';
-import { HttpErrorResponse } from '@angular/common/http';
+import { catchError, first, map, tap } from 'rxjs/operators';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { LocalStorageService } from './local-storage.service';
 import { Customer } from '../models/customer.model';
 import { CartProduct } from '../models/cart-product.model';
+import { ROLES } from '../constants/roles.constant';
 
 interface CartProductLocalStorage {
-  id: number,
-  selectedQuantity: number,
-  selectedSize: number
+  productId: number,
+  quantity: number,
+  size: number
 }
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
-  private userSubject: BehaviorSubject<User>;
+  public userSubject: BehaviorSubject<User>;
   public user: Observable<User>;
   public cartSubject: BehaviorSubject<CartProduct[]>;
   public cartCounterSubject: BehaviorSubject<number>;
-  private cart: CartProduct[] = [];
 
   constructor(
     private router: Router,
     private http: HttpMethodsService,
     private localStorage: LocalStorageService
   ) {
-    this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.get('userData')));
+    this.userSubject = new BehaviorSubject<User>(localStorage.get('userData'));
     this.user = this.userSubject.asObservable();
 
-    this.cartSubject = new BehaviorSubject<CartProduct[]>(localStorage.get('cart'));
+    this.cartSubject = new BehaviorSubject<CartProduct[]>([]);
 
     var numberCartProducts:number = this.localStorage.get('cartCounter');
     if(numberCartProducts == null){
@@ -56,68 +56,190 @@ export class AccountService {
     return this.cartCounterSubject.value;
   }
 
-  login(username: string, password: string) {
+  logout() {
+    this.userSubject.next(null);
+    this.cartCounterSubject.next(0);
+    this.localStorage.remove('jwt');
+    this.localStorage.remove('userData');
+    this.localStorage.set('cart', []);
+    this.localStorage.set('cartCounter', 0);
+    //this.router.navigate(['/account/login']);
+  }
 
+  login(username: string, password: string) {
     return this.http.post<Response>('/auth/login', { username, password }, { observe: 'response' })
       .pipe(
         map(resp => {
-
           this.localStorage.set('jwt', resp.headers.get('Authorization'));
-          this.setAccount(username);
+          this.getAccount(username);
           return resp
         }),
         catchError((err: HttpErrorResponse) => {
-          return err.status == 401
+          return err.status == StatusCodes.UNAUTHORIZED
             ? throwError("Wrong username or password") : throwError("Server error: " + err.status);    //Rethrow it back to component
         })
       );
   }
 
-  private setAccount(username: string) {
-    this.http.get<User>(`/auth/identifieduser/${username}`)
+  private getAccount(username: string) {
+
+    this.http.get<User>(`/auth/user/${username}`)
       .pipe(first())
       .subscribe(user => {
+        this.userSubject.next(user);
         this.localStorage.set('userData', user);
-        /*if(user.role == "ADMIN")
-          this.setAccountCustomer(username);*/
+        if(user.role == ROLES.Customer){
+          var cart : CartProduct[] = this.localStorage.get('cart');
+          if(cart != null){
+            this.addProductsToCart(cart);
+            this.localStorage.set('cart', []);
+            this.localStorage.set('cartCounter', 0);
+          }else{
+            this.loadCart();
+          }
+        }
       } );
   }
-
-  private setAccountCustomer(username: string) {
-    this.http.get<Customer>(`/customers/customers/${username}`)
-      .pipe(first())
-      .subscribe(user => {
-        this.localStorage.set('userData', user);
-      }
+/*
+  registerCustomer(customer: Customer) {
+    return this.registerUser(customer)
+    .pipe(
+      map((resp: HttpResponse<any>) => {
+        return resp;
+      }),
+      catchError((err: HttpErrorResponse) => {
+        return err.status == StatusCodes.UNAUTHORIZED
+          ? throwError("Wrong username or password") : throwError("Server error: " + err.status);    //Rethrow it back to component
+      })
+    );
+  }
+*/
+  registerUser(user: User) {
+    return this.http.post(`/auth/user/`, user, { observe: 'response' })
+      .pipe(
+        map((resp: HttpResponse<any>) => {
+          return resp;
+        }),
+        catchError((err: HttpErrorResponse) => {
+          return err.status == StatusCodes.UNAUTHORIZED
+            ? throwError("Wrong username or password") : throwError("Server error: " + err.status);    //Rethrow it back to component
+        })
       );
   }
 
-  registerCustomer(customer: Customer) {
-    //return this.http.post(`/users/register`, user);
+  createCustomer(customer: Customer) {
+    return this.http.post<Customer>(`/customers/customers/`, customer, { observe: 'response' })
+      .subscribe( resp => {
+        this.login(customer.username, customer.password).subscribe();
+      });
   }
 
   getById(id: string) {
     return this.http.get(`/auth/identifieduser/${id}`)
   }
 
-  addProductToCart(product: CartProduct) {
+
+  addProductsToCart(products: CartProduct[]) {
     if(this.userValue != null){
-      //var productAdded = this.http.post<CartProduct>(`/customers/cart/`, product);
-    }else{
-      console.log("Adios");
+      this.http.put<CartProduct[]>(`/customers/cart/${this.userValue.id}`, products)
+        .pipe()
+        .subscribe(cartLoaded => {
+          var counter = this.countCartProducts(cartLoaded);
+          this.cartCounterSubject.next(counter);
+        });
     }
+    else{
 
-    //console.log("cart "+this.localStorage.get('cart'));
-    //console.log("cart "+this.localStorage.get('jwt'));
-    /*console.log("holabccccc "+ this.localStorage.get('cartCounter'));*/
-    /*this.cart = this.localStorage.get('cart');
-    this.cart.push(product);
+      var cartCounter = this.localStorage.get('cartCounter');
+      var cart : CartProductLocalStorage[] = this.localStorage.get('cart');
+      for(var product of products){
 
-    this.localStorage.set('cart', this.cart);
-    var cartCounter = this.localStorage.get('cartCounter');
-    cartCounter += product.quantity;
+        cartCounter += product.quantity;
 
-    this.localStorage.set('cartCounter', cartCounter);
-    this.cartCounterSubject.next(cartCounter);*/
+        var existingIndex = cart.findIndex(p => p.productId == product.productId && p.size == product.size);
+        if(existingIndex != -1){
+          cart[existingIndex].quantity += product.quantity;
+
+        }else{
+          cart.push(product as CartProductLocalStorage);
+        }
+      }
+      this.cartCounterSubject.next(cartCounter);
+      this.localStorage.set('cart', cart);
+      this.localStorage.set('cartCounter', cartCounter);
+    }
+  }
+
+  loadCart() {
+    if(this.userValue != null) {
+      this.http.get<CartProduct[]>(`/customers/cart/${this.userValue.id}`)
+        .pipe()
+        .subscribe(cartLoaded => {
+          this.cartSubject.next(cartLoaded);
+          var productsNumber = this.countCartProducts(cartLoaded);
+          this.cartCounterSubject.next(productsNumber);
+        });
+    }
+    else {
+      var cart = this.localStorage.get('cart');
+      this.http.put<CartProduct[]>(`/customers/cart/`, cart)
+        .pipe()
+        .subscribe(cartLoaded => {
+          this.cartSubject.next(cartLoaded);
+          var productsNumber = this.countCartProducts(cartLoaded);
+          this.cartCounterSubject.next(productsNumber);
+
+          var productsNumber = this.countCartProducts(cartLoaded);
+          this.localStorage.set('cart', cartLoaded as CartProductLocalStorage[]);
+          this.localStorage.set('cartCounter', productsNumber);
+        });
+    }
+  }
+
+  removeCartProduct(product: CartProduct) {
+
+    var cartCounter = this.cartCounterSubject.value;
+    var cart = this.cartSubject.value;
+    var cartUpdated = cart.filter(p => p.id != product.id);
+
+    cartCounter -= product.quantity;
+    this.cartSubject.next(cartUpdated);
+    this.cartCounterSubject.next(cartCounter);
+
+    if(this.userValue != null) {
+      this.http.delete(`/customers/cart/${product.id}`);
+    }else{
+      this.localStorage.set('cart', cartUpdated);
+      this.localStorage.set('cartCounter', cartCounter);
+    }
+  }
+
+  updateCartProductQuantity(cartProduct: CartProduct) {
+    if(this.userValue != null) {
+      this.http.put<CartProduct>(`/customers/cart/quantity`, cartProduct)
+        .pipe()
+        .subscribe(productUpdated => {
+          var cart = this.cartSubject.value;
+          var index = cart.findIndex(p => p.id == productUpdated.id);
+
+          if(index != -1){
+            cart[index].quantity = productUpdated.quantity;
+            this.cartSubject.next(cart);
+            var counter = this.countCartProducts(cart);
+            this.cartCounterSubject.next(counter);
+          }
+        });
+    }else{
+      var cartCounter = this.countCartProducts(this.cartSubject.value);
+      this.cartCounterSubject.next(cartCounter);
+      this.localStorage.set('cartCounter', cartCounter);
+    }
+  }
+  private countCartProducts(cart: CartProduct[]) {
+    var total = 0;
+    for(var productCart of cart) {
+      total += productCart.quantity;
+    }
+    return total;
   }
 }

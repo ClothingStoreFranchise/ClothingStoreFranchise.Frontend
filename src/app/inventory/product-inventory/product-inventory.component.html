@@ -42,15 +42,14 @@
       <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
 
         <div class="row element-detail" [@detailExpand]="element.isExpanded ? 'expanded' : 'collapsed'">
-
           <table>
             <tr>
               <td>
                 <h3>Talla</h3>
               </td>
               <td *ngFor="let stock of element.warehouseStocks">
-                <h3 *ngIf="checkSizeType(product.clothingSizeType)">{{this.sizesDictionary[stock.idSize]}}</h3>
-                <h3 *ngIf="!checkSizeType(product.clothingSizeType)">{{stock.idSize}}</h3>
+                <h3 *ngIf="checkSizeType(product.clothingSizeType)">{{this.sizesDictionary[stock.size]}}</h3>
+                <h3 *ngIf="!checkSizeType(product.clothingSizeType)">{{stock.size}}</h3>
               </td>
             </tr>
             <tr>
@@ -87,9 +86,10 @@
         <td>
           <h3>Talla</h3>
         </td>
-        <td *ngFor="let stock of totalWarehoseStock">
-          <h3 *ngIf="checkSizeType(product.clothingSizeType)">{{this.sizesDictionary[stock.idSize]}}</h3>
-          <h3 *ngIf="!checkSizeType(product.clothingSizeType)">{{stock.idSize}}</h3>
+        <td *ngFor="let totalStock of this.totalWarehoseStock">
+          <h3 *ngIf="totalStock.size===undefined">a {{product.id}}</h3>
+          <h3 *ngIf="checkSizeType(product.clothingSizeType)">{{this.sizesDictionary[totalStock.size]}}</h3>
+          <h3 *ngIf="!checkSizeType(product.clothingSizeType)">{{totalStock.size}}</h3>
         </td>
       </tr>
       <tr>
@@ -131,8 +131,8 @@
                 <h3>Talla</h3>
               </td>
               <td *ngFor="let stock of element.shopStocks">
-                <h3 *ngIf="checkSizeType(product.clothingSizeType)">{{this.sizesDictionary[stock.idSize]}}</h3>
-                <h3 *ngIf="!checkSizeType(product.clothingSizeType)">{{stock.idSize}}</h3>
+                <h3 *ngIf="checkSizeType(product.clothingSizeType)">{{this.sizesDictionary[stock.size]}}</h3>
+                <h3 *ngIf="!checkSizeType(product.clothingSizeType)">{{stock.size}}</h3>
               </td>
             </tr>
             <tr>

@@ -6,6 +6,7 @@ import { ClothingSizeType, TSHIRT_JACKETS_PANTS } from 'src/app/shared/constants
 import { CartProduct } from 'src/app/shared/models/cart-product.model';
 import { Product } from 'src/app/shared/models/product.model';
 import { AccountService } from 'src/app/shared/services/account.service';
+import { AlertService } from 'src/app/shared/services/alert.service';
 import { InventoryService } from 'src/app/shared/services/inventory.service';
 import { ShopAvailabilityComponent } from './shop-availability/shop-availability.component';
 
@@ -32,6 +33,7 @@ export class ProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private inventoryService: InventoryService,
+    private alertService: AlertService,
     private accountService: AccountService
     ) { }
 
@@ -48,21 +50,25 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addProductToCart(product: Product) {
-    var cartProduct = new CartProduct(product.id, this.selectedQuantity, this.selectedSize);
-    this.accountService.addProductToCart(cartProduct);
+
+    var cartProduct = [new CartProduct(product.id, this.selectedQuantity, this.selectedSize)];
+    this.accountService.addProductsToCart(cartProduct);
+    this.alertService.success("Producto añadido al carro");
+
+    //this.alertService.error("Product added to cart");
   }
 
   showShopsAvailability(size, shops) {
     shops.size = size;
     this.dialog.open(ShopAvailabilityComponent, {
-      width: 'auto',
+      width: '100%',
       data: shops
     });
   }
 
   checkSizeTotalWarehouseStock(size: number) : boolean {
 
-    return this.product.totalWarehouseStock.find(s => s.idSize == size).stock == 0;
+    return this.product.totalWarehouseStock.find(s => s.size == size).stock == 0;
   }
 
   private checkAvailableOnline(product: Product): boolean {

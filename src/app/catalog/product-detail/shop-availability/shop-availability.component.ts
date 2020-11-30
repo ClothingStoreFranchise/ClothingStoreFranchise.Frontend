@@ -24,7 +24,7 @@ export class ShopAvailabilityComponent {
   }
 
   checkAvailable(stock: Stock[]) {
-    this.available = stock.find(s => s.idSize == this.size).stock > 0;
+    this.available = stock.find(s => s.size == this.size).stock > 0;
   }
 
   closeDialog(){

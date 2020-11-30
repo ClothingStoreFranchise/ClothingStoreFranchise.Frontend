@@ -4,11 +4,16 @@
     <button mat-icon-button (click)="snav.toggle()" class="example-icon">
       <mat-icon>menu</mat-icon>
     </button>
-    <h1>Clothing My World</h1>
+    <img class="img-responsive" src="assets/images/clothing_my_world.png" routerLink="/">
     <span class = filler></span>
-    <button mat-icon-button class="account-icon" routerLink="/account/login">
+
+    <button mat-icon-button *ngIf="!user" class="account-icon" routerLink="/account/login">
       <mat-icon>account_circle</mat-icon>
-      Perfil
+      <span >Perfil</span>
+    </button>
+    <button mat-icon-button *ngIf="user" class="account-icon" #trigger="matMenuTrigger" [matMenuTriggerFor]="menu">
+      <mat-icon style="color:greenyellow" *ngIf="user">account_circle</mat-icon>
+      <span style="color:greenyellow" *ngIf="user">{{user.username}}</span>
     </button>
     <button mat-icon-button class="cart-icon" routerLink="/account/cart">
       <mat-icon matBadge="{{cartCounter}}" matBadgeColor="accent">shopping_cart</mat-icon>
@@ -34,6 +39,8 @@
   </mat-sidenav-container>
 </div>
 
-<!--
-        <a mat-list-item [routerLink]="nav.route" *ngFor="let nav of fillerNav">{{nav.name}}</a>
-        -->
+<mat-menu #menu="matMenu">
+  <button mat-menu-item routerLink="/catalog/create-category">Mi Cuenta</button>
+  <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
+</mat-menu>
+

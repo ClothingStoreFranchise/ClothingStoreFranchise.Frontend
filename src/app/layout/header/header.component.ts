@@ -5,6 +5,9 @@ import { NavService } from '../../shared/services/nav.service';
 import { CatalogService } from '../../shared/services/catalog.service';
 import { Category } from '../../shared/models/category.model';
 import { AccountService } from 'src/app/shared/services/account.service';
+import { User } from 'src/app/shared/models/user.model';
+import { Router } from '@angular/router';
+import { ROLES } from 'src/app/shared/constants/roles.constant';
 
 @Component({
   selector: 'app-header',
@@ -13,6 +16,7 @@ import { AccountService } from 'src/app/shared/services/account.service';
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
   @ViewChild('snav') snav: ElementRef;
+
   mobileQuery: MediaQueryList;
 
   showSubmenu: boolean = false;
@@ -22,6 +26,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   count: number;
   cartCounter: number;
+  user: User;
 
   categoriesNavItem: NavItem[] = [];
 
@@ -30,6 +35,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   constructor(
     media: MediaMatcher,
     public navService: NavService,
+    private router: Router,
     private catalogService: CatalogService,
     private accountService: AccountService
     ) {
@@ -43,6 +49,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
 
     this.catalogService.loadCategories();
+    if(this.accountService.userSubject.value.role == ROLES.Customer){
+      this.accountService.loadCart();
+    }
 
     this.categoriesNavItem.push(new NavItem("Añadir Categoría", "create-category"));
     this.catalogService.categoriesSubject
@@ -56,6 +65,12 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       .subscribe(counter => {
         this.cartCounter = counter;
       })
+
+      this.accountService.userSubject
+      .pipe()
+      .subscribe(user => {
+       this.user = user;
+      });
   }
 
   ngAfterViewInit() {
@@ -73,6 +88,11 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     if (!this.isExpanded) {
       this.isShowing = false;
     }
+  }
+
+  logout() {
+    this.accountService.logout();
+    this.router.navigate(['/account/login']);
   }
 
   converToNavItem(categories: Category[]) {
@@ -128,171 +148,25 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       ]
     },
     {
-      displayName: 'Pedidos',
+      displayName: 'Ventas',
       iconName: 'videocam',
       route: 'orlando',
-      children: [
-        {
-          displayName: 'Speakers',
-          iconName: 'group',
-          route: 'orlando/speakers',
-          children: [
-            {
-              displayName: 'Michael Prentice',
-              iconName: 'person',
-              route: 'orlando/speakers/michael-prentice',
-              children: [
-                {
-                  displayName: 'Create Enterprise UIs',
-                  iconName: 'star_rate',
-                  route: 'orlando/speakers/michael-prentice/material-design'
-                }
-              ]
-            },
-            {
-              displayName: 'Stephen Fluin',
-              iconName: 'person',
-              route: 'orlando/speakers/stephen-fluin',
-              children: [
-                {
-                  displayName: 'What\'s up with the Web?',
-                  iconName: 'star_rate',
-                  route: 'orlando/speakers/stephen-fluin/what-up-web'
-                }
-              ]
-            },
-            {
-              displayName: 'Mike Brocchi',
-              iconName: 'person',
-              route: 'orlando/speakers/mike-brocchi',
-              children: [
-                {
-                  displayName: 'My ally, the CLI',
-                  iconName: 'star_rate',
-                  route: 'orlando/speakers/mike-brocchi/my-ally-cli'
-                },
-                {
-                  displayName: 'Become an Angular Tailor',
-                  iconName: 'star_rate',
-                  route: 'orlando/speakers/mike-brocchi/become-angular-tailor'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          displayName: 'Sessions',
-          iconName: 'speaker_notes',
-          route: 'orlando/sessions',
-          children: [
-            {
-              displayName: 'Create Enterprise UIs',
-              iconName: 'star_rate',
-              route: 'orlando/sessions/material-design'
-            },
-            {
-              displayName: 'What\'s up with the Web?',
-              iconName: 'star_rate',
-              route: 'orlando/sessions/what-up-web'
-            },
-            {
-              displayName: 'My ally, the CLI',
-              iconName: 'star_rate',
-              route: 'orlando/sessions/my-ally-cli'
-            },
-            {
-              displayName: 'Become an Angular Tailor',
-              iconName: 'star_rate',
-              route: 'orlando/sessions/become-angular-tailor'
-            }
-          ]
-        },
-        {
-          displayName: 'Feedback',
-          iconName: 'feedback',
-          route: 'orlando/feedback'
-        }
-      ]
+
     },
     {
       displayName: 'Empleados',
       iconName: 'videocam',
-      route: 'maleficent',
+      route: 'employees/',
       children: [
         {
-          displayName: 'Speakers',
+          displayName: 'Almacenes',
           iconName: 'group',
-          route: 'maleficent/speakers',
-          children: [
-            {
-              displayName: 'Michael Prentice',
-              iconName: 'person',
-              route: 'maleficent/speakers/michael-prentice',
-              children: [
-                {
-                  displayName: 'Create Enterprise UIs',
-                  iconName: 'star_rate',
-                  route: 'maleficent/speakers/michael-prentice/material-design'
-                }
-              ]
-            },
-            {
-              displayName: 'Stephen Fluin',
-              iconName: 'person',
-              route: 'maleficent/speakers/stephen-fluin',
-              children: [
-                {
-                  displayName: 'What\'s up with the Web?',
-                  iconName: 'star_rate',
-                  route: 'maleficent/speakers/stephen-fluin/what-up-web'
-                }
-              ]
-            },
-            {
-              displayName: 'Mike Brocchi',
-              iconName: 'person',
-              route: 'maleficent/speakers/mike-brocchi',
-              children: [
-                {
-                  displayName: 'My ally, the CLI',
-                  iconName: 'star_rate',
-                  route: 'maleficent/speakers/mike-brocchi/my-ally-cli'
-                },
-                {
-                  displayName: 'Become an Angular Tailor',
-                  iconName: 'star_rate',
-                  route: 'maleficent/speakers/mike-brocchi/become-angular-tailor'
-                }
-              ]
-            }
-          ]
+          route: 'employees/warehouses',
         },
         {
-          displayName: 'Sessions',
+          displayName: 'Tiendas',
           iconName: 'speaker_notes',
-          route: 'maleficent/sessions',
-          children: [
-            {
-              displayName: 'Create Enterprise UIs',
-              iconName: 'star_rate',
-              route: 'maleficent/sessions/material-design'
-            },
-            {
-              displayName: 'What\'s up with the Web?',
-              iconName: 'star_rate',
-              route: 'maleficent/sessions/what-up-web'
-            },
-            {
-              displayName: 'My ally, the CLI',
-              iconName: 'star_rate',
-              route: 'maleficent/sessions/my-ally-cli'
-            },
-            {
-              displayName: 'Become an Angular Tailor',
-              iconName: 'star_rate',
-              route: 'maleficent/sessions/become-angular-tailor'
-            }
-          ]
+          route: 'employees/shops',
         },
         {
           displayName: 'Feedback',

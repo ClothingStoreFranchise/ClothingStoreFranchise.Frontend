@@ -33,6 +33,15 @@ export class HttpMethodsService {
         return this.doPut<T>(url, data, params);
     }
 
+    head(): Observable<Response> {
+      return this.http.head("s")
+        .pipe(
+          tap((res: any) => {
+            return res;
+        })
+        );
+    }
+
     private doPost<T>(url: string, data: T, needId: boolean, params?: any): Observable<T> {
         return this.http.post<T>(`${environment.apiUrl}`+url, data, params)
             .pipe(
