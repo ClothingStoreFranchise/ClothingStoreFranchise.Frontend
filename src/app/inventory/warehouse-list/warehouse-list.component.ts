@@ -35,7 +35,7 @@ export class WarehouseListComponent implements OnInit {
   openDialog(action,obj) {
     obj.action = action;
     const dialogRef = this.dialog.open(CreateWarehouseShopComponent, {
-      width: '250px',
+      width: 'auto',
       data:obj
     });
 

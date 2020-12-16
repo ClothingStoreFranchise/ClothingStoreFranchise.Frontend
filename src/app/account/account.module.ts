@@ -10,7 +10,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { AccountRoutingModule } from './account-routing.module';
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from '../shared/shared.module';
-import { CartComponent } from './cart/cart.component';
 import { MatTableModule } from '@angular/material/table';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
@@ -22,7 +21,6 @@ import { MatDialogModule } from '@angular/material/dialog';
   declarations: [
     RegisterComponent,
     LoginComponent,
-    CartComponent,
     CreateAccountComponent
   ],
   imports: [

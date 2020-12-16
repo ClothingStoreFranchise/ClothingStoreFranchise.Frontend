@@ -5,6 +5,7 @@
   <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
     <input placeholder="{{action}} Address" matInput [(ngModel)]="local_data.address">
   </mat-form-field>
+  <br>
   <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
     <input placeholder="{{action}} Phone" matInput [(ngModel)]="local_data.phone">
   </mat-form-field>
@@ -14,5 +15,5 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="doAction()">{{action}}</button>
-  <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+  <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancelar</button>
 </mat-dialog-actions>

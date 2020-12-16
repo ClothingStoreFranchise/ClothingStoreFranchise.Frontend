@@ -63,30 +63,6 @@ export class CreateSubcategoryComponent implements OnInit {
 
     var subcategory = new Category(this.f.subcategoryname.value, undefined, this.parentId, this.selectedSizeType);
     this.catalogService.createCategory(subcategory);
-    //this.appService.nextCount();
-    /*.pipe(first())
-    .subscribe(resp => {
-      this.router.navigate([this.returnUrl]);
-      console.log("Return URL: "+this.returnUrl);
-    },
-      error => {
-        this.alertService.error(error);
-        this.loading = false;
-      }
-    );*/
-    /*this.accountService.login(this.f.username.value, this.f.password.value)
-      .pipe(first())
-      .subscribe(resp => {
-        // Here, resp is of type HttpResponse<MyJsonData>.
-        // You can inspect its headers:
-
-        this.router.navigate([this.returnUrl])
-        // And access the body directly, which is typed as MyJsonData as requested.
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        });
-  */
+    this.router.navigate(["/"]);
   }
 }

@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
+import { ROLES } from 'src/app/shared/constants/roles.constant';
 import { Product } from 'src/app/shared/models/product.model';
+import { AccountService } from 'src/app/shared/services/account.service';
 import { CatalogService } from 'src/app/shared/services/catalog.service';
 import { CreateEditProductComponent } from '../create-edit-product/create-edit-product.component';
 
@@ -21,6 +23,7 @@ export class ProductCatalogComponent implements OnInit {
     private route: ActivatedRoute,
     public router: Router,
     public dialog: MatDialog,
+    private accountService: AccountService,
     private catalogService: CatalogService
   ) {
     this.route.paramMap.subscribe(params => {
@@ -81,8 +84,21 @@ export class ProductCatalogComponent implements OnInit {
     });
   }
 
-
   imageClick(productId: number) {
-    this.router.navigate([`${this.router.url}/product-detail/${productId}`]);
+    if(this.isCustomer||!this.isAuthenticated) {
+      this.router.navigate([`${this.router.url}/product-detail/${productId}`]);
+    }
+  }
+
+  get isAuthenticated(){
+    return this.accountService.isAuthenticated();
+  }
+
+  get isAdmin() {
+    return this.accountService.hasRole(ROLES.Admin);
+  }
+
+  get isCustomer() {
+    return this.accountService.hasRole(ROLES.Customer);
   }
 }

@@ -3,10 +3,11 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ClothingSizeType, TSHIRT_JACKETS_PANTS } from 'src/app/shared/constants/clothing-sizes.constant';
+import { CartProductLocalStorage } from 'src/app/shared/models/cart-product-local-storage.model';
 import { CartProduct } from 'src/app/shared/models/cart-product.model';
 import { Product } from 'src/app/shared/models/product.model';
-import { AccountService } from 'src/app/shared/services/account.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { CustomersService } from 'src/app/shared/services/customers.service';
 import { InventoryService } from 'src/app/shared/services/inventory.service';
 import { ShopAvailabilityComponent } from './shop-availability/shop-availability.component';
 
@@ -33,8 +34,8 @@ export class ProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private inventoryService: InventoryService,
-    private alertService: AlertService,
-    private accountService: AccountService
+    private customersService: CustomersService,
+    private alertService: AlertService
     ) { }
 
   ngOnInit(): void {
@@ -51,8 +52,13 @@ export class ProductDetailComponent implements OnInit {
 
   addProductToCart(product: Product) {
 
-    var cartProduct = [new CartProduct(product.id, this.selectedQuantity, this.selectedSize)];
-    this.accountService.addProductsToCart(cartProduct);
+    var cartProduct : CartProductLocalStorage[] = [{
+      productId: product.id,
+      quantity: this.selectedQuantity,
+      size: this.selectedSize
+    }]
+
+    this.customersService.addProductsToCart(cartProduct);
     this.alertService.success("Producto añadido al carro");
 
     //this.alertService.error("Product added to cart");

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { first } from 'rxjs/operators';
 import { Category } from 'src/app/shared/models/category.model';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { CatalogService } from 'src/app/shared/services/catalog.service';
@@ -56,5 +55,6 @@ export class CreateCategoryComponent implements OnInit {
 
     var category = new Category(this.f.categoryname.value);
     this.catalogService.createCategory(category);
+    this.router.navigate(["/"]);
   }
 }

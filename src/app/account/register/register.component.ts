@@ -13,6 +13,7 @@ import { first } from 'rxjs/operators';
 import { EditEmployeeComponent } from 'src/app/employees/edit-employee/edit-employee.component';
 import { Employee } from 'src/app/shared/models/employee.model';
 import { EmployeesService } from 'src/app/shared/services/employees.service';
+import { CustomersService } from 'src/app/shared/services/customers.service';
 
 @Component({
   selector: 'app-register',
@@ -26,7 +27,7 @@ export class RegisterComponent implements OnInit {
   loading = false;
   submitted = false;
 
-  role: string;
+  role: ROLES;
   buildingId: number;
 
   constructor(
@@ -35,6 +36,7 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     private accountService: AccountService,
+    private customersService: CustomersService,
     private employeesService: EmployeesService,
     private alertService: AlertService
   ) { }
@@ -154,7 +156,9 @@ export class RegisterComponent implements OnInit {
       .pipe(first())
       .subscribe(resp => {
         customer.id = resp.body.id;
-        this.accountService.createCustomer(customer);
+        this.customersService.createCustomer(customer);
+
+          this.router.navigate(["/account/login"]);
         },
         error => {
           this.alertService.error(error);

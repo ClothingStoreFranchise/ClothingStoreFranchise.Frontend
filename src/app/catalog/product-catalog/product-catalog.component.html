@@ -9,15 +9,15 @@
         <li class="color-item" style="background-color:grey; border-color: grey;  box-shadow: none"></li>
       </ul>
       <span style="font-size: 16px;font-weight: bold; cursor: pointer">{{product.name}}</span>
-      <span style="font-size: 16px; color: skyblue; font-weight: bold;">{{product.unitPrice}} €</span>
-      <div>
-        <button mat-raised-button color="accent" (click)="openDialog('Update', product)">Editar</button>
-        <button mat-raised-button color="accent" (click)="openDialog('Delete', product)">Eliminar</button>
+      <span style="font-size: 16px; color: blue; font-weight: bold;">{{product.unitPrice}} €</span>
+      <div *ngIf="isAdmin">
+        <button mat-raised-button color="accent" (click)="openDialog('Update', product)">Editar</button>   |
+        <button mat-raised-button color="warn" (click)="openDialog('Delete', product)">Eliminar</button>
       </div>
       </div>
 
   </div>
-  <div>
+  <div *ngIf="isAdmin">
     <button mat-fab color="primary" id="add-button" matTooltip="Add new product" routerLink="create-product-catalog">
       <mat-icon>add</mat-icon>
     </button>

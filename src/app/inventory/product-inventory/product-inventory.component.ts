@@ -1,14 +1,3 @@
-import { DataSource } from '@angular/cdk/collections';
-import { Component, Inject, Optional } from '@angular/core';
-
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Product } from 'src/app/shared/models/product.model';
-import { Shop } from 'src/app/shared/models/shop.model';
-import { Warehouse } from 'src/app/shared/models/warehouse.model';
-import { InventoryService } from 'src/app/shared/services/inventory.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { ClothingSizeType, TSHIRT_JACKETS_PANTS } from 'src/app/shared/constants/clothing-sizes.constant';
-import { WarehousesShopsAllocationComponent } from './warehouses-shops-allocation/warehouses-shops-allocation.component';
 import {
   animate,
   state,
@@ -16,7 +5,15 @@ import {
   transition,
   trigger
 } from "@angular/animations";
+import { Component, Inject, Optional } from '@angular/core';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { ClothingSizeType, TSHIRT_JACKETS_PANTS } from 'src/app/shared/constants/clothing-sizes.constant';
+import { Product } from 'src/app/shared/models/product.model';
 import { Stock } from 'src/app/shared/models/stock.model';
+import { InventoryService } from 'src/app/shared/services/inventory.service';
+import { WarehousesShopsAllocationComponent } from './warehouses-shops-allocation/warehouses-shops-allocation.component';
+
 
 @Component({
   selector: 'app-product-inventory',
@@ -88,7 +85,7 @@ export class ProductInventoryComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.event != "Cancel"){
+      if (result.event != "Cancel") {
         if (obj.building == "shops") {
           this.inventoryService.addProductsToShops(this.product.id, result.data)
             .subscribe(shops => {

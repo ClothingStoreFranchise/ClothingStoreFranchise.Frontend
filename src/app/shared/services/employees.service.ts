@@ -31,6 +31,7 @@ export class EmployeesService {
   }
 
   createWarehouseEmployee(employee: Employee) {
+    console.log("creando employee")
     return this.http.post<Employee>("/employees/warehouse-employees", employee);
   }
 

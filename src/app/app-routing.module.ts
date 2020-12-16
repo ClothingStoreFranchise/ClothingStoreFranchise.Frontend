@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+const salesModule = () => import('./sales/sales.module').then(x => x.SalesModule);
 const inventoryModule = () => import('./inventory/inventory.module').then(x => x.InventoryModule);
 const catalogModule = () => import('./catalog/catalog.module').then(x => x.CatalogModule);
 const employeesModule = () => import('./employees/employees.module').then(x => x.EmployeesModule);
+const customersModule = () => import('./customers/customers.module').then(x => x.CustomersModule);
 const accountModule = () => import('./account/account.module').then(x => x.AccountModule);
 
 const appRoutes: Routes = [
@@ -11,7 +13,9 @@ const appRoutes: Routes = [
   {path: 'inventory', loadChildren: inventoryModule},
   {path: 'catalog', loadChildren: catalogModule},
   {path: 'account', loadChildren: accountModule},
+  {path: 'customers', loadChildren: customersModule},
   {path: 'employees', loadChildren: employeesModule},
+  {path: 'sales', loadChildren: salesModule},
   {path: '', redirectTo: '/', pathMatch: 'full'}
   //{ path: '', loadChildren: accountModule }
 ];

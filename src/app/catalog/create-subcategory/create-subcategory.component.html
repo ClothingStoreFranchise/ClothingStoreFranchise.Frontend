@@ -1,11 +1,11 @@
 <mat-card>
-  <mat-card-title>Create {{name}} Subcategory</mat-card-title>
+  <mat-card-title>Crear {{name}} Subcategoría</mat-card-title>
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
       <div>
         <mat-form-field>
-          <mat-label>Subcategory name</mat-label>
+          <mat-label>Nombre de subcategoría</mat-label>
           <input matInput placeholder="subcategoryname" name="subcategoryname" formControlName="subcategoryname">
         </mat-form-field>
         <div *ngIf="submitted && f.subcategoryname.errors" class="invalid-feedback">
@@ -13,7 +13,7 @@
         </div>
 
         <mat-form-field appearance="fill">
-          <mat-label>Choose type of clothing size</mat-label>
+          <mat-label>Elegir tipo de talla</mat-label>
           <mat-select [(value)]="selectedSizeType">
             <mat-option *ngFor="let sizeType of clothingSizeType" [value]="sizeType.value">
               {{sizeType.viewValue}}
@@ -25,11 +25,11 @@
       <p>
       <button class="width-button" [disabled]="loading||selectedSizeType==undefined" type="submit" mat-raised-button color="primary">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        Create
+        Crear
       </button>
     </p>
     <p>
-      <button class="width-button" mat-raised-button color="accent" routerLink="/">Cancel</button>
+      <button class="width-button" mat-raised-button color="accent" routerLink="/">Cancelar</button>
     </p>
 
     </form>

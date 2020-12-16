@@ -1,10 +1,10 @@
 ﻿<mat-card>
-  <mat-card-title>Login</mat-card-title>
+  <mat-card-title>Iniciar Sesión</mat-card-title>
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div>
         <mat-form-field>
-          <mat-label>Username</mat-label>
+          <mat-label>Nombre de Usuario</mat-label>
           <input matInput placeholder="username" name="username" formControlName="username">
         </mat-form-field>
         <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
@@ -13,7 +13,7 @@
       </div>
       <div>
         <mat-form-field>
-          <mat-label>Password</mat-label>
+          <mat-label>Contraseña</mat-label>
           <input matInput placeholder="password" name="password" formControlName="password">
         </mat-form-field>
         <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
@@ -28,7 +28,7 @@
         </button>
       </p>
       <p>
-        <button mat-raised-button color="accent" routerLink="../register/CUSTOMER">Register</button>
+        <button mat-raised-button color="accent" routerLink="../register/CUSTOMER">Registrarse</button>
       </p>
     </form>
   </mat-card-content>
