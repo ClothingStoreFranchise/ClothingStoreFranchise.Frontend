@@ -1,0 +1,24 @@
+mat-card {
+  width: 500px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.total-box{
+  background: #f6f6f6;
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  align-items: baseline;
+}
+
+.price{
+  float: right;
+  margin-right: 20px;
+}
+
+.buy-now{
+  width: 100%;
+}
