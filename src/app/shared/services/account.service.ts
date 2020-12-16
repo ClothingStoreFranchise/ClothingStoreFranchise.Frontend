@@ -7,32 +7,37 @@ import { User } from '../models/user.model'
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { LocalStorageService } from './local-storage.service';
-import { Customer } from '../models/customer.model';
 import { CartProduct } from '../models/cart-product.model';
 import { ROLES } from '../constants/roles.constant';
+import { CustomersService } from './customers.service';
+import { CartProductLocalStorage } from '../models/cart-product-local-storage.model';
 
+/*
 interface CartProductLocalStorage {
   productId: number,
   quantity: number,
   size: number
 }
+*/
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
   public userSubject: BehaviorSubject<User>;
   public user: Observable<User>;
+  /*
   public cartSubject: BehaviorSubject<CartProduct[]>;
   public cartCounterSubject: BehaviorSubject<number>;
-
+*/
   constructor(
     private router: Router,
     private http: HttpMethodsService,
+    private customersService: CustomersService,
     private localStorage: LocalStorageService
   ) {
     this.userSubject = new BehaviorSubject<User>(localStorage.get('userData'));
     this.user = this.userSubject.asObservable();
 
-    this.cartSubject = new BehaviorSubject<CartProduct[]>([]);
+    /*this.cartSubject = new BehaviorSubject<CartProduct[]>([]);
 
     var numberCartProducts:number = this.localStorage.get('cartCounter');
     if(numberCartProducts == null){
@@ -42,12 +47,26 @@ export class AccountService {
     }else{
       this.cartCounterSubject = new BehaviorSubject<number>(numberCartProducts);
     }
+    */
   }
 
   public get userValue(): User {
     return this.userSubject.value;
   }
 
+  getUser() {
+    return this.userSubject.value;
+  }
+
+  isAuthenticated() {
+    var user: User = this.userValue;
+    return !!user;
+  }
+
+  hasRole(role: ROLES) {
+    return this.isAuthenticated() && this.userValue.role == role;
+  }
+/*
   public get cartValue(): CartProduct[] {
     return this.cartSubject.value;
   }
@@ -55,15 +74,15 @@ export class AccountService {
   public get cartCounterValue(): number {
     return this.cartCounterSubject.value;
   }
-
+*/
   logout() {
     this.userSubject.next(null);
-    this.cartCounterSubject.next(0);
+    //this.cartCounterSubject.next(0);
     this.localStorage.remove('jwt');
     this.localStorage.remove('userData');
-    this.localStorage.set('cart', []);
-    this.localStorage.set('cartCounter', 0);
-    //this.router.navigate(['/account/login']);
+    //this.localStorage.set('cart', []);
+    //this.localStorage.set('cartCounter', 0);
+    window.location.reload();
   }
 
   login(username: string, password: string) {
@@ -88,14 +107,14 @@ export class AccountService {
       .subscribe(user => {
         this.userSubject.next(user);
         this.localStorage.set('userData', user);
+        window.location.reload();
         if(user.role == ROLES.Customer){
-          var cart : CartProduct[] = this.localStorage.get('cart');
-          if(cart != null){
-            this.addProductsToCart(cart);
+          var cart : CartProductLocalStorage[] = this.localStorage.get('cart');
+          if(cart.length>0){
+
+            this.customersService.addProductsToCart(cart);
             this.localStorage.set('cart', []);
             this.localStorage.set('cartCounter', 0);
-          }else{
-            this.loadCart();
           }
         }
       } );
@@ -126,18 +145,18 @@ export class AccountService {
         })
       );
   }
-
+/*
   createCustomer(customer: Customer) {
     return this.http.post<Customer>(`/customers/customers/`, customer, { observe: 'response' })
       .subscribe( resp => {
         this.login(customer.username, customer.password).subscribe();
       });
   }
-
+*/
   getById(id: string) {
     return this.http.get(`/auth/identifieduser/${id}`)
   }
-
+/*
 
   addProductsToCart(products: CartProduct[]) {
     if(this.userValue != null){
@@ -242,4 +261,6 @@ export class AccountService {
     }
     return total;
   }
+
+  */
 }

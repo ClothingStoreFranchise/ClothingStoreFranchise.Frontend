@@ -1,9 +1,11 @@
-import { Component, ChangeDetectorRef, OnDestroy, OnInit, HostBinding, Input } from '@angular/core';
-import { MediaMatcher } from '@angular/cdk/layout';
+import { Component, Input, OnInit } from '@angular/core';
 import { NavItem } from 'src/app/shared/models/nav-item';
 import { Router } from '@angular/router';
 import { NavService } from 'src/app/shared/services/nav.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import { AccountService } from 'src/app/shared/services/account.service';
+import { ROLES } from 'src/app/shared/constants/roles.constant';
+import { User } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-menu-list',
@@ -19,29 +21,19 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
     ])
   ]
 })
-export class MenuListComponent implements OnInit {
+export class MenuListComponent {
   expanded: boolean;
-  //@HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
   @Input() item: NavItem;
   @Input() depth: number;
+  @Input() role: ROLES;
+  anonymous: string = "anonymous";
 
   constructor(public navService: NavService,
-              public router: Router) {
+              public router: Router,
+              private accountService: AccountService) {
     if (this.depth === undefined) {
       this.depth = 0;
     }
-  }
-
-  ngOnInit() {
-    /*this.navService.currentUrl.subscribe((url: string) => {
-      if (this.item.route && url) {
-        console.log(`Checking '/${this.item.route}' against '${url}'`);
-        this.expanded = url.indexOf(`/${this.item.route}`) === 0;
-        //this.ariaExpanded = this.expanded;
-         console.log(`${this.item.route} is expanded: ${this.expanded}`);
-         console.log(this.item)
-      }
-    });*/
   }
 
   onItemSelected(item: NavItem) {
@@ -53,5 +45,11 @@ export class MenuListComponent implements OnInit {
     }
   }
 
+  get isAdmin() {
+    return this.accountService.hasRole(ROLES.Admin);
+  }
 
+  get isAuthenticated(){
+    return this.accountService.isAuthenticated();
+  }
 }

@@ -1,10 +1,13 @@
+import { ROLES } from '../constants/roles.constant';
+
 export class NavItem {
   id?: number;
   parentId?: number;
   displayName: string;
+  visibility?: string[];
   parentName?: string;
   disabled?: boolean;
-  iconName: string;
+  iconName?: string;
   route?: string;
   children?: NavItem[];
 
@@ -14,6 +17,7 @@ export class NavItem {
     this.id = id;
     this.parentId = parentId;
     this.children = children;
+    this.visibility = [ROLES.Admin, ROLES.Customer, 'anonymous'];
 
     if(parentId == null)
       this.route = "/catalog/"+name;

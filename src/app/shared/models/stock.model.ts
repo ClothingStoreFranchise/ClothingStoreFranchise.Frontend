@@ -5,6 +5,6 @@ export interface Stock{
   warehouseId: number,
   productId: number,
   product: Product,
-  size: any,
+  size: number,
   stock: number
 }

@@ -8,5 +8,6 @@ export interface Customer extends User{
   country: string;
   phoneNumber: string;
   email: string;
+  card?: string;
   cartProducts?: CartProduct[];
 }

@@ -1,6 +1,6 @@
-<a mat-list-item [ngStyle]="{'padding-left': (depth * 12) + 'px'}" (click)="onItemSelected(item)"
-   [ngClass]="{'active': item.route ? router.isActive(item.route, true): false, 'expanded': expanded}"
-   class="menu-list-item">
+<a mat-list-item *ngIf="!isAuthenticated && item.visibility.includes(anonymous) || item.visibility.includes(role)"
+[ngStyle]="{'padding-left': (depth * 12) + 'px'}" (click)="onItemSelected(item)"
+   [ngClass]="{'active': item.route ? router.isActive(item.route, true): false, 'expanded': expanded}" class="menu-list-item">
   <mat-icon class="routeIcon">{{item.iconName}}</mat-icon>
   <span>{{item.displayName}}</span>
   <span fxFlex *ngIf="item.children && item.children.length">
@@ -9,7 +9,8 @@
       expand_more
     </mat-icon>
   </span>
-  <span fxFlex *ngIf="item.route.includes('catalog/') && item.parentId == null">
+
+  <span fxFlex *ngIf="item.route.includes('catalog/') && isAdmin">
 
     <button mat-icon-button #trigger=matMenuTrigger [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
@@ -19,10 +20,10 @@
 </a>
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item routerLink="/catalog/create-category">Create Category</button>
-  <button mat-menu-item routerLink="/catalog/create-subcategory/{{item.displayName}}/{{item.id}}">Create Subcategory</button>
+  <button *ngIf="item.route == 'catalog/'" mat-menu-item routerLink="/catalog/create-category">Create Category</button>
+  <button *ngIf="item.route != 'catalog/'" mat-menu-item routerLink="/catalog/create-subcategory/{{item.displayName}}/{{item.id}}">Create Subcategory</button>
 </mat-menu>
 <div *ngIf="expanded">
-  <app-menu-list *ngFor="let child of item.children" [item]="child" [depth]="depth+1">
+  <app-menu-list *ngFor="let child of item.children" [role]="role" [item]="child" [depth]="depth+1">
   </app-menu-list>
 </div>

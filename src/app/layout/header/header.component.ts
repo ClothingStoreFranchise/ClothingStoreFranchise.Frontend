@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnDestroy, AfterViewInit, ViewChild, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { NavItem } from '../../shared/models/nav-item';
 import { NavService } from '../../shared/services/nav.service';
@@ -8,6 +8,9 @@ import { AccountService } from 'src/app/shared/services/account.service';
 import { User } from 'src/app/shared/models/user.model';
 import { Router } from '@angular/router';
 import { ROLES } from 'src/app/shared/constants/roles.constant';
+import { CustomersService } from 'src/app/shared/services/customers.service';
+import { OrderState } from 'src/app/shared/constants/order-state.const';
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 
 @Component({
   selector: 'app-header',
@@ -27,6 +30,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   count: number;
   cartCounter: number;
   user: User;
+  userRole: string;
 
   categoriesNavItem: NavItem[] = [];
 
@@ -36,8 +40,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     media: MediaMatcher,
     public navService: NavService,
     private router: Router,
+    private localStorage: LocalStorageService,
     private catalogService: CatalogService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private customersService: CustomersService
     ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
   }
@@ -48,34 +54,34 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
-    this.catalogService.loadCategories();
-    if(this.accountService.userSubject.value.role == ROLES.Customer){
-      this.accountService.loadCart();
-    }
-
     this.categoriesNavItem.push(new NavItem("Añadir Categoría", "create-category"));
+    this.catalogService.loadCategories();
     this.catalogService.categoriesSubject
       .pipe()
       .subscribe(categories => {
         this.converToNavItem(categories);
       });
 
-    this.accountService.cartCounterSubject
-      .pipe()
-      .subscribe(counter => {
-        this.cartCounter = counter;
-      })
-
       this.accountService.userSubject
       .pipe()
       .subscribe(user => {
-       this.user = user;
+        this.user = user;
+        this.userRole = user.role;
+      });
+
+    if(this.userRole == ROLES.Customer){
+        this.customersService.loadCart();
+    }
+
+    this.customersService.cartCounterSubject
+      .pipe()
+      .subscribe(counter => {
+        this.cartCounter = counter;
       });
   }
 
   ngAfterViewInit() {
     this.navService.snav = this.snav;
-
   }
 
   mouseenter() {
@@ -92,6 +98,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   logout() {
     this.accountService.logout();
+    console.log("hola!");
     this.router.navigate(['/account/login']);
   }
 
@@ -118,60 +125,100 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  get isAuthenticated(){
+    return this.accountService.isAuthenticated();
+  }
+
+  get isAdmin() {
+    return this.accountService.hasRole(ROLES.Admin);
+  }
+
+  get isCustomer() {
+    return this.accountService.hasRole(ROLES.Customer);
+  }
+
+  get isEmployee() {
+    return this.accountService.hasRole(ROLES.WarehouseEmployee) || this.accountService.hasRole(ROLES.ShopEmployee)
+  }
+
   navItems: NavItem[] = [
     {
       displayName: 'Catálogo',
-      iconName: 'recent_actors',
       route: 'catalog/',
-      parentId: null
+      visibility: [ROLES.Admin, ROLES.Customer, 'anonymous']
     },
     {
       displayName: 'Inventario',
-      iconName: 'videocam',
       route: 'inventory',
+      visibility: [ROLES.Admin],
       children: [
         {
           displayName: 'Existencias de Productos',
-          iconName: 'group',
+          visibility: [ROLES.Admin],
           route: 'inventory/products/'
         },
         {
           displayName: 'Almacenes',
-          iconName: 'group',
+          visibility: [ROLES.Admin],
           route: 'inventory/warehouses'
         },
         {
           displayName: 'Tiendas',
-          iconName: 'speaker_notes',
+          visibility: [ROLES.Admin],
           route: 'inventory/shops'
         }
       ]
     },
     {
       displayName: 'Ventas',
-      iconName: 'videocam',
-      route: 'orlando',
-
+      route: 'sales/',
+      visibility: [ROLES.Admin],
+      children: [
+        {
+          displayName: 'Pedidos',
+          visibility: [ROLES.Admin],
+          route: 'sales/orders/',
+          children: [
+            {
+              displayName: 'Pedidos Pendientes',
+              visibility: [ROLES.Admin],
+              route: 'sales/orders/'+OrderState.PENDING
+            },
+            {
+              displayName: 'Pedidos Confirmados',
+              visibility: [ROLES.Admin],
+              route: 'sales/orders/'+OrderState.CONFIRMED
+            },
+            {
+              displayName: 'Pedidos Preparados',
+              visibility: [ROLES.Admin],
+              route: 'sales/orders/'+OrderState.PREPARED
+            },
+            {
+              displayName: 'Pedidos Cancelados',
+              visibility: [ROLES.Admin],
+              route: 'sales/orders/'+OrderState.CANCELLED
+            }
+          ]
+        }
+      ]
     },
     {
       displayName: 'Empleados',
       iconName: 'videocam',
       route: 'employees/',
+      visibility: [ROLES.Admin],
       children: [
         {
           displayName: 'Almacenes',
           iconName: 'group',
+          visibility: [ROLES.Admin],
           route: 'employees/warehouses',
         },
         {
           displayName: 'Tiendas',
-          iconName: 'speaker_notes',
+          visibility: [ROLES.Admin],
           route: 'employees/shops',
-        },
-        {
-          displayName: 'Feedback',
-          iconName: 'feedback',
-          route: 'maleficent/feedback'
         }
       ]
     },
