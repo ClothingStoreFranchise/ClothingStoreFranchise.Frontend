@@ -12,6 +12,7 @@ const catalogRoutes: Routes = [
     children: [
         { path: 'create-category', component: CreateCategoryComponent },
         { path: 'create-subcategory/:name/:id', component: CreateSubcategoryComponent },
+        { path: 'novelties', component: ProductCatalogComponent },
         { path: ':parentname/:name/:id', component: ProductCatalogComponent },
         { path: ':parentname/:name/:id/create-product-catalog', component: CreateCatalogProductComponent },
         { path: ':parentname/:name/:id/product-detail/:product-id', component: ProductDetailComponent }
