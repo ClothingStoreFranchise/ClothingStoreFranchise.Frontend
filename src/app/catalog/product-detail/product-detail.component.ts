@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClothingSizeType, TSHIRT_JACKETS_PANTS } from 'src/app/shared/constants/clothing-sizes.constant';
 import { CartProductLocalStorage } from 'src/app/shared/models/cart-product-local-storage.model';
-import { CartProduct } from 'src/app/shared/models/cart-product.model';
 import { Product } from 'src/app/shared/models/product.model';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { CustomersService } from 'src/app/shared/services/customers.service';
@@ -21,6 +20,7 @@ export class ProductDetailComponent implements OnInit {
   form: FormGroup;
   category: string;
   subcategory: string;
+  subcategoryId: number;
   productId: number;
   sizesDictionary = TSHIRT_JACKETS_PANTS;
   sizeType = ClothingSizeType;
@@ -32,6 +32,7 @@ export class ProductDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     public dialog: MatDialog,
     private inventoryService: InventoryService,
     private customersService: CustomersService,
@@ -40,6 +41,7 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.productId = this.route.snapshot.params['product-id'];
+    this.subcategoryId = this.route.snapshot.params['id'];
     this.category = decodeURIComponent(this.route.snapshot.params['parentname']);
     this.subcategory = decodeURIComponent(this.route.snapshot.params['name']);
 
@@ -86,5 +88,9 @@ export class ProductDetailComponent implements OnInit {
       }
     }
     return available;
+  }
+
+  clickCategory(){
+    this.router.navigate([`/catalog/`,this.category,this.subcategory, this.subcategoryId]);
   }
 }

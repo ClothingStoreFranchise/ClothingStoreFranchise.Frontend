@@ -1,3 +1,5 @@
+<h1 *ngIf="isNovelty"><strong>Novedades</strong></h1>
+<h1 *ngIf="!isNovelty"><strong>{{category}}/{{subcategoryName}}</strong></h1>
 <div style="display:flex;flex-wrap: wrap; background:primary;justify-content: space-around;">
   <div *ngFor="let product of catalogProducts" class="onLoad">
     <div
@@ -10,14 +12,14 @@
       </ul>
       <span style="font-size: 16px;font-weight: bold; cursor: pointer">{{product.name}}</span>
       <span style="font-size: 16px; color: blue; font-weight: bold;">{{product.unitPrice}} €</span>
-      <div *ngIf="isAdmin">
+      <div *ngIf="isAdmin && !isNovelty">
         <button mat-raised-button color="accent" (click)="openDialog('Update', product)">Editar</button>   |
         <button mat-raised-button color="warn" (click)="openDialog('Delete', product)">Eliminar</button>
       </div>
       </div>
 
   </div>
-  <div *ngIf="isAdmin">
+  <div *ngIf="isAdmin && !isNovelty">
     <button mat-fab color="primary" id="add-button" matTooltip="Add new product" routerLink="create-product-catalog">
       <mat-icon>add</mat-icon>
     </button>

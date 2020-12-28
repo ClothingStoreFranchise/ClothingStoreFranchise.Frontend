@@ -43,13 +43,16 @@ export class CatalogService {
   }
 
   createCategory(category: Category){
-    //this.count.next(++this.counter);
     this.http.post<Category[]>(`/catalog/category/`, category)
     .pipe(first())
     .subscribe(categoriesAct => {
       this.categories = categoriesAct;
       this.categoriesSubject.next(categoriesAct);
     });
+  }
+
+  loadNovelties() {
+    return this.http.get<Product[]>(`/catalog/catalog_products/novelties`);
   }
 
   loadSubcategoryProducts(subcategoryId: number) {

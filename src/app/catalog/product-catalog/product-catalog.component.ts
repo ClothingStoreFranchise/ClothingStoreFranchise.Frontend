@@ -18,6 +18,8 @@ export class ProductCatalogComponent implements OnInit {
   catalogProducts: Product[];
   subcategoryId: number;
   subcategoryName: string;
+  category: string;
+  isNovelty: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,11 +35,21 @@ export class ProductCatalogComponent implements OnInit {
 
   ngOnInit(): void {
     this.subcategoryId = this.route.snapshot.params['id'];
+    this.category = decodeURIComponent(this.route.snapshot.params['parentname']);
+    this.subcategoryName = decodeURIComponent(this.route.snapshot.params['name']);
 
-    this.catalogService.loadSubcategoryProducts(this.subcategoryId)
+    if(this.subcategoryId == null){
+      this.isNovelty = true;
+      this.catalogService.loadNovelties()
       .subscribe(catalogProducts => {
         this.catalogProducts = catalogProducts;
       });
+    }else{
+      this.catalogService.loadSubcategoryProducts(this.subcategoryId)
+      .subscribe(catalogProducts => {
+        this.catalogProducts = catalogProducts;
+      });
+    }
   }
 
   openDialog(action,obj) {

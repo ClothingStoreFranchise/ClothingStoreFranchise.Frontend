@@ -7,7 +7,7 @@
     <div class="containers">
     <mat-card >
       <mat-card-content>
-        <h4>Categoría:   <a href="">{{category}}/{{subcategory}}</a></h4>
+        <h4>Categoría:   <a [routerLink]="" (click)="clickCategory()">{{category}}/{{subcategory}}</a></h4>
 
         <h2>{{product.name}}</h2>
 
