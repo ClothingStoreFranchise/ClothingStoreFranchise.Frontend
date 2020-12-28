@@ -42,6 +42,7 @@ export class CheckoutDialogComponent {
           name: cartProduct.name,
           pictureUrl: cartProduct.pictureUrl,
           unitPrice: cartProduct.unitPrice,
+          clothingSizeType: cartProduct.clothingSizeType,
           size: cartProduct.size,
           quantity: cartProduct.quantity
         })
