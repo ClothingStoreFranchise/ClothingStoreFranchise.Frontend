@@ -10,6 +10,9 @@
       <mat-icon>card_giftcard</mat-icon>
       Pedidos
     </button>
+    <button mat-icon-button *ngIf="!isAdmin && !isEmployee" class="cart-icon" routerLink="/customers/cart">
+      <mat-icon matBadge="{{cartCounter}}" matBadgeColor="accent">shopping_cart</mat-icon>
+    </button>
     <button mat-icon-button *ngIf="!user" class="account-icon" routerLink="/account/login">
       <mat-icon>account_circle</mat-icon>
       <span >Perfil</span>
@@ -17,9 +20,6 @@
     <button mat-icon-button *ngIf="user" class="account-icon" #trigger="matMenuTrigger" [matMenuTriggerFor]="menu">
       <mat-icon style="color:greenyellow" *ngIf="user">account_circle</mat-icon>
       <span style="color:greenyellow" *ngIf="user">{{user.username}}</span>
-    </button>
-    <button mat-icon-button *ngIf="!isAdmin && !isEmployee" class="cart-icon" routerLink="/customers/cart">
-      <mat-icon matBadge="{{cartCounter}}" matBadgeColor="accent">shopping_cart</mat-icon>
     </button>
   </mat-toolbar>
 

@@ -11,6 +11,7 @@ import { ROLES } from 'src/app/shared/constants/roles.constant';
 import { CustomersService } from 'src/app/shared/services/customers.service';
 import { OrderState } from 'src/app/shared/constants/order-state.const';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { Employee } from 'src/app/shared/models/employee.model';
 
 @Component({
   selector: 'app-header',
@@ -30,6 +31,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   count: number;
   cartCounter: number;
   user: User;
+  employee: Employee;
   userRole: string;
 
   categoriesNavItem: NavItem[] = [];
@@ -71,6 +73,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
     if(this.userRole == ROLES.Customer){
         this.customersService.loadCart();
+    }else if(this.userRole == ROLES.ShopEmployee || this.userRole == ROLES.WarehouseEmployee){
+      this.employee = this.localStorage.get('employeeData');
     }
 
     this.customersService.cartCounterSubject
@@ -98,8 +102,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   logout() {
     this.accountService.logout();
-    console.log("hola!");
-    this.router.navigate(['/account/login']);
+  }
+
+  imageClick(){
+    this.router.navigate(["/"]);
   }
 
   converToNavItem(categories: Category[]) {
@@ -119,7 +125,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
     for(var item of this.navItems){
       if(item.displayName == "Catálogo"){
-        item.children = this.categoriesNavItem;
+        item.children.push(...this.categoriesNavItem);
         break;
       }
     }
@@ -145,7 +151,14 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     {
       displayName: 'Catálogo',
       route: 'catalog/',
-      visibility: [ROLES.Admin, ROLES.Customer, 'anonymous']
+      visibility: [ROLES.Admin, ROLES.Customer, ROLES.Anonymous],
+      children: [
+        {
+          displayName: 'Novedades',
+          route: 'catalog/novelties',
+          visibility: [ROLES.Customer, ROLES.Anonymous]
+        }
+      ]
     },
     {
       displayName: 'Inventario',
@@ -222,5 +235,20 @@ export class HeaderComponent implements OnInit, AfterViewInit {
         }
       ]
     },
+    {
+      displayName: 'Inventario Tienda',
+      route: 'inventory/shop/products',
+      visibility: [ROLES.ShopEmployee]
+    },
+    {
+      displayName: 'Inventario Almacén',
+      route: 'inventory/warehouse/products',
+      visibility: [ROLES.WarehouseEmployee]
+    },
+    {
+      displayName: 'Pedidos Almacén',
+      route: 'sales/warehouse/orders',
+      visibility: [ROLES.WarehouseEmployee]
+    }
   ];
 }

@@ -5,7 +5,6 @@ import { NavService } from 'src/app/shared/services/nav.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { AccountService } from 'src/app/shared/services/account.service';
 import { ROLES } from 'src/app/shared/constants/roles.constant';
-import { User } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-menu-list',
@@ -26,7 +25,7 @@ export class MenuListComponent {
   @Input() item: NavItem;
   @Input() depth: number;
   @Input() role: ROLES;
-  anonymous: string = "anonymous";
+  anonymous: string = ROLES.Anonymous;
 
   constructor(public navService: NavService,
               public router: Router,

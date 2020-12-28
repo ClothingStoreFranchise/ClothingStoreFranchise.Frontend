@@ -1,0 +1,46 @@
+<h1 *ngIf="!isEmployee">Pedidos {{stateString}} </h1>
+<h1 *ngIf="isEmployee">Historial Pedidos {{stateString}} </h1>
+<div fxFlex="20" class="example-card">
+  <mat-card *ngFor="let orderProduct of orderProducts" style="margin-top:10px;">
+    <mat-card-content>
+      <table>
+        <tr>
+          <th>Pedido ID.</th>
+          <th>Fecha Pedido</th>
+          <th>Cliente ID.</th>
+          <th>Dirección</th>
+        </tr>
+        <tr>
+          <td>{{orderProduct.order.id}}</td>
+          <td>{{orderProduct.order.date | date: "dd/MMM/yyyy"}}</td>
+          <td>{{orderProduct.order.customerId}}</td>
+          <td>{{orderProduct.order.address}}</td>
+        </tr>
+      </table>
+
+      <mat-grid-list cols="7" rowHeight="250px">
+        <ng-container>
+          <mat-grid-tile colspan="2">
+            <img [src]="orderProduct.pictureUrl"/>
+          </mat-grid-tile>
+          <mat-grid-tile colspan="5">
+            <mat-card>
+
+              <mat-card-content>
+                <h1>Nombre Producto: {{orderProduct.name}}</h1>
+                <h3 class="inner">ID.: {{orderProduct.productId}}</h3>
+                <h3 class="inner" *ngIf="checkSizeType(orderProduct.clothingSizeType)">Talla:  {{this.sizesDictionary[orderProduct.size]}}</h3>
+                <h3 class="inner" *ngIf="!checkSizeType(orderProduct.clothingSizeType)">Talla: {{orderProduct.size}}</h3>
+                <h3 class="inner">Precio Unidad: {{orderProduct.unitPrice}} €</h3>
+                <h3 class="inner">Cantidad: {{ orderProduct.quantity }}</h3>
+                <h3 class="inner">Estado: {{this.dictionary[orderProduct.state]}} </h3>
+                <h3 class="inner">Almacén asignado: {{orderProduct.warehouseId}} </h3>
+                <button *ngIf="showPrepareOrder(orderProduct.state)" (click)="prepareOrder(orderProduct)" mat-button  mat-flat-button color="primary">Preparar Pedido</button>
+
+              </mat-card-content>
+            </mat-card>
+          </mat-grid-tile>
+        </ng-container>
+      </mat-grid-list>
+    </mat-card-content>
+  </mat-card>

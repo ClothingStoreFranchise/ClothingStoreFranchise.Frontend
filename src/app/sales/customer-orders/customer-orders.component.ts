@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ClothingSizeType } from 'src/app/shared/constants/clothing-sizes.constant';
+import { ClothingSizeType, TSHIRT_JACKETS_PANTS } from 'src/app/shared/constants/clothing-sizes.constant';
 import { OrderState, ORDER_STATE_DICTIONARY } from 'src/app/shared/constants/order-state.const';
 import { OrderProduct } from 'src/app/shared/models/order-product.model';
 import { Order } from 'src/app/shared/models/order.model';
@@ -16,6 +16,7 @@ export class CustomerOrdersComponent implements OnInit {
   orders: Order[];
   displayedColumns: string[] = ['id', 'date', 'address', 'total'];
   dictionary = ORDER_STATE_DICTIONARY;
+  sizesDictionary = TSHIRT_JACKETS_PANTS;
 
   constructor(
     private salesService: SalesService,
@@ -23,11 +24,9 @@ export class CustomerOrdersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("clienteee "+this.accountService.userValue.id);
     this.salesService.loadOrdersByCustomerId(this.accountService.userValue.id)
       .subscribe( orders => {
         this.orders = orders;
-        console.log(orders.length);
       });
   }
 

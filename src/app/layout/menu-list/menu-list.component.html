@@ -10,7 +10,7 @@
     </mat-icon>
   </span>
 
-  <span fxFlex *ngIf="item.route.includes('catalog/') && isAdmin">
+  <span fxFlex *ngIf="item.route.includes('catalog/') && item.parentId == null && isAdmin">
 
     <button mat-icon-button #trigger=matMenuTrigger [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
