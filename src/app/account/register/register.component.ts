@@ -6,7 +6,6 @@ import { ROLES } from 'src/app/shared/constants/roles.constant';
 import { User } from 'src/app/shared/models/user.model';
 import { AccountService } from 'src/app/shared/services/account.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { CreateAccountComponent } from '../create-account/create-account.component';
 import { CommonErrorStateMatcher } from 'src/app/shared/helpers/common-error-state-matcher';
 import { Customer } from 'src/app/shared/models/customer.model';
 import { first } from 'rxjs/operators';
@@ -14,6 +13,7 @@ import { EditEmployeeComponent } from 'src/app/employees/edit-employee/edit-empl
 import { Employee } from 'src/app/shared/models/employee.model';
 import { EmployeesService } from 'src/app/shared/services/employees.service';
 import { CustomersService } from 'src/app/shared/services/customers.service';
+import { CreateCustomerComponent } from 'src/app/customers/create-customer/create-customer.component';
 
 @Component({
   selector: 'app-register',
@@ -87,21 +87,7 @@ export class RegisterComponent implements OnInit {
         break;
       default:
         console.log('invalid role');
-
     }
-    /*
-    this.accountService.registerAccount(user)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.alertService.success('Registration successful', { keepAfterRouteChange: true });
-          this.router.navigate(['../login'], { relativeTo: this.route });
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        });
-        */
   }
 
   createEmployeeDialog(user){
@@ -124,11 +110,15 @@ export class RegisterComponent implements OnInit {
         if(this.role == ROLES.ShopEmployee){
           employee.shopId = this.buildingId;
           this.employeesService.createShopEmployee(employee)
-            .subscribe();
+          .subscribe( employee => {
+            this.router.navigate(["../../"], {relativeTo: this.route});
+          });
         }else{
           employee.warehouseId = this.buildingId;
           this.employeesService.createWarehouseEmployee(employee)
-          .subscribe();
+          .subscribe( employee => {
+            this.router.navigate(["../../"], {relativeTo: this.route});
+          });
         }
         },
         error => {
@@ -136,12 +126,12 @@ export class RegisterComponent implements OnInit {
           this.loading = false;
         });
 
-        this.router.navigate(["../../"], {relativeTo: this.route});
+
   }
 
   createCustomerDialog(user) {
 
-      const dialogRef =this.dialog.open(CreateAccountComponent, {
+      const dialogRef =this.dialog.open(CreateCustomerComponent, {
         width: 'auto',
         data: user
       });
@@ -179,7 +169,7 @@ export class RegisterComponent implements OnInit {
         */
   }
 
-  checkPasswords(group: FormGroup) { // here we have the 'passwords' group
+  checkPasswords(group: FormGroup) {
     let pass = group.controls.password.value;
     let confirmPass = group.controls.confirmPassword.value;
 
