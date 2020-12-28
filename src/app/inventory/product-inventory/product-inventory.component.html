@@ -87,7 +87,7 @@
           <h3>Talla</h3>
         </td>
         <td *ngFor="let totalStock of this.totalWarehoseStock">
-          <h3 *ngIf="totalStock.size===undefined">a {{product.id}}</h3>
+          <h3 *ngIf="totalStock.size===undefined">{{product.id}}</h3>
           <h3 *ngIf="checkSizeType(product.clothingSizeType)">{{this.sizesDictionary[totalStock.size]}}</h3>
           <h3 *ngIf="!checkSizeType(product.clothingSizeType)">{{totalStock.size}}</h3>
         </td>

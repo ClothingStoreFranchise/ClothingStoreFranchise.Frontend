@@ -1,11 +1,21 @@
-<h1>Stock</h1>
+<mat-card>
+  <mat-card-title>
+    <strong >Stock Tienda </strong>
+  </mat-card-title>
+  <mat-card-content>
+    <b>ID: </b>{{shop.id}}
+    <br>
+    <b>Dirección: </b>{{shop.address}}
+    <br>
+    <b>Teléfono: </b>{{shop.phone}}
+  </mat-card-content>
+</mat-card>
 <div class="container text-center">
-  <table mat-table [dataSource]="stocks" #mytable class="my-table mat-elevation-z8">
+  <table mat-table [dataSource]="shop.shopStocks" #mytable class="my-table mat-elevation-z8">
 
     <ng-container matColumnDef="product_id">
       <th mat-header-cell *matHeaderCellDef> Producto ID. </th>
-      <td mat-cell *matCellDef="let element">{{element.product.id}}
-      </td>
+      <td mat-cell *matCellDef="let element">{{element.product.id}} </td>
     </ng-container>
 
     <ng-container matColumnDef="product_name">

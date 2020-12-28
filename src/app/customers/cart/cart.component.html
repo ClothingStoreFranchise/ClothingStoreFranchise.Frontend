@@ -1,53 +1,57 @@
-<h1>Carro de la compra</h1>
+<div *ngIf="cartProducts.length==0">
+  <h1>Tu carro de la compra esta vacío.</h1>
+</div>
+<div *ngIf="cartProducts.length>0">
+  <h1>Carro de la compra</h1>
+  <mat-grid-list cols="7" rowHeight="200px">
+    <ng-container *ngFor="let product of cartProducts">
+        <mat-grid-tile colspan="2">
+          <img [src]="product.pictureUrl" />
+        </mat-grid-tile>
+        <mat-grid-tile colspan="5">
+          <mat-card class="cart-item">
+            <mat-card-content>
 
-<mat-grid-list cols="7" rowHeight="200px">
-  <ng-container *ngFor="let product of cartProducts">
-      <mat-grid-tile colspan="2">
-        <img [src]="product.pictureUrl" />
-      </mat-grid-tile>
-      <mat-grid-tile colspan="5">
-        <mat-card class="cart-item">
-          <mat-card-content>
+              <h1>{{product.name}}</h1>
 
-            <h1>{{product.name}}</h1>
+              <h3 class="inner">Precio: {{product.unitPrice | number:'1.2-2'}} €</h3>
 
-            <h3 class="inner">Precio: {{product.unitPrice}} €</h3>
+              <h3 class="inner" *ngIf="checkSizeType(product.clothingSizeType)">Talla:  {{this.sizesDictionary[product.size]}}</h3>
+              <h3 class="inner" *ngIf="!checkSizeType(product.clothingSizeType)">Talla: {{product.size}}</h3>
 
-            <h3 class="inner" *ngIf="checkSizeType(product.clothingSizeType)">Talla:  {{this.sizesDictionary[product.size]}}</h3>
-            <h3 class="inner" *ngIf="!checkSizeType(product.clothingSizeType)">Talla: {{product.size}}</h3>
+              <br>
 
-            <br>
+              <mat-form-field class="selected" appearance="fill">
+                <mat-label>Cantidad</mat-label>
+                <mat-select [(value)]="product.quantity" (selectionChange)="updateQuantity(product)">
+                  <mat-option *ngFor="let quantity of [1,2,3,4,5,6,7,8]" [value]="quantity">
+                    {{quantity}}
+                  </mat-option>
+                </mat-select>
 
-            <mat-form-field class="selected" appearance="fill">
-              <mat-label>Cantidad</mat-label>
-              <mat-select [(value)]="product.quantity" (selectionChange)="updateQuantity(product)">
-                <mat-option *ngFor="let quantity of [1,2,3,4,5,6,7,8]" [value]="quantity">
-                  {{quantity}}
-                </mat-option>
-              </mat-select>
+              </mat-form-field>
 
-            </mat-form-field>
+              <button mat-button class="inner" color="primary" (click)="delete(product)">Eliminar</button>
 
-            <button mat-button class="inner" color="primary" (click)="delete(product)">Eliminar</button>
-
-          </mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-  </ng-container>
-</mat-grid-list>
-<mat-divider></mat-divider>
-<mat-card>
-  <mat-card-content>
-  <div class="table-box">
-    <span style="font-size: 16px;font-weight: 700; color:E91E63">Factura</span>
-    <div *ngFor="let product of cartProducts"><span>{{product.name}} ....... x  {{product.quantity}}</span><span class="price">{{getSubtotal(product)}} €</span></div>
-    <div class="total-text">
-        <span style="font-size: 16px;font-weight: 700; color:#E91E63">Total</span>
-        <span style="font-size: 16px;font-weight: 700; color:#E91E63" class="price">{{getTotalPrice()}} €</span>
+            </mat-card-content>
+          </mat-card>
+        </mat-grid-tile>
+    </ng-container>
+  </mat-grid-list>
+  <mat-divider></mat-divider>
+  <mat-card>
+    <mat-card-content>
+    <div class="table-box">
+      <span style="font-size: 16px;font-weight: 700; color:E91E63">Factura</span>
+      <div *ngFor="let product of cartProducts"><span>{{product.name}} ....... x  {{product.quantity}}</span><span class="price">{{getSubtotal(product) | number:'1.2-2'}} €</span></div>
+      <div class="total-text">
+          <span style="font-size: 16px;font-weight: 700; color:#E91E63">Total</span>
+          <span style="font-size: 16px;font-weight: 700; color:#E91E63" class="price">{{getTotalPrice() | number:'1.2-2'}} €</span>
+      </div>
     </div>
-  </div>
-</mat-card-content>
-<mat-card-footer>
-  <button class="checkout" mat-raised-button color="accent" (click)="checkout()">Tramitar Pedido</button>
-</mat-card-footer>
-</mat-card>
+  </mat-card-content>
+  <mat-card-footer>
+    <button class="checkout" mat-raised-button color="accent" (click)="checkout()">Tramitar Pedido</button>
+  </mat-card-footer>
+  </mat-card>
+</div>

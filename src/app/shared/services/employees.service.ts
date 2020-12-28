@@ -31,8 +31,15 @@ export class EmployeesService {
   }
 
   createWarehouseEmployee(employee: Employee) {
-    console.log("creando employee")
     return this.http.post<Employee>("/employees/warehouse-employees", employee);
+  }
+
+  loadShopEmployee(id: number) {
+    return this.http.get<Employee>(`/employees/shop-employees/${id}`);
+  }
+
+  loadWarehouseEmployee(id: number) {
+    return this.http.get<Employee>(`/employees/warehouse-employees/${id}`);
   }
 
   updateShopEmployee(employee: Employee) {

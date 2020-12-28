@@ -17,7 +17,7 @@ export class NavItem {
     this.id = id;
     this.parentId = parentId;
     this.children = children;
-    this.visibility = [ROLES.Admin, ROLES.Customer, 'anonymous'];
+    this.visibility = [ROLES.Admin, ROLES.Customer, ROLES.Anonymous];
 
     if(parentId == null)
       this.route = "/catalog/"+name;

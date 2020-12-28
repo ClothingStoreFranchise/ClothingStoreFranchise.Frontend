@@ -96,10 +96,11 @@ export class ProductInventoryComponent {
             })
         } else {
           this.inventoryService.addProductsToWarehouses(this.product.id, result.data)
-            .subscribe(warehouses => {
+            .subscribe(inventory => {
               const data = this.warehousesDataSource.data;
-              data.push(...warehouses);
+              data.push(...inventory.warehouses);
               this.warehousesDataSource.data = data;
+              this.totalWarehoseStock = inventory.totalWarehouseStock;
             })
         }
       }

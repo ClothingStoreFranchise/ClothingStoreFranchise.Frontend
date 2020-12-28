@@ -7,7 +7,7 @@ mat-table mat-row.mat-row{
 }
 
 .mat-row:hover {
-  background-color:  gray;;
+  background-color:  lightblue;
 }
 
 img {

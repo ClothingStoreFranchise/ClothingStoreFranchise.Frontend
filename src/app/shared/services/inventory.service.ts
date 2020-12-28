@@ -42,13 +42,22 @@ export class InventoryService {
   deleteShop(id: number){
     return this.http.delete(`/inventory/shops/${id}`);
   }
-
+/*
   loadShopStock(id: number){
     return this.http.get<Stock[]>(`/inventory/shop-stocks/${id}`);
   }
 
   loadWarehouseStock(id: number){
     return this.http.get<Stock[]>(`/inventory/warehouse-stocks/${id}`);
+  }
+  */
+  //nuevo
+  loadWarehouse(id: number){
+    return this.http.get<Warehouse>(`/inventory/warehouses/${id}`);
+  }
+
+  loadShop(id: number){
+    return this.http.get<Shop>(`/inventory/shops/${id}`);
   }
 
   loadAllProducts(){
@@ -76,6 +85,6 @@ export class InventoryService {
   }
 
   addProductsToWarehouses(productId: number, warehouseIds: number[]){
-    return this.http.put<Warehouse[]>(`/inventory/warehouses/product-allocation/${productId}`, warehouseIds);
+    return this.http.put<Product>(`/inventory/warehouses/product-allocation/${productId}`, warehouseIds);
   }
 }

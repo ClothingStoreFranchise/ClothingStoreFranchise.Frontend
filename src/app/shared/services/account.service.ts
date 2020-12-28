@@ -7,47 +7,25 @@ import { User } from '../models/user.model'
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { LocalStorageService } from './local-storage.service';
-import { CartProduct } from '../models/cart-product.model';
 import { ROLES } from '../constants/roles.constant';
 import { CustomersService } from './customers.service';
 import { CartProductLocalStorage } from '../models/cart-product-local-storage.model';
-
-/*
-interface CartProductLocalStorage {
-  productId: number,
-  quantity: number,
-  size: number
-}
-*/
+import { EmployeesService } from './employees.service';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
   public userSubject: BehaviorSubject<User>;
   public user: Observable<User>;
-  /*
-  public cartSubject: BehaviorSubject<CartProduct[]>;
-  public cartCounterSubject: BehaviorSubject<number>;
-*/
+
   constructor(
     private router: Router,
     private http: HttpMethodsService,
     private customersService: CustomersService,
+    private employeesService: EmployeesService,
     private localStorage: LocalStorageService
   ) {
     this.userSubject = new BehaviorSubject<User>(localStorage.get('userData'));
     this.user = this.userSubject.asObservable();
-
-    /*this.cartSubject = new BehaviorSubject<CartProduct[]>([]);
-
-    var numberCartProducts:number = this.localStorage.get('cartCounter');
-    if(numberCartProducts == null){
-      this.localStorage.set('cart', []);
-      this.localStorage.set('cartCounter', 0);
-      this.cartCounterSubject = new BehaviorSubject<number>(0);
-    }else{
-      this.cartCounterSubject = new BehaviorSubject<number>(numberCartProducts);
-    }
-    */
   }
 
   public get userValue(): User {
@@ -66,23 +44,20 @@ export class AccountService {
   hasRole(role: ROLES) {
     return this.isAuthenticated() && this.userValue.role == role;
   }
-/*
-  public get cartValue(): CartProduct[] {
-    return this.cartSubject.value;
-  }
 
-  public get cartCounterValue(): number {
-    return this.cartCounterSubject.value;
-  }
-*/
   logout() {
     this.userSubject.next(null);
     //this.cartCounterSubject.next(0);
     this.localStorage.remove('jwt');
     this.localStorage.remove('userData');
+    this.localStorage.remove('employeeData');
     //this.localStorage.set('cart', []);
     //this.localStorage.set('cartCounter', 0);
-    window.location.reload();
+    console.log("aaaaa")
+    //this.router.navigate(['/account/login']);
+    //window.location.reload();
+    this.router.navigate(['/account/login'])
+      .then(() => window.location.reload());
   }
 
   login(username: string, password: string) {
@@ -107,8 +82,11 @@ export class AccountService {
       .subscribe(user => {
         this.userSubject.next(user);
         this.localStorage.set('userData', user);
-        window.location.reload();
+
         if(user.role == ROLES.Customer){
+          this.router.navigate(['/catalog/novelties'])
+            .then(() => window.location.reload());
+
           var cart : CartProductLocalStorage[] = this.localStorage.get('cart');
           if(cart.length>0){
 
@@ -116,23 +94,29 @@ export class AccountService {
             this.localStorage.set('cart', []);
             this.localStorage.set('cartCounter', 0);
           }
+        }else if(user.role == ROLES.WarehouseEmployee){
+          this.employeesService.loadWarehouseEmployee(user.id)
+            .subscribe(employee => {
+              this.localStorage.set('employeeData', employee);
+
+              this.router.navigate(['/inventory/warehouse/products'])
+                .then(() => window.location.reload());
+            });
+        }else if(user.role == ROLES.ShopEmployee){
+          this.employeesService.loadShopEmployee(user.id)
+            .subscribe(employee => {
+              this.localStorage.set('employeeData', employee);
+
+              this.router.navigate(['/inventory/shop/products'])
+                .then(() => window.location.reload());
+            });
+        }else if(user.role == ROLES.Admin){
+          this.router.navigate(['/inventory/products'])
+            .then(() => window.location.reload());
         }
       } );
   }
-/*
-  registerCustomer(customer: Customer) {
-    return this.registerUser(customer)
-    .pipe(
-      map((resp: HttpResponse<any>) => {
-        return resp;
-      }),
-      catchError((err: HttpErrorResponse) => {
-        return err.status == StatusCodes.UNAUTHORIZED
-          ? throwError("Wrong username or password") : throwError("Server error: " + err.status);    //Rethrow it back to component
-      })
-    );
-  }
-*/
+
   registerUser(user: User) {
     return this.http.post(`/auth/user/`, user, { observe: 'response' })
       .pipe(

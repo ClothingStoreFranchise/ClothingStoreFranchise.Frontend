@@ -8,9 +8,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { OrderProductsComponent } from './order-products/order-products.component';
 
 @NgModule({
-  declarations: [CustomerOrdersComponent],
+  declarations: [CustomerOrdersComponent, OrderProductsComponent],
   imports: [
     CommonModule,
     SalesRoutingModule,

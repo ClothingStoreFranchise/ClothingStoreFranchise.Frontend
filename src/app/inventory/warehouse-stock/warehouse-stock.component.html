@@ -1,6 +1,17 @@
-<h1>Stock</h1>
+<mat-card>
+  <mat-card-title>
+    <strong >Stock Almacén </strong>
+  </mat-card-title>
+  <mat-card-content>
+    <b>ID: </b>{{warehouse.id}}
+    <br>
+    <b>Dirección: </b>{{warehouse.address}}
+    <br>
+    <b>Teléfono: </b>{{warehouse.phone}}
+  </mat-card-content>
+</mat-card>
 <div class="container text-center">
-  <table mat-table [dataSource]="stocks" #mytable class="my-table mat-elevation-z8">
+  <table mat-table [dataSource]="warehouse.warehouseStocks" #mytable class="my-table mat-elevation-z8">
 
     <ng-container matColumnDef="product_id">
       <th mat-header-cell *matHeaderCellDef> Producto ID. </th>
@@ -16,7 +27,7 @@
     <ng-container matColumnDef="size">
       <th mat-header-cell *matHeaderCellDef> Talla </th>
       <td  mat-cell *matCellDef="let element" >
-        <p *ngIf="element.product.clothingSizeType===0">{{this.sizesDictionary[element.idSize]}}</p>
+        <p *ngIf="element.product.clothingSizeType===0">{{this.sizesDictionary[element.size]}}</p>
         <p *ngIf="element.product.clothingSizeType===1">{{element.idSize}}</p>
       </td>
     </ng-container>

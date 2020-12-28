@@ -40,6 +40,7 @@ export class CustomersService {
   }
 
   cleanCart() {
+    this.cartSubject.next([]);
     this.cartCounterSubject.next(0);
     this.localStorage.set('cart', []);
     this.localStorage.set('cartCounter', 0);
@@ -70,7 +71,7 @@ export class CustomersService {
     else{
       var cartCounter = this.localStorage.get('cartCounter');
       var cart : CartProductLocalStorage[] = this.localStorage.get('cart');
-      
+
       for(var product of products){
 
         cartCounter += product.quantity;

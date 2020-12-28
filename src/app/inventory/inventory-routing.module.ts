@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ROLES } from '../shared/constants/roles.constant';
+import { RoleGuard } from '../shared/guards/role.guard';
 import { ProductInventoryComponent } from './product-inventory/product-inventory.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ShopListComponent } from './shop-list/shop-list.component';
@@ -16,7 +18,9 @@ const inventoryRoutes: Routes = [
       { path: 'warehouses', component: WarehouseListComponent},
       { path: 'shops', component: ShopListComponent},
       { path: 'shops/:id', component: ShopStockComponent},
-      { path: 'warehouses/:id', component: WarehouseStockComponent}
+      { path: 'warehouses/:id', component: WarehouseStockComponent},
+      { path: 'warehouse/products', component: WarehouseStockComponent},
+      { path: 'shop/products', component: ShopStockComponent}
     ]
   },
 ];
