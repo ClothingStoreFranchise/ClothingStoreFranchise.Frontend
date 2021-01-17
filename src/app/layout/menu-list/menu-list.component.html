@@ -20,8 +20,8 @@
 </a>
 
 <mat-menu #menu="matMenu">
-  <button *ngIf="item.route == 'catalog/'" mat-menu-item routerLink="/catalog/create-category">Create Category</button>
-  <button *ngIf="item.route != 'catalog/'" mat-menu-item routerLink="/catalog/create-subcategory/{{item.displayName}}/{{item.id}}">Create Subcategory</button>
+  <button *ngIf="item.route == 'catalog/'" mat-menu-item routerLink="/catalog/create-category">Crear Categoría</button>
+  <button *ngIf="item.route != 'catalog/'" mat-menu-item routerLink="/catalog/create-subcategory/{{item.displayName}}/{{item.id}}">Crear Subcategoría</button>
 </mat-menu>
 <div *ngIf="expanded">
   <app-menu-list *ngFor="let child of item.children" [role]="role" [item]="child" [depth]="depth+1">

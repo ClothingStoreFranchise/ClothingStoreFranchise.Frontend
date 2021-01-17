@@ -40,6 +40,7 @@ export class CreateCatalogProductComponent implements OnInit {
 
     this.form = this.formBuilder.group({
       productname: ['', Validators.required],
+      pictureUrl: ['', Validators.required],
       unit_price: ['', [Validators.required, CreateCatalogProductComponent.decimalValidation]]
 
     });
@@ -69,7 +70,7 @@ export class CreateCatalogProductComponent implements OnInit {
       this.subcategoryId
     );
 
-    this.catalogService.addProductToSubcatedory(product)
+    this.catalogService.addProductToSubcategory(product)
     .pipe(first())
     .subscribe(p => {
       this._location.back();

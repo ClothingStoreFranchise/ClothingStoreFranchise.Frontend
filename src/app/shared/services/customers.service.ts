@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { CartProductLocalStorage } from '../models/cart-product-local-storage.model';
+import { CartProductBase } from '../models/cart-product-base.model';
 import { CartProduct } from '../models/cart-product.model';
 import { Customer } from '../models/customer.model';
 import { User } from '../models/user.model';
@@ -47,9 +47,18 @@ export class CustomersService {
   }
 
   createCustomer(customer: Customer) {
+    var cart : CartProductBase[] = this.localStorage.get('cart');
+
+    customer.cartProducts = cart as CartProduct[];
+
     return this.http.post<Customer>(`/customers/customers/`, customer, { observe: 'response' })
       .subscribe( resp => {
-        //this.accountService.login(customer.username, customer.password).subscribe();
+        this.cartCounterSubject.next(0);
+        this.localStorage.set('cart', []);
+        this.localStorage.set('cartCounter', 0);
+/*
+          this.router.navigate(['/catalog/novelties'])
+            .then(() => window.location.reload());*/
       });
   }
 
@@ -57,8 +66,7 @@ export class CustomersService {
     return this.http.get<Customer>(`/customers/customers/${username}`);
   }
 
-  addProductsToCart(products: CartProductLocalStorage[]) {
-
+  addProductsToCart(products: CartProductBase[]) {
     var user: User = this.localStorage.get('userData');
     if(user != null){
       this.http.put<CartProduct[]>(`/customers/cart/customer/${user.id}`, products)
@@ -70,7 +78,7 @@ export class CustomersService {
     }
     else{
       var cartCounter = this.localStorage.get('cartCounter');
-      var cart : CartProductLocalStorage[] = this.localStorage.get('cart');
+      var cart : CartProductBase[] = this.localStorage.get('cart');
 
       for(var product of products){
 
@@ -81,7 +89,7 @@ export class CustomersService {
           cart[existingIndex].quantity += product.quantity;
 
         }else{
-          cart.push(product as CartProductLocalStorage);
+          cart.push(product as CartProductBase);
         }
       }
       this.cartCounterSubject.next(cartCounter);
@@ -103,7 +111,6 @@ export class CustomersService {
     }
     else {
       var cart = this.localStorage.get('cart');
-      console.log("El carro   "+cart);
       if(cart != null){
         this.http.post<CartProduct[]>(`/customers/cart/`, cart)
           .pipe()
@@ -113,7 +120,7 @@ export class CustomersService {
             this.cartCounterSubject.next(productsNumber);
 
             var productsNumber = this.countCartProducts(cartLoaded);
-            this.localStorage.set('cart', cartLoaded as CartProductLocalStorage[]);
+            this.localStorage.set('cart', cartLoaded as CartProductBase[]);
             this.localStorage.set('cartCounter', productsNumber);
           });
       }

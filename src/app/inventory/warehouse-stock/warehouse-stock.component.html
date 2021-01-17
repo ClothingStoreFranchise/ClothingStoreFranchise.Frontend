@@ -10,7 +10,7 @@
     <b>Teléfono: </b>{{warehouse.phone}}
   </mat-card-content>
 </mat-card>
-<div class="container text-center">
+<div *ngIf="warehouse.warehouseStocks.length > 0; else elseBlock" class="container text-center">
   <table mat-table [dataSource]="warehouse.warehouseStocks" #mytable class="my-table mat-elevation-z8">
 
     <ng-container matColumnDef="product_id">
@@ -28,7 +28,7 @@
       <th mat-header-cell *matHeaderCellDef> Talla </th>
       <td  mat-cell *matCellDef="let element" >
         <p *ngIf="element.product.clothingSizeType===0">{{this.sizesDictionary[element.size]}}</p>
-        <p *ngIf="element.product.clothingSizeType===1">{{element.idSize}}</p>
+        <p *ngIf="element.product.clothingSizeType===1">{{element.size}}</p>
       </td>
     </ng-container>
 
@@ -41,3 +41,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>
+
+<ng-template #elseBlock>
+  <h2> No hay existencias en este almacén. </h2>
+</ng-template>

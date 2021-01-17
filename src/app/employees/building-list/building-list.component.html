@@ -1,6 +1,7 @@
-<h1 *ngIf="isShop">Selecciona Tienda</h1>
-<h1 *ngIf="!isShop">Selecciona Almacén</h1>
-<div class="container text-center">
+<h1 *ngIf="isShop">Selecciona una Tienda</h1>
+<h1 *ngIf="!isShop">Selecciona un Almacén</h1>
+
+<div *ngIf="buildings.length > 0; else elseBlock" class="container text-center">
   <mat-table [dataSource]="buildings" class="my-table mat-elevation-z8">
 
     <ng-container matColumnDef="id">
@@ -29,3 +30,8 @@
     <mat-row matRipple *matRowDef="let row; columns: displayedColumns;" (click)="seeEmployees(row.id)"></mat-row>
   </mat-table>
 </div>
+
+<ng-template #elseBlock>
+  <h2 *ngIf="isShop && !loading">Actualmente no hay tiendas registrados en el sitema.</h2>
+  <h2 *ngIf="!isShop && !loading">Actualmente no hay almacenes registrados en el sitema.</h2>
+</ng-template>

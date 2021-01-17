@@ -1,19 +1,44 @@
-<h1 mat-dialog-title *ngIf="action == 'Delete'"><strong> Borrar </strong></h1>
-<h1 mat-dialog-title *ngIf="action == 'Add'"><strong> Crear </strong></h1>
-<h1 mat-dialog-title *ngIf="action == 'Update'"><strong> Editar </strong></h1>
 <mat-dialog-content>
-  <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
-    <input placeholder="{{action}} Address" matInput [(ngModel)]="local_data.address">
-  </mat-form-field>
-  <br>
-  <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
-    <input placeholder="{{action}} Phone" matInput [(ngModel)]="local_data.phone">
-  </mat-form-field>
-  <ng-template #elseTemplate>
-    Estas seguro de borrar <b>{{local_data.name}}</b>?
-  </ng-template>
+  <mat-card>
+    <h1 mat-card-title *ngIf="action == 'Delete'"><strong> Eliminar </strong></h1>
+    <h1 mat-card-title *ngIf="action == 'Add'"><strong> Crear </strong></h1>
+    <h1 mat-card-title *ngIf="action == 'Update'"><strong> Editar </strong></h1>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div *ngIf="action != 'Delete'; else elseTemplate">
+        <mat-form-field>
+          <mat-label *ngIf="action == 'Add'">Añadir Dirección</mat-label>
+          <mat-label *ngIf="action == 'Update'">Editar Dirección</mat-label>
+          <input matInput formControlName="address" [(ngModel)]="local_data.address" required>
+          <mat-error *ngIf="form.get('address').hasError('required')">
+            Entada requerida
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+      <br>
+      <div *ngIf="action != 'Delete'">
+        <mat-form-field>
+          <mat-label *ngIf="action == 'Add'">Añadir Teléfono</mat-label>
+          <mat-label *ngIf="action == 'Update'">Editar Teléfono</mat-label>
+          <input matInput formControlName="phone" [(ngModel)]="local_data.phone" required>
+          <mat-error *ngIf="form.get('phone').hasError('required')">
+            Entada requerida
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+      <ng-template #elseTemplate>
+        Estas seguro de borrar <b>{{local_data.name}}</b>?
+      </ng-template>
+      <br>
+
+      <button type="submit" mat-flat-button color="accent" *ngIf="action == 'Add'">Añadir</button>
+      <button type="submit" mat-flat-button color="accent" *ngIf="action == 'Update'">Actualizar</button>
+      <button type="button" mat-flat-button color="warn" *ngIf="action == 'Delete'" (click)="onSubmit()">Eliminar</button>
+      <button type="button" mat-button (click)="closeDialog()"  color="warn">Cancelar</button>
+    </form>
+    </mat-card-content>
+  </mat-card>
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button (click)="doAction()">{{action}}</button>
-  <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancelar</button>
-</mat-dialog-actions>

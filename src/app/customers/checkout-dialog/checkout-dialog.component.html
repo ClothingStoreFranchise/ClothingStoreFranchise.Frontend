@@ -3,10 +3,10 @@
     <mat-card-content>
     <div class="table-box">
       <span style="font-size: 16px;font-weight: 700; color:E91E63">Factura</span>
-      <div *ngFor="let product of cartProducts"><span>{{product.name}} ....... x  {{product.quantity}}</span><span class="price">{{getSubtotal(product)}} €</span></div>
+      <div *ngFor="let product of cartProducts"><span>{{product.name}} ....... x  {{product.quantity}}</span><span class="price">{{getSubtotal(product) | number:'1.2-5'}} €</span></div>
       <div class="total-text">
           <span style="font-size: 16px;font-weight: 700; color:#E91E63">Total</span>
-          <span style="font-size: 16px;font-weight: 700; color:#E91E63" class="price">{{getTotalPrice()}} €</span>
+          <span style="font-size: 16px;font-weight: 700; color:#E91E63" class="price">{{getTotalPrice() | number:'1.2-5'}} €</span>
       </div>
     </div>
     <br>
@@ -22,6 +22,6 @@
   <mat-card-footer>
     <button class="buy-now" mat-raised-button color="accent" (click)="doAction()">Comprar Ahora</button>
     <hr>
-    <button class="buy-now" mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancelar</button>
+    <button class="buy-now" mat-button (click)="closeDialog()" color="warn">Cancelar</button>
   </mat-card-footer>
 </mat-card>

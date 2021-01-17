@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ClothingSizeType, TSHIRT_JACKETS_PANTS } from 'src/app/shared/constants/clothing-sizes.constant';
-import { CartProductLocalStorage } from 'src/app/shared/models/cart-product-local-storage.model';
+import { ClothingSizeType, footwear, tshirtJacketsPants, TSHIRT_JACKETS_PANTS } from 'src/app/shared/constants/clothing-sizes.constant';
+import { CartProductBase } from 'src/app/shared/models/cart-product-base.model';
 import { Product } from 'src/app/shared/models/product.model';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { CustomersService } from 'src/app/shared/services/customers.service';
@@ -23,12 +23,17 @@ export class ProductDetailComponent implements OnInit {
   subcategoryId: number;
   productId: number;
   sizesDictionary = TSHIRT_JACKETS_PANTS;
+  tshirtJacketsPantsSizes = tshirtJacketsPants;
+  footwearSizes = footwear;
   sizeType = ClothingSizeType;
   available: boolean;
   selectedSize: number;
+  maxQuantity: number;
+  arraySizes: number[];
   selectedQuantity = 1;
 
   product: Product;
+  sizeAvailable: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,7 +59,7 @@ export class ProductDetailComponent implements OnInit {
 
   addProductToCart(product: Product) {
 
-    var cartProduct : CartProductLocalStorage[] = [{
+    var cartProduct : CartProductBase[] = [{
       productId: product.id,
       quantity: this.selectedQuantity,
       size: this.selectedSize
@@ -69,20 +74,29 @@ export class ProductDetailComponent implements OnInit {
   showShopsAvailability(size, shops) {
     shops.size = size;
     this.dialog.open(ShopAvailabilityComponent, {
-      width: '100%',
+      width: 'auto',
       data: shops
     });
   }
 
-  checkSizeTotalWarehouseStock(size: number) : boolean {
+  checkSizeType(typeId: number): boolean {
+    return typeId === ClothingSizeType.tshirtsJacketsPants;
+  }
 
-    return this.product.totalWarehouseStock.find(s => s.size == size).stock == 0;
+  updateStockQuantity(size: number) {
+    this.maxQuantity = this.product.totalWarehouseStock.find(s => s.size == size).stock;
+    if(this.maxQuantity > 0 )
+      this.sizeAvailable = true;
+    else
+      this.sizeAvailable = false;
+
+    this.arraySizes = Array(this.maxQuantity).fill(0).map((x,i)=>i+1);
   }
 
   private checkAvailableOnline(product: Product): boolean {
     var available = false;
     for(let stock of product.totalWarehouseStock){
-      if(stock.stock>0){
+      if(stock.stock > 0){
         available = true;
         break;
       }

@@ -124,7 +124,15 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     }
 
     for(var item of this.navItems){
+
       if(item.displayName == "Catálogo"){
+        var novelties = [{
+          displayName: 'Novedades',
+          route: 'catalog/novelties',
+          visibility: [ROLES.Customer, ROLES.Anonymous]
+        }];
+
+        item.children = novelties;
         item.children.push(...this.categoriesNavItem);
         break;
       }
@@ -152,13 +160,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       displayName: 'Catálogo',
       route: 'catalog/',
       visibility: [ROLES.Admin, ROLES.Customer, ROLES.Anonymous],
-      children: [
-        {
-          displayName: 'Novedades',
-          route: 'catalog/novelties',
-          visibility: [ROLES.Customer, ROLES.Anonymous]
-        }
-      ]
     },
     {
       displayName: 'Inventario',
@@ -218,13 +219,11 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     },
     {
       displayName: 'Empleados',
-      iconName: 'videocam',
       route: 'employees/',
       visibility: [ROLES.Admin],
       children: [
         {
           displayName: 'Almacenes',
-          iconName: 'group',
           visibility: [ROLES.Admin],
           route: 'employees/warehouses',
         },

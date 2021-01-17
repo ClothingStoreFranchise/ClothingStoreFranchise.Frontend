@@ -72,7 +72,7 @@ export class ProductCatalogComponent implements OnInit {
 
   createProduct(product: Product) {
     product.subcategoryId = this.subcategoryId;
-    this.catalogService.addProductToSubcatedory(product)
+    this.catalogService.addProductToSubcategory(product)
       .pipe(first())
       .subscribe(productCreated => {
         this.catalogProducts.push(productCreated);
@@ -96,9 +96,13 @@ export class ProductCatalogComponent implements OnInit {
     });
   }
 
-  imageClick(productId: number) {
+  imageClick(product: Product) {
     if(this.isCustomer||!this.isAuthenticated) {
-      this.router.navigate([`${this.router.url}/product-detail/${productId}`]);
+      if(this.isNovelty){
+        this.router.navigate([`/catalog/${product.categoryName}/${product.subcategoryName}/${product.subcategoryId}/product-detail/${product.id}`]);
+      }else{
+        this.router.navigate([`${this.router.url}/product-detail/${product.id}`]);
+      }
     }
   }
 

@@ -16,6 +16,7 @@ import { CreateWarehouseShopComponent } from '../create-warehouse-shop/create-wa
 export class ShopListComponent implements OnInit {
   displayedColumns: string[] = ['id', 'address', 'phone', 'action'];
   shops: Shop[] = [];
+  loading: boolean = true;
 
   @ViewChild(MatTable,{static:false}) table: MatTable<any>;
 
@@ -24,6 +25,7 @@ export class ShopListComponent implements OnInit {
   ngOnInit(): void {
     this.inventoryService.loadShops()
     .subscribe(shops => {
+      this.loading = false;
       this.shops = shops;
     });
   }

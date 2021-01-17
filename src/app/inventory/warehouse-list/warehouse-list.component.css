@@ -11,11 +11,15 @@ table {
 }
 
 h1{
-  color:white;
+  color:black;
   font-size:35px;
   text-align:center;
   display:inline-block;
   position:relative;
   width:100%;
   top: 10px;
+}
+
+h2{
+  margin-left: 5%;
 }

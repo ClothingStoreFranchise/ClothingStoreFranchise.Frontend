@@ -1,5 +1,5 @@
-import { Component, Inject, Optional } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Product } from 'src/app/shared/models/product.model';
 
@@ -8,7 +8,7 @@ import { Product } from 'src/app/shared/models/product.model';
   templateUrl: './create-edit-product.component.html',
   styleUrls: ['./create-edit-product.component.css']
 })
-export class CreateEditProductComponent {
+export class CreateEditProductComponent implements OnInit {
   form: FormGroup;
   action: string;
   product: any;
@@ -17,6 +17,7 @@ export class CreateEditProductComponent {
   submitted = false;
   returnUrl: string;
   pictureUrl: string;
+  numRegex = /^-?\d*[.]?\d{0,2}$/;
 
   constructor(
     public dialogRef: MatDialogRef<CreateEditProductComponent>,
@@ -26,9 +27,22 @@ export class CreateEditProductComponent {
     this.action = this.product.action;
   }
 
+  ngOnInit() {
+
+    this.form = this.formBuilder.group({
+      productName: ['', Validators.required],
+      unitPrice: ['', Validators.required],
+      pictureUrl: ['', [Validators.required, Validators.pattern(this.numRegex)]]
+    });
+  }
+
   get f() { return this.form.controls; }
 
-  doAction(){
+  onSubmit(){
+    if (this.form.invalid && this.action != "Delete") {
+      return;
+    }
+
     this.dialogRef.close({event:this.action,data:this.product});
   }
 

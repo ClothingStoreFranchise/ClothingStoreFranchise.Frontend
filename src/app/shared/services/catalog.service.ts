@@ -59,7 +59,7 @@ export class CatalogService {
     return this.http.get<Product[]>(`/catalog/category/subcategory/${subcategoryId}`);
   }
 
-  addProductToSubcatedory(product: Product) {
+  addProductToSubcategory(product: Product) {
     return this.http.post<Product>(`/catalog/catalog_products/`, product);
   }
 

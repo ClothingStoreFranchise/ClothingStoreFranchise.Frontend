@@ -13,14 +13,22 @@
     <button mat-icon-button *ngIf="!isAdmin && !isEmployee" class="cart-icon" routerLink="/customers/cart">
       <mat-icon matBadge="{{cartCounter}}" matBadgeColor="accent">shopping_cart</mat-icon>
     </button>
+
+
     <button mat-icon-button *ngIf="!user" class="account-icon" routerLink="/account/login">
       <mat-icon>account_circle</mat-icon>
       <span >Perfil</span>
     </button>
     <button mat-icon-button *ngIf="user" class="account-icon" #trigger="matMenuTrigger" [matMenuTriggerFor]="menu">
-      <mat-icon style="color:greenyellow" *ngIf="user">account_circle</mat-icon>
-      <span style="color:greenyellow" *ngIf="user">{{user.username}}</span>
+      <mat-icon *ngIf="user">account_circle</mat-icon>
+      <span *ngIf="user">{{user.username}}</span>
     </button>
+    <!--
+    <button mat-icon-button *ngIf="user" class="account-icon" #trigger="matMenuTrigger" [matMenuTriggerFor]="menu">
+      <mat-icon color="accent" *ngIf="user">account_circle</mat-icon>
+      <span style="color:#fc0061" *ngIf="user">{{user.username}}</span>
+    </button>
+    -->
   </mat-toolbar>
 
   <mat-sidenav-container class="example-sidenav-container"
@@ -43,7 +51,7 @@
 </div>
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item routerLink="/catalog/create-category">Mi Cuenta</button>
+  <button mat-menu-item>Mi Cuenta</button>
   <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
 </mat-menu>
 

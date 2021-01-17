@@ -23,6 +23,7 @@ export class ShopAvailabilityComponent {
     this.size = this.local_data.size;
   }
 
+
   checkAvailable(stock: Stock[]) {
     this.available = stock.find(s => s.size == this.size).stock > 0;
   }

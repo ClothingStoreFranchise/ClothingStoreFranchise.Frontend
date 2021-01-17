@@ -6,33 +6,43 @@
 
       <div id="form-container" class="mat-elevation-z8">
         <mat-form-field>
-          <mat-label>Product name</mat-label>
-          <input matInput placeholder="productname" name="productname" formControlName="productname" required>
+          <mat-label>Nombre del producto</mat-label>
+          <input matInput placeholder="Nombre del producto" name="productname" formControlName="productname" required>
+          <mat-error *ngIf="form.get('productname').hasError('required')">
+            Valor requerido
+          </mat-error>
         </mat-form-field>
-        <div *ngIf="submitted && f.productname.errors" class="invalid-feedback">
-          <div *ngIf="f.productname.errors.required">Category name is required</div>
-        </div>
 
         <mat-form-field>
-          <mat-label>Unit Price (€)</mat-label>
-          <input matInput placeholder="unit_price" name="unit_price"
+          <mat-label>Precio Unidad (€)</mat-label>
+          <input matInput placeholder="Precio Unidad" name="unit_price"
             formControlName="unit_price" required>
+            <mat-error *ngIf="form.get('unit_price').hasError('required')">
+              Valor requerido
+            </mat-error>
+            <mat-error *ngIf="form.get('unit_price').hasError('twoDecimalAllowed')">
+              Debe ser un valor decimal (2 decimales)
+            </mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Picture url</mat-label>
-          <input matInput type="text" name="pictureUrl" placeholder="pictureUrl"
-            [(ngModel)]="pictureUrl" [ngModelOptions]="{standalone: true}" required>
+          <mat-label>Imagen url</mat-label>
+          <input matInput type="text" name="pictureUrl" formControlName="pictureUrl" placeholder="Imagen url"
+            [(ngModel)]="pictureUrl" required>
+
+            <mat-error *ngIf="form.get('pictureUrl').hasError('required')">
+              Valor requerido
+            </mat-error>
         </mat-form-field>
 
 
           <button class="width-button" [disabled]="loading" type="submit" mat-raised-button color="primary">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Create
+            Crear
           </button>
         <hr>
 
-          <button class="width-button" mat-raised-button color="accent" routerLink="../">Cancel</button>
+          <button class="width-button" mat-button color="warn" routerLink="../">Cancel</button>
 
         </div>
       </form>
@@ -44,7 +54,7 @@
 <div class="split right">
   <div class="centered">
     <div id="image-container" class="mat-elevation-z8">
-      <h2 *ngIf=!pictureUrl>Picture Preview</h2>
+      <h2 *ngIf=!pictureUrl>Vista anticipada de la imagen</h2>
 
     <img *ngIf=pictureUrl [src]="pictureUrl" alt="Error loading picture">
     </div>

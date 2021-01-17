@@ -18,6 +18,7 @@ export class EmployeeListComponent implements OnInit {
   building: any;
   buildingId: number;
   isShop: boolean;
+  loading: boolean = true;
 
   constructor(
     private router: Router,
@@ -33,12 +34,14 @@ export class EmployeeListComponent implements OnInit {
     if(!this.isShop){
       this.employeesService.loadWarehouseById(this.buildingId)
         .subscribe( warehouse => {
+          this.loading = false;
             this.building = warehouse;
             this.employees = warehouse.warehouseEmployees;
           });
       } else {
         this.employeesService.loadShopById(this.buildingId)
         .subscribe( shop => {
+          this.loading = false;
             this.building = shop;
             this.employees = shop.shopEmployees;
           });

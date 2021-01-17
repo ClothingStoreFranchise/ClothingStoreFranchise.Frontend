@@ -1,4 +1,5 @@
-<h1>Mis pedidos</h1>
+<h1> Mis pedidos </h1>
+<h2 *ngIf="!(orders.length > 0)">Aún no has realiado ningún pedido</h2>
 <div fxFlex="20" class="example-card">
   <mat-card *ngFor="let order of orders" style="margin-top:10px;">
     <mat-card-content>
@@ -13,7 +14,7 @@
           <td>{{order.id}}</td>
           <td>{{order.date | date: "dd/MMM/yyyy"}}</td>
           <td>{{order.address}}</td>
-          <td>{{getTotalPrice(order.orderProducts) | number:'1.2-2'}} €</td>
+          <td>{{getTotalPrice(order.orderProducts) | number:'1.2-5'}} €</td>
         </tr>
       </table>
 
@@ -30,7 +31,7 @@
                 <h3 class="inner">ID.: {{product.productId}}</h3>
                 <h3 class="inner" *ngIf="checkSizeType(product.clothingSizeType)">Talla:  {{this.sizesDictionary[product.size]}}</h3>
                 <h3 class="inner" *ngIf="!checkSizeType(product.clothingSizeType)">Talla: {{product.size}}</h3>
-                <h3 class="inner">Precio Unidad: {{product.unitPrice}} €</h3>
+                <h3 class="inner">Precio Unidad: {{product.unitPrice | number:'1.2-5'}} €</h3>
                 <h3 class="inner">Cantidad: {{ product.quantity }}</h3>
                 <h3 class="inner">Estado: {{this.dictionary[product.state]}} </h3>
                 <h3 class="inner">Almacén de origen: {{product.warehouseId}} </h3>

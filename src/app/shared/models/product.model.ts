@@ -12,6 +12,8 @@ export class Product {
   currentOffer: Offer;
   offersRegistry: Offer[];
   subcategoryId: number;
+  subcategoryName: string;
+  categoryName: string;
   shops: Shop[];
   warehouses: Warehouse[];
   totalWarehouseStock: Stock[];

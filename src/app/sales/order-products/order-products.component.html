@@ -1,5 +1,6 @@
 <h1 *ngIf="!isEmployee">Pedidos {{stateString}} </h1>
 <h1 *ngIf="isEmployee">Historial Pedidos {{stateString}} </h1>
+<h2 *ngIf="!(orderProducts.length > 0)">Actualmente no hay Pedidos {{stateString}}.</h2>
 <div fxFlex="20" class="example-card">
   <mat-card *ngFor="let orderProduct of orderProducts" style="margin-top:10px;">
     <mat-card-content>

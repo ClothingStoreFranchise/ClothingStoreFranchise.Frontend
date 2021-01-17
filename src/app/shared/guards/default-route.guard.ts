@@ -16,7 +16,7 @@ export class DefaultRouteGuard implements CanActivate{
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       var user: User = this._localStorage.get('userData');
 
-      if(user.role === ROLES.Customer || user == null){
+      if(user == null || user.role == ROLES.Customer){
         this._router.navigate(['/catalog/novelties']);
       }else if(user.role === ROLES.Admin){
         this._router.navigate(['/inventory/products']);
@@ -25,8 +25,5 @@ export class DefaultRouteGuard implements CanActivate{
       }else{
         return true;
       }
-
-      //this._router.navigate(['/inventory/products']);
   }
-
 }

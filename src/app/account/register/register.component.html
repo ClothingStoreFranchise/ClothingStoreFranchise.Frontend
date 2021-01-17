@@ -1,22 +1,28 @@
 <mat-card>
-  <mat-card-title>Registrarse</mat-card-title>
+  <mat-card-title *ngIf="!buildingId">Registrarse</mat-card-title>
+  <mat-card-title *ngIf="buildingId">Registrar Empleado</mat-card-title>
   <mat-card-content>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form">
       <div>
         <mat-form-field>
-          <mat-label>Username</mat-label>
-          <input matInput placeholder="username" name="username" formControlName="username" required>
-          <mat-error *ngIf="form.hasError('required', 'username')">
-            Please enter the username
+          <mat-label>Nombre de usuario</mat-label>
+          <input matInput placeholder="Nombre de usuario" name="username" formControlName="username" required>
+          <mat-error *ngIf="form.get('username').hasError('required')">
+            Por favor introduce el nombre de usuario
           </mat-error>
         </mat-form-field>
       </div>
       <div>
         <mat-form-field>
-          <mat-label>Password</mat-label >
-          <input matInput placeholder="password" name="password" formControlName="password" required>
-          <mat-error *ngIf="form.hasError('required', 'password')">
-            Please enter the password
+          <mat-label>Contraseña</mat-label >
+          <input matInput placeholder="Contraseña" name="password"
+          [type]="hide ? 'password' : 'text'" formControlName="password" required>
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          <mat-error *ngIf="form.get('password').hasError('required')">
+            Por favor introduce la contraseña
+          </mat-error>
+          <mat-error *ngIf="form.get('password').hasError('minlength')">
+            La contraseña debe tener al menos 4 carácteres
           </mat-error>
         </mat-form-field>
       </div>
@@ -28,16 +34,19 @@
       <div>
         <mat-form-field>
           <mat-label>Confirmar Contraseña</mat-label>
-          <input matInput placeholder="confirmPassword" formControlName="confirmPassword" [errorStateMatcher]="matcher">
+          <input matInput placeholder="Confirmar Contraseña"
+          [type]="hide ? 'password' : 'text'" formControlName="confirmPassword" [errorStateMatcher]="matcher" required>
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           <mat-error *ngIf="form.hasError('notSame')">
-            Passwords do not match
+            Las contraseñas no coinciden
           </mat-error>
         </mat-form-field>
       </div>
 
-      <button [disabled]="loading" type="submit" mat-raised-button color="primary">Registrarse</button>
-      <button mat-button color="accent" routerLink="/account/login">Iniciar Sesión</button>
-
+      <button type="button" mat-raised-button color="primary" (click)="onSubmit()">Registrar</button>
+      <hr>
+      <button *ngIf="!buildingId" mat-button color="accent" routerLink="/account/login">Iniciar Sesión</button>
+      <button *ngIf="buildingId" mat-button color="warn" routerLink="../../">Cancelar</button>
     </form>
   </mat-card-content>
 </mat-card>

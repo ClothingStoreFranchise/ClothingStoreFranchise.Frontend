@@ -1,20 +1,22 @@
 <h1 *ngIf="isNovelty"><strong>Novedades</strong></h1>
 <h1 *ngIf="!isNovelty"><strong>{{category}}/{{subcategoryName}}</strong></h1>
+<h2 *ngIf="!(catalogProducts.length > 0)"> No hay productos de esta categoría. </h2>
+
 <div style="display:flex;flex-wrap: wrap; background:primary;justify-content: space-around;">
   <div *ngFor="let product of catalogProducts" class="onLoad">
     <div
       style="display:flex; flex-direction:column;justify-content: center;align-items: center; margin-bottom: 20px; cursor: pointer;">
-      <img [src]="product.pictureUrl" (click)="imageClick(product.id)">
+      <img [src]="product.pictureUrl" (click)="imageClick(product)">
       <ul style="list-style:none; display:flex; padding: 0px;">
         <li class="color-item"
           style="background-color:black; border-color: black; box-shadow: none; margin-right: 10px;"></li>
         <li class="color-item" style="background-color:grey; border-color: grey;  box-shadow: none"></li>
       </ul>
       <span style="font-size: 16px;font-weight: bold; cursor: pointer">{{product.name}}</span>
-      <span style="font-size: 16px; color: blue; font-weight: bold;">{{product.unitPrice}} €</span>
+      <span style="font-size: 16px; color: blue; font-weight: bold;">{{product.unitPrice | number:'1.2-5'}} €</span>
       <div *ngIf="isAdmin && !isNovelty">
         <button mat-raised-button color="accent" (click)="openDialog('Update', product)">Editar</button>   |
-        <button mat-raised-button color="warn" (click)="openDialog('Delete', product)">Eliminar</button>
+        <button [disabled]="true" mat-raised-button color="warn" (click)="openDialog('Delete', product)">Eliminar</button>
       </div>
       </div>
 

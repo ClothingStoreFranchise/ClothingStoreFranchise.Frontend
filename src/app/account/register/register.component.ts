@@ -26,6 +26,7 @@ export class RegisterComponent implements OnInit {
   matcher = new CommonErrorStateMatcher();
   loading = false;
   submitted = false;
+  hide = true;
 
   role: ROLES;
   buildingId: number;
@@ -47,7 +48,7 @@ export class RegisterComponent implements OnInit {
 
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(4)]],
       confirmPassword: ['']
     }, {
       validator: this.checkPasswords
@@ -98,7 +99,9 @@ export class RegisterComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        this.registerEmployee(result.data);
+        if(result.event == 'Add'){
+          this.registerEmployee(result.data);
+        }
       });
   }
 
@@ -120,6 +123,8 @@ export class RegisterComponent implements OnInit {
             this.router.navigate(["../../"], {relativeTo: this.route});
           });
         }
+
+        this.alertService.success("El empleado ha sido registrado con éxito");
         },
         error => {
           this.alertService.error(error);
@@ -137,7 +142,9 @@ export class RegisterComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        this.registerCustomer(result.data);
+        if(result.event == 'create'){
+          this.registerCustomer(result.data);
+        }
       });
   }
 
@@ -148,6 +155,7 @@ export class RegisterComponent implements OnInit {
         customer.id = resp.body.id;
         this.customersService.createCustomer(customer);
 
+          this.alertService.success("El registro ha tenido éxito, inicie sesión");
           this.router.navigate(["/account/login"]);
         },
         error => {

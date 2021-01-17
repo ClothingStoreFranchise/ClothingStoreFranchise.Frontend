@@ -51,7 +51,7 @@ export class InventoryService {
     return this.http.get<Stock[]>(`/inventory/warehouse-stocks/${id}`);
   }
   */
-  //nuevo
+
   loadWarehouse(id: number){
     return this.http.get<Warehouse>(`/inventory/warehouses/${id}`);
   }

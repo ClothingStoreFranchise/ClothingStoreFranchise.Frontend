@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 export class WarehouseListComponent implements OnInit {
   displayedColumns: string[] = ['id', 'address', 'phone', 'action'];
   warehouses: Warehouse[] = [];
+  loading: boolean = true;
 
   @ViewChild(MatTable,{static:false}) table: MatTable<any>;
 
@@ -28,6 +29,7 @@ export class WarehouseListComponent implements OnInit {
   ngOnInit(): void {
     this.inventoryService.loadWarehouses()
     .subscribe(warehouses => {
+      this.loading = false;
       this.warehouses = warehouses;
     });
   }

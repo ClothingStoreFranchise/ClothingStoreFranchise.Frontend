@@ -42,6 +42,10 @@ export class CartComponent implements OnInit {
     this.customersService.updateCartProductQuantity(cartProduct);
   }
 
+  updateStock(stock: number): number[] {
+    return Array(stock).fill(0).map((x,i)=>i+1);
+  }
+
   delete(cartProduct: CartProduct){
     this.customersService.removeCartProduct(cartProduct);
   }

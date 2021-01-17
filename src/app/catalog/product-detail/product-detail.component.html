@@ -11,7 +11,7 @@
 
         <h2>{{product.name}}</h2>
 
-        <h3>Precio: {{product.unitPrice}} €</h3>
+        <h3>Precio: {{product.unitPrice | number:'1.2-5'}} €</h3>
       </mat-card-content>
     </mat-card>
 
@@ -26,27 +26,40 @@
 
          <mat-form-field class="selected" appearance="fill">
           <mat-label>Talla</mat-label>
-          <mat-select [(value)]="selectedSize">
-            <mat-option *ngFor="let size of product.totalWarehouseStock" [value]="size.size">
-              <span *ngIf="product.clothingSizeType === sizeType.tshirtsJacketsPants"> {{sizesDictionary[size.size]}}</span>
-              <span *ngIf="product.clothingSizeType === sizeType.footwear"> {{size.size}}</span>
-            </mat-option>
-          </mat-select>
+            <!--
+            <mat-select *ngIf="available" [(value)]="selectedSize">
+              <mat-option *ngFor="let size of product.totalWarehouseStock" [value]="size.size">
+                <span *ngIf="product.clothingSizeType === sizeType.tshirtsJacketsPants"> {{sizesDictionary[size.size]}}</span>
+                <span *ngIf="product.clothingSizeType === sizeType.footwear"> {{size.size}}</span>
+              </mat-option>
+            </mat-select>
+            -->
+            <mat-select *ngIf="checkSizeType(product.clothingSizeType)" [(value)]="selectedSize" (selectionChange)="updateStockQuantity(selectedSize)">
+              <mat-option *ngFor="let size of tshirtJacketsPantsSizes" [value]="size">
+                {{sizesDictionary[size]}}
+              </mat-option>
+            </mat-select>
+
+            <mat-select *ngIf="!checkSizeType(product.clothingSizeType)" [(value)]="selectedSize" (selectionChange)="updateStockQuantity(selectedSize)">
+              <mat-option *ngFor="let size of footwearSizes" [value]="size">
+                {{size}}
+              </mat-option>
+            </mat-select>
 
         </mat-form-field>
 
         <mat-form-field class="selected" appearance="fill">
           <mat-label>Cantidad</mat-label>
-          <mat-select [disabled]="selectedSize===undefined || !available" [(value)]="selectedQuantity">
-            <mat-option *ngFor="let quantity of [1,2,3,4,5,6,7,8]" [value]="quantity">
+          <mat-select [disabled]="selectedSize===undefined || !sizeAvailable" [(value)]="selectedQuantity" >
+            <mat-option *ngFor="let quantity of arraySizes" [value]="quantity">
               {{quantity}}
             </mat-option>
           </mat-select>
         </mat-form-field>
 
-        <h4 style="color:red" *ngIf="selectedSize!=undefined && checkSizeTotalWarehouseStock(selectedSize)">No hay existencias de la talla seleccionada.</h4>
+        <h4 style="color:red" *ngIf="available && selectedSize!=undefined && !sizeAvailable">No hay existencias de la talla seleccionada.</h4>
 
-        <button mat-raised-button [disabled]="selectedSize===undefined || !available"
+        <button mat-raised-button [disabled]="selectedSize === undefined || !sizeAvailable"
           color="primary" (click)="addProductToCart(product)">
           <mat-icon>add_shopping_cart</mat-icon> Añadir al carro
         </button>
@@ -55,10 +68,12 @@
     </mat-card>
     <mat-card>
     <mat-card-content>
+
       <button mat-raised-button [disabled]="selectedSize===undefined"
         color="accent" (click)="showShopsAvailability(selectedSize, product.shops)">
         <mat-icon>location_on</mat-icon> Consultar disponibilidad en tiendas
       </button>
+
     </mat-card-content>
   </mat-card>
   </div>

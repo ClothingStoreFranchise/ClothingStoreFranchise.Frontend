@@ -15,6 +15,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatInputModule,
     MatDividerModule,
     MatDialogModule,
+    MatIconModule,
     SharedModule,
     AccountRoutingModule
   ],

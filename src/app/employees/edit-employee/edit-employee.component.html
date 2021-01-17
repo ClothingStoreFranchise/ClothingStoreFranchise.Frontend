@@ -1,38 +1,93 @@
-<h1 mat-dialog-title *ngIf="action == 'Delete'"><strong> Borrar Empleado </strong></h1>
-<h1 mat-dialog-title *ngIf="action == 'Update'"><strong> Editar Empleado </strong></h1>
-<h1 mat-dialog-title *ngIf="action == 'Add'"><strong> Crear Empleado</strong></h1>
 <mat-dialog-content>
   <mat-card>
+    <h1 mat-card-title *ngIf="action == 'Delete'"><strong> Borrar Empleado </strong></h1>
+    <h1 mat-card-title *ngIf="action == 'Update'"><strong> Editar Empleado </strong></h1>
+    <h1 mat-card-title *ngIf="action == 'Add'"><strong> Crear Empleado</strong></h1>
     <mat-card-content>
-      <div *ngIf="action != 'Delete'; else elseTemplate">
-      <mat-form-field >
-        <input placeholder="Nombre" matInput [(ngModel)]="local_data.firstName">
-      </mat-form-field>
-      <mat-form-field>
-        <input placeholder="Apellido" matInput [(ngModel)]="local_data.lastName">
-      </mat-form-field>
-      <mat-form-field>
-        <input placeholder="Email" matInput [(ngModel)]="local_data.email">
-      </mat-form-field>
-      <mat-form-field>
-        <input placeholder="Número Seguridad Social" matInput [(ngModel)]="local_data.sSecurityNumber">
-      </mat-form-field>
-      <mat-form-field>
-        <input placeholder="Salario (€)" matInput [(ngModel)]="local_data.salary">
-      </mat-form-field>
-      <mat-form-field>
-        <input placeholder="Número de cuenta" matInput [(ngModel)]="local_data.accountNumber">
-      </mat-form-field>
-    </div>
 
-      <ng-template #elseTemplate>
-        Estas seguro de borrar <b>{{local_data.name}}</b>?
-      </ng-template>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div *ngIf="action != 'Delete'; else elseTemplate">
+        <div>
+          <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input matInput placeholder="firstName" formControlName="firstName" [(ngModel)]="employee.firstName" required>
+            <mat-error *ngIf="form.get('firstName').hasError('required')">
+              Valor requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>Last Name</mat-label>
+            <input matInput placeholder="lastName" formControlName="lastName" [(ngModel)]="employee.lastName" required>
+            <mat-error *ngIf="form.get('lastName').hasError('required')">
+              Valor requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>Address</mat-label>
+            <input matInput placeholder="address" formControlName="address" [(ngModel)]="employee.address" required>
+            <mat-error *ngIf="form.get('address').hasError('required')">
+              Valor requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>E-mail</mat-label>
+            <input matInput placeholder="email" name="email" formControlName="email" [(ngModel)]="employee.email" required>
+            <mat-error *ngIf="form.get('email').hasError('required')">
+              Valor requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>Número Seguridad Social</mat-label>
+            <input matInput name="sSecurityNumber" formControlName="sSecurityNumber" [(ngModel)]="employee.sSecurityNumber" required>
+            <mat-error *ngIf="form.get('sSecurityNumber').hasError('required')">
+              Valor requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
 
+        <div>
+          <mat-form-field>
+            <mat-label>Salario (€)</mat-label>
+            <input matInput placeholder="Salario (€)" formControlName="salary" [(ngModel)]="employee.salary" required>
+            <mat-error *ngIf="form.get('salary').hasError('required')">
+              Valor requerido
+            </mat-error>
+            <mat-error *ngIf="form.get('salary').hasError('pattern')">
+              Debe ser un valor decimal (2 decimales)
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field>
+            <mat-label>Número de cuenta</mat-label>
+            <input placeholder="Número de cuenta" formControlName="accountNumber" matInput [(ngModel)]="employee.accountNumber" required>
+            <mat-error *ngIf="form.get('accountNumber').hasError('required')">
+              Valor requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+      </div>
+
+        <button type="submit" mat-flat-button color="accent" *ngIf="action == 'Add'">Crear</button>
+        <button type="submit" mat-flat-button color="accent" *ngIf="action == 'Update'" (click)="doAction()">Actualizar</button>
+        <button type="button" mat-flat-button color="warn" *ngIf="action == 'Delete'" (click)="doAction()">Eliminar</button>
+        <button type="button" mat-button (click)="closeDialog()" color="warn">Cancelar</button>
+
+      </form>
     </mat-card-content>
-    <mat-card-footer>
-      <button mat-button (click)="doAction()">{{action}}</button>
-      <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
-    </mat-card-footer>
   </mat-card>
 </mat-dialog-content>
+
+<ng-template #elseTemplate>
+  Estas seguro de borrar <b>{{local_data.name}}</b>?
+</ng-template>

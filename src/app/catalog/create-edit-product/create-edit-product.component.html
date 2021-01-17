@@ -1,40 +1,54 @@
-<h1 mat-dialog-title> Crear producto para la categoría</h1>
+<h1 mat-card-title *ngIf="action == 'Delete'"><strong> Añadir Producto a la Categoría </strong></h1>
+<h1 mat-card-title *ngIf="action == 'Update'"><strong> Editar Producto de la Categoría </strong></h1>
+<h1 mat-card-title *ngIf="action == 'Add'"><strong> Añadir Procuto de la Categoría </strong></h1>
 <mat-dialog-content>
   <mat-grid-list cols="2" >
     <mat-grid-tile colspan="1" rowspan="1">
 
       <mat-card>
         <mat-card-content>
-
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
               <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
-                <mat-label>Product name</mat-label>
-                <input matInput placeholder="{{action}}" [(ngModel)]="product.name" required>
-              </mat-form-field>
-
-
-              <mat-form-field *ngIf="action != 'Delete'">
-                <mat-label>Unit Price (€)</mat-label>
-                <input matInput placeholder="{{action}}" [(ngModel)]="product.unitPrice" required>
+                <mat-label>Nombre Producto</mat-label>
+                <input matInput formControlName="productName" [(ngModel)]="product.name" required>
+                <mat-error *ngIf="form.get('productName').hasError('required')">
+                  Valor requerido
+                </mat-error>
               </mat-form-field>
 
               <mat-form-field *ngIf="action != 'Delete'">
-                <mat-label>Picture url</mat-label>
-                <input matInput placeholder="{{action}}" [(ngModel)]="product.pictureUrl" required>
+                <mat-label>Precio Unidad (€)</mat-label>
+                <input matInput formControlName="unitPrice" [(ngModel)]="product.unitPrice" required>
+                <mat-error *ngIf="form.get('unitPrice').hasError('required')">
+                  Valor requerido
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field *ngIf="action != 'Delete'">
+                <mat-label>Imagen url</mat-label>
+                <input matInput formControlName="pictureUrl" [(ngModel)]="product.pictureUrl" required>
+                <mat-error *ngIf="form.get('pictureUrl').hasError('required')">
+                  Valor requerido
+                </mat-error>
               </mat-form-field>
 
               <ng-template #elseTemplate>
-                Estas seguro de borrar <b>{{product.name}}</b>?
+                Estas seguro de borrar el producto <b>{{product.name}}</b>?
               </ng-template>
-        </mat-card-content>
-        <mat-card-footer>
-          <button mat-button class="width-button" (click)="doAction()" mat-raised-button color="accent">{{action}}</button>
-          <hr>
-          <button mat-button class="width-button" (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
-        </mat-card-footer>
+
+              <br>
+              <button type="submit" class="width-button" mat-flat-button color="accent" *ngIf="action == 'Add'">Crear</button>
+              <button type="submit"  class="width-button" mat-flat-button color="accent" *ngIf="action == 'Update'">Actualizar</button>
+              <button type="button"  class="width-button" mat-flat-button color="warn" *ngIf="action == 'Delete'" (click)="onSubmit()">Eliminar</button>
+              <button mat-button class="width-button" (click)="closeDialog()" color="warn">Cancelar</button>
+            </form>
+          </mat-card-content>
+
+
       </mat-card>
     </mat-grid-tile>
     <mat-grid-tile colspan="1" rowspan="1">
-        <h2 *ngIf="!product.pictureUrl">Picture Preview</h2>
+        <h2 *ngIf="!product.pictureUrl">Imagen Preview</h2>
 
         <img *ngIf="product.pictureUrl" [src]="product.pictureUrl" alt="Error loading picture">
     </mat-grid-tile>

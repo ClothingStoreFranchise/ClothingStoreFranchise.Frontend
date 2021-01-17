@@ -1,8 +1,10 @@
-<h1 mat-dialog-title><strong>Existencias en tienda</strong></h1>
+<h1 mat-dialog-title><strong>Disponibilidad en tienda</strong></h1>
+<div *ngIf="shops.length > 0; else elseBlock">
 <mat-dialog-content>
+
   <mat-form-field appearance="fill">
     <mat-label>Dirección de la tienda</mat-label>
-    <mat-select [(value)]="selectedStock">
+    <mat-select [(value)]="selectedStock" (selectionChange)="checkAvailable(selectedStock)">
       <mat-option *ngFor="let shop of shops" [value]="shop.shopStocks">
         {{shop.address}}
       </mat-option>
@@ -15,8 +17,16 @@
 
 </mat-dialog-content>
 <mat-card-footer>
-  <button mat-raised-button [disabled]="selectedStock===undefined"
-    color="accent" (click)="checkAvailable(selectedStock)">
-     Consultar disponibilidad
-  </button>
+  <button mat-button color="warn" (click)="closeDialog()">
+    Cerrar
+ </button>
 </mat-card-footer>
+</div>
+
+<ng-template #elseBlock>
+  <h3> No hay existencias de este producto para la talla seleccionada en ninguna tienda. </h3>
+
+  <button mat-button color="warn" (click)="closeDialog()">
+     Cerrar
+  </button>
+</ng-template>

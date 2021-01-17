@@ -30,7 +30,7 @@ export class ShopStockComponent implements OnInit {
 
     if(this.shopId == null){
       var employee: Employee = this.localStorageService.get('employeeData');
-      this.shopId = employee.warehouseId;
+      this.shopId = employee.shopId;
     }
 
     this.inventoryService.loadShop(this.shopId)

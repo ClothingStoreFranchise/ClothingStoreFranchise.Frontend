@@ -1,5 +1,5 @@
 <h1>Inventario de Productos</h1>
-<div class="container text-center">
+<div *ngIf="products.length > 0; else elseBlock" class="container text-center">
   <mat-table [dataSource]="products" class="my-table mat-elevation-z8">
 
     <ng-container matColumnDef="image">
@@ -27,11 +27,14 @@
     </ng-container>
 
     <ng-container matColumnDef="unit_price">
-      <mat-header-cell *matHeaderCellDef> Precio Unidad(€) </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.unitPrice}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef> Precio Unidad (€) </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.unitPrice | number:'1.2-5'}} €</mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row matRipple *matRowDef="let row; columns: displayedColumns;" (click)="openDialog(row)"></mat-row>
   </mat-table>
 </div>
+<ng-template #elseBlock>
+  <h2 *ngIf="!loading"> No hay inventario de productos. </h2>
+</ng-template>

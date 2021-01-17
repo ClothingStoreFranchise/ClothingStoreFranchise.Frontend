@@ -12,6 +12,7 @@ export class BuildingListComponent implements OnInit {
   displayedColumns: string[] = ['id', 'address', 'phone', 'employeesNumber'];
   buildings: any[] = [];
   isShop: boolean;
+  loading: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,11 +26,13 @@ export class BuildingListComponent implements OnInit {
     if(!this.isShop){
       this.employeesService.loadWarehouses()
       .subscribe( warehouses => {
+          this.loading = false;
           this.buildings = warehouses;
         });
     }else{
       this.employeesService.loadShops()
       .subscribe( shops => {
+          this.loading = false;
           this.buildings = shops;
       });
     }

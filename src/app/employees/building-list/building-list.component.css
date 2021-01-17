@@ -5,3 +5,12 @@ mat-table mat-row.mat-row{
 .mat-row:hover {
   background-color:  gray;;
 }
+
+h1 {
+  margin-top: 3%;
+  margin-left: 5%;
+}
+
+h2 {
+  margin-left: 3%;
+}

@@ -23,14 +23,15 @@
         </mat-form-field>
       </div>
       <p>
-      <button class="width-button" [disabled]="loading||selectedSizeType==undefined" type="submit" mat-raised-button color="primary">
-        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        Crear
-      </button>
-    </p>
-    <p>
-      <button class="width-button" mat-raised-button color="accent" routerLink="/">Cancelar</button>
-    </p>
+        <button class="width-button" [disabled]="loading||selectedSizeType==undefined" type="submit" mat-raised-button
+          color="primary">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          Crear
+        </button>
+      </p>
+      <p>
+        <button class="width-button" mat-raised-button color="accent" routerLink="/">Cancelar</button>
+      </p>
 
     </form>
   </mat-card-content>

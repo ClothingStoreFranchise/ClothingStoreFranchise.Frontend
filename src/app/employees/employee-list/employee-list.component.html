@@ -4,14 +4,15 @@
     <strong *ngIf="isShop">Empleados Tienda </strong>
   </mat-card-title>
   <mat-card-content>
-    <b>ID: </b>{{building.id}}
+    <b *ngIf="isShop">ID Tienda: </b>
+    <b *ngIf="!isShop">ID Almacén: </b>{{building.id}}
     <br>
     <b>Dirección: </b>{{building.address}}
     <br>
     <b>Teléfono: </b>{{building.phone}}
   </mat-card-content>
 </mat-card>
-<div class="container text-center">
+<div div *ngIf="employees.length > 0; else elseBlock" class="container text-center" >
   <mat-table [dataSource]="employees" class="my-table mat-elevation-z8">
 
     <ng-container matColumnDef="id">
@@ -56,13 +57,18 @@
     <ng-container matColumnDef="delete">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell  *matCellDef="let element" class="action-link">
-        <button mat-button color="primary" (click)="openDialog('Delete',element)">Eliminar</button>
+        <button [disabled]="true" mat-button color="primary" (click)="openDialog('Delete',element)">Eliminar</button>
       </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row matRipple *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
-
-  <button mat-button mat-flat-button color="primary" (click)="registerEmployee()">Añadir nuevo Empleado</button>
 </div>
+
+<button mat-button mat-flat-button color="primary" (click)="registerEmployee()">Añadir nuevo Empleado</button>
+
+<ng-template #elseBlock>
+  <h2 *ngIf="isShop && !loading"> Actualmente no hay empleados en esta tienda. </h2>
+  <h2 *ngIf="!isShop && !loading"> Actualmente no hay empleados en este almacén. </h2>
+</ng-template>

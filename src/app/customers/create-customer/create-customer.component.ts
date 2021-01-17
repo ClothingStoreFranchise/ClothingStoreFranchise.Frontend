@@ -65,7 +65,10 @@ export class CreateCustomerComponent implements OnInit {
       email: this.f.email.value
     };
 
-    this.dialogRef.close({ data: this.customer });
+    this.dialogRef.close({event: 'create', data: this.customer });
   }
 
+  cancel(){
+    this.dialogRef.close({event: 'cancel'});
+  }
 }

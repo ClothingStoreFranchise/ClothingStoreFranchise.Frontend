@@ -16,6 +16,7 @@ import { ProductInventoryComponent } from '../product-inventory/product-inventor
 export class ProductListComponent implements OnInit {
   displayedColumns: string[] = ['image', 'id', 'name', 'unit_price'];
   products: Product[] = [];
+  loading: boolean = true;
 
   @ViewChild(MatTable,{static:false}) table: MatTable<any>;
 
@@ -24,6 +25,7 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.inventoryService.loadAllProducts()
     .subscribe(products => {
+      this.loading = false;
       this.products = products;
     });
   }

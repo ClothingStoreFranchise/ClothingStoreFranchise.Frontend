@@ -9,8 +9,8 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { LocalStorageService } from './local-storage.service';
 import { ROLES } from '../constants/roles.constant';
 import { CustomersService } from './customers.service';
-import { CartProductLocalStorage } from '../models/cart-product-local-storage.model';
 import { EmployeesService } from './employees.service';
+import { CartProductBase } from '../models/cart-product-base.model';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -47,13 +47,11 @@ export class AccountService {
 
   logout() {
     this.userSubject.next(null);
-    //this.cartCounterSubject.next(0);
     this.localStorage.remove('jwt');
     this.localStorage.remove('userData');
     this.localStorage.remove('employeeData');
-    //this.localStorage.set('cart', []);
-    //this.localStorage.set('cartCounter', 0);
-    console.log("aaaaa")
+    this.localStorage.set('cart', []);
+    this.localStorage.set('cartCounter', 0);
     //this.router.navigate(['/account/login']);
     //window.location.reload();
     this.router.navigate(['/account/login'])
@@ -70,7 +68,7 @@ export class AccountService {
         }),
         catchError((err: HttpErrorResponse) => {
           return err.status == StatusCodes.UNAUTHORIZED
-            ? throwError("Wrong username or password") : throwError("Server error: " + err.status);    //Rethrow it back to component
+            ? throwError("Usuario o contraseña incorrectos") : throwError("Server error: " + err.status);    //Rethrow it back to component
         })
       );
   }
@@ -84,16 +82,18 @@ export class AccountService {
         this.localStorage.set('userData', user);
 
         if(user.role == ROLES.Customer){
-          this.router.navigate(['/catalog/novelties'])
-            .then(() => window.location.reload());
 
-          var cart : CartProductLocalStorage[] = this.localStorage.get('cart');
+          var cart : CartProductBase[] = this.localStorage.get('cart');
           if(cart.length>0){
 
             this.customersService.addProductsToCart(cart);
-            this.localStorage.set('cart', []);
-            this.localStorage.set('cartCounter', 0);
+            /*this.localStorage.set('cart', []);
+            this.localStorage.set('cartCounter', 0);*/
           }
+
+          this.router.navigate(['/catalog/novelties'])
+            .then(() => window.location.reload());
+
         }else if(user.role == ROLES.WarehouseEmployee){
           this.employeesService.loadWarehouseEmployee(user.id)
             .subscribe(employee => {
@@ -124,8 +124,8 @@ export class AccountService {
           return resp;
         }),
         catchError((err: HttpErrorResponse) => {
-          return err.status == StatusCodes.UNAUTHORIZED
-            ? throwError("Wrong username or password") : throwError("Server error: " + err.status);    //Rethrow it back to component
+          return err.status == StatusCodes.CONFLICT
+            ? throwError("Ya esxiste este nombre de ususario") : throwError("Server error: " + err.status);    //Rethrow it back to component
         })
       );
   }

@@ -14,7 +14,7 @@
 
               <h1>{{product.name}}</h1>
 
-              <h3 class="inner">Precio: {{product.unitPrice | number:'1.2-2'}} €</h3>
+              <h3 class="inner">Precio: {{product.unitPrice | number:'1.2-5'}} €</h3>
 
               <h3 class="inner" *ngIf="checkSizeType(product.clothingSizeType)">Talla:  {{this.sizesDictionary[product.size]}}</h3>
               <h3 class="inner" *ngIf="!checkSizeType(product.clothingSizeType)">Talla: {{product.size}}</h3>
@@ -24,14 +24,13 @@
               <mat-form-field class="selected" appearance="fill">
                 <mat-label>Cantidad</mat-label>
                 <mat-select [(value)]="product.quantity" (selectionChange)="updateQuantity(product)">
-                  <mat-option *ngFor="let quantity of [1,2,3,4,5,6,7,8]" [value]="quantity">
+                  <mat-option *ngFor="let quantity of updateStock(product.stock)" [value]="quantity">
                     {{quantity}}
                   </mat-option>
                 </mat-select>
-
               </mat-form-field>
 
-              <button mat-button class="inner" color="primary" (click)="delete(product)">Eliminar</button>
+              <button mat-button class="inner" color="warn" (click)="delete(product)">Eliminar</button>
 
             </mat-card-content>
           </mat-card>

@@ -33,6 +33,7 @@ export class ProductInventoryComponent {
   isTableExpanded = false;
   displayedColumns: string[] = ['id', 'address'];
   sizesDictionary = TSHIRT_JACKETS_PANTS;
+  loading: boolean = true;
 
   product: Product;
   totalWarehoseStock: Stock[] = [];
@@ -46,6 +47,7 @@ export class ProductInventoryComponent {
     this.product = { ...data };
     this.inventoryService.loadProductInventory(this.product.id)
       .subscribe(inventory => {
+        this.loading = false;
         this.shopsDataSource.data = inventory.shops;
         this.warehousesDataSource.data = inventory.warehouses;
         this.totalWarehoseStock = inventory.totalWarehouseStock;
@@ -97,6 +99,7 @@ export class ProductInventoryComponent {
         } else {
           this.inventoryService.addProductsToWarehouses(this.product.id, result.data)
             .subscribe(inventory => {
+
               const data = this.warehousesDataSource.data;
               data.push(...inventory.warehouses);
               this.warehousesDataSource.data = data;
