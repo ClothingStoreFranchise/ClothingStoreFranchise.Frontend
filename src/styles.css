@@ -4,17 +4,21 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .error-alert{
+  background-color: white;
   color: red;
 }
 
 .success-alert{
-  background-color: green !important;
+  background-color: white;
+  color: green !important;
 }
 
 .info-alert{
-  color: white;
+  background-color: white;
+  color: blue;
 }
 
 .warn-alert{
+  background-color: white;
   color: yellow;
 }
