@@ -43,6 +43,7 @@ export class ProductCatalogComponent implements OnInit {
       this.catalogService.loadNovelties()
       .subscribe(catalogProducts => {
         this.catalogProducts = catalogProducts;
+
       });
     }else{
       this.catalogService.loadSubcategoryProducts(this.subcategoryId)
@@ -60,7 +61,7 @@ export class ProductCatalogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.event == 'Create'){
+      if(result.event == 'Add'){
         this.createProduct(result.data);
       }else if(result.event == 'Update'){
         this.updateProduct(result.data);
@@ -80,6 +81,7 @@ export class ProductCatalogComponent implements OnInit {
   }
 
   updateProduct(product: Product) {
+
     this.catalogService.updateProduct(product)
       .pipe(first())
       .subscribe(productUpdateded => {

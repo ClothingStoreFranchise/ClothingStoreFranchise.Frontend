@@ -65,10 +65,11 @@ export class CartComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result.event)
       if(result.event == 'Checkout'){
         this.salesService.createOrder(result.data)
           .subscribe( t => {
-            this.customersService.removeCustomerCart(result.data.customerId);
+            this.customersService.updateCustomerAfterCheckout(result.customer);
             this.customersService.cleanCart();
           }
         );

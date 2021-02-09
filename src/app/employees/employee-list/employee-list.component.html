@@ -57,7 +57,7 @@
     <ng-container matColumnDef="delete">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell  *matCellDef="let element" class="action-link">
-        <button [disabled]="true" mat-button color="primary" (click)="openDialog('Delete',element)">Eliminar</button>
+        <button mat-button color="primary" (click)="openDialog('Delete',element)">Eliminar</button>
       </mat-cell>
     </ng-container>
 

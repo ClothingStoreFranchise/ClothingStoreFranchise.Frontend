@@ -12,6 +12,7 @@ import { SharedModule } from '../shared/shared.module';
 import { MatSelectModule } from '@angular/material/select';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTableModule } from '@angular/material/table';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CheckoutDialogComponent } from './checkout-dialog/checkout-dialog.component';
 import { CartComponent } from './cart/cart.component';
@@ -31,6 +32,7 @@ import { CustomersRoutingModule } from './customers-routing.module';
     MatGridListModule,
     MatSelectModule,
     MatInputModule,
+    MatDatepickerModule,
     MatDividerModule,
     MatDialogModule,
     SharedModule,

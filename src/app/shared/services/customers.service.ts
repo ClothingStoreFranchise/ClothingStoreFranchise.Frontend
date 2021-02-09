@@ -56,9 +56,6 @@ export class CustomersService {
         this.cartCounterSubject.next(0);
         this.localStorage.set('cart', []);
         this.localStorage.set('cartCounter', 0);
-/*
-          this.router.navigate(['/catalog/novelties'])
-            .then(() => window.location.reload());*/
       });
   }
 
@@ -127,8 +124,9 @@ export class CustomersService {
     }
   }
 
-  removeCustomerCart(customerId: number) {
-    this.http.delete(`/customers/cart/customer/${customerId}`);
+  updateCustomerAfterCheckout(customer: Customer) {
+    return this.http.put<Customer>(`/customers/customers/checkout`, customer)
+      .subscribe();
   }
 
   removeCartProduct(product: CartProduct) {

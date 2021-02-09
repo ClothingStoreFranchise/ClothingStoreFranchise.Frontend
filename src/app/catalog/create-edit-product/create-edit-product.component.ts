@@ -31,8 +31,8 @@ export class CreateEditProductComponent implements OnInit {
 
     this.form = this.formBuilder.group({
       productName: ['', Validators.required],
-      unitPrice: ['', Validators.required],
-      pictureUrl: ['', [Validators.required, Validators.pattern(this.numRegex)]]
+      unitPrice: ['', Validators.required, Validators.pattern(this.numRegex)],
+      pictureUrl: ['', [Validators.required]]
     });
   }
 
@@ -42,12 +42,11 @@ export class CreateEditProductComponent implements OnInit {
     if (this.form.invalid && this.action != "Delete") {
       return;
     }
-
+    this.product.unitPrice = this.f.unitPrice.value;
     this.dialogRef.close({event:this.action,data:this.product});
   }
 
   closeDialog(){
     this.dialogRef.close({event:'Cancel'});
   }
-
 }

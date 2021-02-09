@@ -83,5 +83,5 @@ export class CreateCatalogProductComponent implements OnInit {
     } else {
         return { 'twoDecimalAllowed': true };
     }
-}
+  }
 }

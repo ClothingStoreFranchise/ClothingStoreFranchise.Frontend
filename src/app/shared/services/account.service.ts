@@ -129,122 +129,12 @@ export class AccountService {
         })
       );
   }
-/*
-  createCustomer(customer: Customer) {
-    return this.http.post<Customer>(`/customers/customers/`, customer, { observe: 'response' })
-      .subscribe( resp => {
-        this.login(customer.username, customer.password).subscribe();
-      });
-  }
-*/
+
   getById(id: string) {
-    return this.http.get(`/auth/identifieduser/${id}`)
-  }
-/*
-
-  addProductsToCart(products: CartProduct[]) {
-    if(this.userValue != null){
-      this.http.put<CartProduct[]>(`/customers/cart/${this.userValue.id}`, products)
-        .pipe()
-        .subscribe(cartLoaded => {
-          var counter = this.countCartProducts(cartLoaded);
-          this.cartCounterSubject.next(counter);
-        });
-    }
-    else{
-
-      var cartCounter = this.localStorage.get('cartCounter');
-      var cart : CartProductLocalStorage[] = this.localStorage.get('cart');
-      for(var product of products){
-
-        cartCounter += product.quantity;
-
-        var existingIndex = cart.findIndex(p => p.productId == product.productId && p.size == product.size);
-        if(existingIndex != -1){
-          cart[existingIndex].quantity += product.quantity;
-
-        }else{
-          cart.push(product as CartProductLocalStorage);
-        }
-      }
-      this.cartCounterSubject.next(cartCounter);
-      this.localStorage.set('cart', cart);
-      this.localStorage.set('cartCounter', cartCounter);
-    }
+    return this.http.get(`/auth/user/${id}`);
   }
 
-  loadCart() {
-    if(this.userValue != null) {
-      this.http.get<CartProduct[]>(`/customers/cart/${this.userValue.id}`)
-        .pipe()
-        .subscribe(cartLoaded => {
-          this.cartSubject.next(cartLoaded);
-          var productsNumber = this.countCartProducts(cartLoaded);
-          this.cartCounterSubject.next(productsNumber);
-        });
-    }
-    else {
-      var cart = this.localStorage.get('cart');
-      this.http.put<CartProduct[]>(`/customers/cart/`, cart)
-        .pipe()
-        .subscribe(cartLoaded => {
-          this.cartSubject.next(cartLoaded);
-          var productsNumber = this.countCartProducts(cartLoaded);
-          this.cartCounterSubject.next(productsNumber);
-
-          var productsNumber = this.countCartProducts(cartLoaded);
-          this.localStorage.set('cart', cartLoaded as CartProductLocalStorage[]);
-          this.localStorage.set('cartCounter', productsNumber);
-        });
-    }
+  deleteUser(id: number){
+    this.http.delete(`/auth/user/${id}`);
   }
-
-  removeCartProduct(product: CartProduct) {
-
-    var cartCounter = this.cartCounterSubject.value;
-    var cart = this.cartSubject.value;
-    var cartUpdated = cart.filter(p => p.id != product.id);
-
-    cartCounter -= product.quantity;
-    this.cartSubject.next(cartUpdated);
-    this.cartCounterSubject.next(cartCounter);
-
-    if(this.userValue != null) {
-      this.http.delete(`/customers/cart/${product.id}`);
-    }else{
-      this.localStorage.set('cart', cartUpdated);
-      this.localStorage.set('cartCounter', cartCounter);
-    }
-  }
-
-  updateCartProductQuantity(cartProduct: CartProduct) {
-    if(this.userValue != null) {
-      this.http.put<CartProduct>(`/customers/cart/quantity`, cartProduct)
-        .pipe()
-        .subscribe(productUpdated => {
-          var cart = this.cartSubject.value;
-          var index = cart.findIndex(p => p.id == productUpdated.id);
-
-          if(index != -1){
-            cart[index].quantity = productUpdated.quantity;
-            this.cartSubject.next(cart);
-            var counter = this.countCartProducts(cart);
-            this.cartCounterSubject.next(counter);
-          }
-        });
-    }else{
-      var cartCounter = this.countCartProducts(this.cartSubject.value);
-      this.cartCounterSubject.next(cartCounter);
-      this.localStorage.set('cartCounter', cartCounter);
-    }
-  }
-  private countCartProducts(cart: CartProduct[]) {
-    var total = 0;
-    for(var productCart of cart) {
-      total += productCart.quantity;
-    }
-    return total;
-  }
-
-  */
 }

@@ -10,18 +10,26 @@
       </div>
     </div>
     <br>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-form-field>
-      <input placeholder="Dirección" matInput [(ngModel)]="customer.address" required>
+
+      <input placeholder="Dirección" matInput formControlName="address" [(ngModel)]="customer.address" required>
     </mat-form-field>
     <br>
     <mat-form-field>
-      <input placeholder="Tarjeta" matInput [(ngModel)]="customer.card" required>
+      <input placeholder="Tarjeta" matInput formControlName="card" [(ngModel)]="customer.cardNumber" required>
     </mat-form-field>
-  </mat-card-content>
 
-  <mat-card-footer>
-    <button class="buy-now" mat-raised-button color="accent" (click)="doAction()">Comprar Ahora</button>
+    <mat-form-field>
+      <mat-label>Fecha de caducidad:</mat-label>
+      <input type="month" [value]="date" matInput formControlName="expiration" min="2020-02" max="2040-03" required
+      pattern="[0-9]{4}-[0-9]{2}">
+    </mat-form-field>
+
+    <button type="submit" class="buy-now" mat-raised-button color="accent">Comprar Ahora</button>
     <hr>
-    <button class="buy-now" mat-button (click)="closeDialog()" color="warn">Cancelar</button>
-  </mat-card-footer>
+    <button type="button" class="buy-now" mat-button (click)="closeDialog()" color="warn">Cancelar</button>
+
+  </form>
+    </mat-card-content>
 </mat-card>

@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ROLES } from 'src/app/shared/constants/roles.constant';
 import { Employee } from 'src/app/shared/models/employee.model';
+import { AccountService } from 'src/app/shared/services/account.service';
 import { EmployeesService } from 'src/app/shared/services/employees.service';
 import { EditEmployeeComponent } from '../edit-employee/edit-employee.component';
 
@@ -24,6 +25,7 @@ export class EmployeeListComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public dialog: MatDialog,
+    private accountService: AccountService,
     private employeesService: EmployeesService
   ) { }
 
@@ -67,13 +69,13 @@ export class EmployeeListComponent implements OnInit {
   updateEmployee(employee: Employee) {
     if(!this.isShop){
       this.employeesService.updateWarehouseEmployee(employee)
-        .subscribe(employee => {
-          this.updateEmployeeArray(employee);
+        .subscribe(employeeUpdated => {
+          this.updateEmployeeArray(employeeUpdated);
         })
       }else {
         this.employeesService.updateShopEmployee(employee)
-        .subscribe(employee => {
-          this.updateEmployeeArray(employee);
+        .subscribe(employeeUpdated => {
+          this.updateEmployeeArray(employeeUpdated);
         })
       }
   }
@@ -88,11 +90,7 @@ export class EmployeeListComponent implements OnInit {
   }
 
   deleteEmployee(employee: Employee) {
-    if(!this.isShop){
-      this.employeesService.deleteWarehouseEmployee(employee.id);
-    }else{
-      this.employeesService.deleteShopEmployee(employee.id);
-    }
+    this.accountService.deleteUser(employee.id);
 
     this.employees = this.employees.filter((value,key)=>{
       return value.id != employee.id;
@@ -100,8 +98,20 @@ export class EmployeeListComponent implements OnInit {
   }
 
   private updateEmployeeArray(employee: Employee){
-    let updateItem = this.employees.find(e => e.id = employee.id);
-    let index = this.employees.indexOf(updateItem);
-    this.employees[index] = employee;
+    this.employees = this.employees.filter((value,key)=>{
+      if(value.id == employee.id){
+        value.firstName = employee.firstName;
+        value.address = employee.address;
+        value.email = employee.email;
+        value.lastName = employee.lastName;
+        value.sSecurityNumber = employee.sSecurityNumber;
+        value.salary = employee.salary;
+        value.accountNumber = employee.accountNumber;
+      }
+      return true;
+    });
+    /*let itemIndex = this.employees.findIndex(p => p.id == employee.id);
+    console.log(employee)
+    this.employees[itemIndex] = employee;*/
   }
 }

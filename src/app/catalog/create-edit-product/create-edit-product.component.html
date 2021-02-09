@@ -1,6 +1,6 @@
-<h1 mat-card-title *ngIf="action == 'Delete'"><strong> Añadir Producto a la Categoría </strong></h1>
-<h1 mat-card-title *ngIf="action == 'Update'"><strong> Editar Producto de la Categoría </strong></h1>
-<h1 mat-card-title *ngIf="action == 'Add'"><strong> Añadir Procuto de la Categoría </strong></h1>
+<h1 mat-card-title *ngIf="action == 'Delete'"><strong> Eliminar Producto de la categoría</strong></h1>
+<h1 mat-card-title *ngIf="action == 'Update'"><strong> Editar Producto de la categoría</strong></h1>
+<h1 mat-card-title *ngIf="action == 'Add'"><strong> Añadir Procuto a la categoría</strong></h1>
 <mat-dialog-content>
   <mat-grid-list cols="2" >
     <mat-grid-tile colspan="1" rowspan="1">
@@ -22,8 +22,10 @@
                 <mat-error *ngIf="form.get('unitPrice').hasError('required')">
                   Valor requerido
                 </mat-error>
+                <mat-error *ngIf="form.get('unitPrice').hasError('pattern')">
+                  Debe ser un valor decimal (2 decimales)
+                </mat-error>
               </mat-form-field>
-
               <mat-form-field *ngIf="action != 'Delete'">
                 <mat-label>Imagen url</mat-label>
                 <input matInput formControlName="pictureUrl" [(ngModel)]="product.pictureUrl" required>
@@ -37,8 +39,10 @@
               </ng-template>
 
               <br>
-              <button type="submit" class="width-button" mat-flat-button color="accent" *ngIf="action == 'Add'">Crear</button>
-              <button type="submit"  class="width-button" mat-flat-button color="accent" *ngIf="action == 'Update'">Actualizar</button>
+              <button type="submit" class="width-button" mat-flat-button color="accent">
+                <span *ngIf="action == 'Add'">Crear</span>
+                <span *ngIf="action == 'Update'">Actualizar</span>
+              </button>
               <button type="button"  class="width-button" mat-flat-button color="warn" *ngIf="action == 'Delete'" (click)="onSubmit()">Eliminar</button>
               <button mat-button class="width-button" (click)="closeDialog()" color="warn">Cancelar</button>
             </form>

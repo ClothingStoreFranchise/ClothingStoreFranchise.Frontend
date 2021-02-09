@@ -32,7 +32,7 @@ export class EditEmployeeComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       address: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required,Validators.email]],
       accountNumber: ['', Validators.required],
       salary: ['', [Validators.required, Validators.pattern(this.numRegex)]],
       sSecurityNumber: ['', Validators.required]
@@ -53,6 +53,10 @@ export class EditEmployeeComponent implements OnInit {
     this.loading = true;
 
     this.dialogRef.close({event:this.action,data:this.employee});
+  }
+
+  remove(){
+    this.dialogRef.close({event:'Delete',data:this.employee});
   }
 
   closeDialog(){

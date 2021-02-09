@@ -34,7 +34,7 @@ export class CreateCustomerComponent implements OnInit {
       address: ['', Validators.required],
       country: ['', Validators.required],
       phoneNumber: ['', Validators.required],
-      email: ['', Validators.required]
+      email: ['', [Validators.required, Validators.email]]
     });
   }
 
