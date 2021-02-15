@@ -9,7 +9,7 @@
           <input matInput placeholder="categoryname" name="categoryname" formControlName="categoryname">
         </mat-form-field>
         <div *ngIf="submitted && f.categoryname.errors" class="invalid-feedback">
-          <div *ngIf="f.categoryname.errors.required">Category name is required</div>
+          <div *ngIf="f.categoryname.errors.required">El nombre de la categoría es requerido</div>
         </div>
       </div>
       <p>

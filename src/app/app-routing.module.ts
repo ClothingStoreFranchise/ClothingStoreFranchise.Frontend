@@ -13,20 +13,19 @@ const accountModule = () => import('./account/account.module').then(x => x.Accou
 
 const appRoutes: Routes = [
 
-  {path: 'inventory', loadChildren: inventoryModule},
-    //canActivate: [RoleGuard], data: {roles: `[${ROLES.Admin}, ${ROLES.WarehouseEmployee}]`}},
-  {path: 'catalog', loadChildren: catalogModule},
-    //canActivate: [RoleGuard], data: {roles: `[${ROLES.Admin}, ${ROLES.Customer}, ${ROLES.Anonymous}]`}},
+  {path: 'inventory', loadChildren: inventoryModule,
+    canActivate: [RoleGuard], data: {roles: `[${ROLES.Admin}, ${ROLES.WarehouseEmployee}, ${ROLES.ShopEmployee}]`}},
+  {path: 'catalog', loadChildren: catalogModule,
+    canActivate: [RoleGuard], data: {roles: `[${ROLES.Admin}, ${ROLES.Customer}, ${ROLES.Anonymous}]`}},
   {path: 'account', loadChildren: accountModule},
-  {path: 'customers', loadChildren: customersModule},
-    //canActivate: [RoleGuard], data: {roles: `[${ROLES.Customer}]`}},
-  {path: 'employees', loadChildren: employeesModule},
-    //canActivate: [RoleGuard], data: {roles: `[${ROLES.Admin}]`}},
-  {path: 'sales', loadChildren: salesModule},
-    //canActivate: [RoleGuard], data: {roles: `[${ROLES.Admin}], ${ROLES.Customer}, ${ROLES.WarehouseEmployee}`}},
+  {path: 'customers', loadChildren: customersModule,
+    canActivate: [RoleGuard], data: {roles: `[${ROLES.Customer}, ${ROLES.Anonymous}]`}},
+  {path: 'employees', loadChildren: employeesModule,
+    canActivate: [RoleGuard], data: {roles: `[${ROLES.Admin}]`}},
+  {path: 'sales', loadChildren: salesModule,
+    canActivate: [RoleGuard], data: {roles: `[${ROLES.Admin}, ${ROLES.Customer}, ${ROLES.WarehouseEmployee}]`}},
   {path: '', canActivate: [DefaultRouteGuard], redirectTo: '', pathMatch: 'full'},
   {path: '**', canActivate: [DefaultRouteGuard], redirectTo: '', pathMatch: 'full'}
-  //{ path: '', loadChildren: accountModule }
 ];
 
 @NgModule({

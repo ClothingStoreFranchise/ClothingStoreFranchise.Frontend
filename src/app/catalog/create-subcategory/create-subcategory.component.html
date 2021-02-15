@@ -9,7 +9,7 @@
           <input matInput placeholder="subcategoryname" name="subcategoryname" formControlName="subcategoryname">
         </mat-form-field>
         <div *ngIf="submitted && f.subcategoryname.errors" class="invalid-feedback">
-          <div *ngIf="f.subcategoryname.errors.required">Category name is required</div>
+          <div *ngIf="f.subcategoryname.errors.required">El nombre de la subcategoría es requerido</div>
         </div>
 
         <mat-form-field appearance="fill">

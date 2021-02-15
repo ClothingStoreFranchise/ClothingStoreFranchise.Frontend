@@ -1,9 +1,6 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { of } from 'rxjs';
-import { Shop } from 'src/app/shared/models/shop.model';
-
 
 interface Building {
   id: number,

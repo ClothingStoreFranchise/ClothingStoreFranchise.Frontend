@@ -69,70 +69,7 @@ export class SecurityService {
       });
   }
 */
-/*
-  public AuthorizedCallback() {
-    this.ResetAuthorizationData();
 
-    let hash = window.location.hash.substr(1);
-
-    let result: any = hash.split('&').reduce(function (result: any, item: string) {
-        let parts = item.split('=');
-        result[parts[0]] = parts[1];
-        return result;
-    }, {});
-
-    console.log(result);
-
-    let token = '';
-    let id_token = '';
-    let authResponseIsValid = false;
-
-    if (!result.error) {
-
-        if (result.state !== this.storage.get('authStateControl')) {
-            console.log('AuthorizedCallback incorrect state');
-        } else {
-
-            token = result.access_token;
-            id_token = result.id_token;
-
-            let dataIdToken: any = this.getDataFromToken(id_token);
-
-            // validate nonce
-            if (dataIdToken.nonce !== this.storage.get('authNonce')) {
-                console.log('AuthorizedCallback incorrect nonce');
-            } else {
-                this.storage.set('authNonce', '');
-                this.storage.set('authStateControl', '');
-
-                authResponseIsValid = true;
-                console.log('AuthorizedCallback state and nonce validated, returning access token');
-            }
-        }
-      }
-
-    if (authResponseIsValid) {
-      this.SetAuthorizationData(token, id_token);
-    }
-  }
-*//*
-  public Logoff() {
-    let authorizationUrl = `${environment.apiUrl}/connect/endsession`;
-    let id_token_hint = this.storage.get('authorizationDataIdToken');
-    let post_logout_redirect_uri = location.origin + '/';
-
-    let url =
-        authorizationUrl + '?' +
-        'id_token_hint=' + encodeURI(id_token_hint) + '&' +
-        'post_logout_redirect_uri=' + encodeURI(post_logout_redirect_uri);
-
-    this.ResetAuthorizationData();
-
-    // emit observable
-    this.authenticationSource.next(false);
-    window.location.href = url;
-  }
-*/
   public HandleError(error: any) {
     console.log(error);
     if (error.status == 403) {
@@ -160,18 +97,6 @@ export class SecurityService {
     }
 
     return window.atob(output);
-  }
-
-  private getDataFromToken(token: any) {
-    let data = {};
-
-    if (typeof token !== 'undefined') {
-        let encoded = token.split('.')[1];
-
-        data = JSON.parse(this.urlBase64Decode(encoded));
-    }
-
-    return data;
   }
 
   /*private getUserData = (): Observable<string[]> => {

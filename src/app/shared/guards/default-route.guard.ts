@@ -20,8 +20,10 @@ export class DefaultRouteGuard implements CanActivate{
         this._router.navigate(['/catalog/novelties']);
       }else if(user.role === ROLES.Admin){
         this._router.navigate(['/inventory/products']);
-      }else if(user.role === ROLES.ShopEmployee || user.role === ROLES.WarehouseEmployee){
+      }else if(user.role === ROLES.WarehouseEmployee){
         this._router.navigate(['/inventory/warehouse/products']);
+      }else if(user.role === ROLES.ShopEmployee){
+        this._router.navigate(['/inventory/shop/products']);
       }else{
         return true;
       }

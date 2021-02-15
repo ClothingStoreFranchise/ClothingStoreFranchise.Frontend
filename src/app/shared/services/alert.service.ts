@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig, MatSnackBarHorizontalPosition, MatSnackBarRef, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { Observable, Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { Alert, AlertType } from '../models/alert.model';
+import { MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
 
 @Injectable({ providedIn: 'any' })
 export class AlertService {

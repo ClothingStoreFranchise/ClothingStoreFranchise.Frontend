@@ -13,12 +13,18 @@ const inventoryRoutes: Routes = [
   {
     path: '',
     children: [
-      { path: 'products', component: ProductListComponent},
-      { path: 'products/:id', component: ProductInventoryComponent},
-      { path: 'warehouses', component: WarehouseListComponent},
-      { path: 'shops', component: ShopListComponent},
-      { path: 'shops/:id', component: ShopStockComponent},
-      { path: 'warehouses/:id', component: WarehouseStockComponent},
+      { path: 'products', component: ProductListComponent,
+          canActivate: [RoleGuard], data: {roles: `[${ROLES.Admin}]`}},
+      { path: 'products/:id', component: ProductInventoryComponent,
+          canActivate: [RoleGuard], data: {roles: `[${ROLES.Admin}]`}},
+      { path: 'warehouses', component: WarehouseListComponent,
+          canActivate: [RoleGuard], data: {roles: `[${ROLES.Admin}]`}},
+      { path: 'shops', component: ShopListComponent,
+          canActivate: [RoleGuard], data: {roles: `[${ROLES.Admin}]`}},
+      { path: 'shops/:id', component: ShopStockComponent,
+          canActivate: [RoleGuard], data: {roles: `[${ROLES.Admin}]`}},
+      { path: 'warehouses/:id', component: WarehouseStockComponent,
+          canActivate: [RoleGuard], data: {roles: `[${ROLES.Admin}]`}},
       { path: 'warehouse/products', component: WarehouseStockComponent},
       { path: 'shop/products', component: ShopStockComponent}
     ]

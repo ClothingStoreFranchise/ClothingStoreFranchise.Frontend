@@ -12,17 +12,22 @@
     <br>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-form-field>
-
       <input placeholder="Dirección" matInput formControlName="address" [(ngModel)]="customer.address" required>
+      <mat-error *ngIf="form.get('address').hasError('required')">
+        Este campo es obligatorio
+      </mat-error>
     </mat-form-field>
     <br>
     <mat-form-field>
       <input placeholder="Tarjeta" matInput formControlName="card" [(ngModel)]="customer.cardNumber" required>
+      <mat-error *ngIf="form.get('card').hasError('required')">
+        Este campo es obligatorio
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Fecha de caducidad:</mat-label>
-      <input type="month" [value]="date" matInput formControlName="expiration" min="2020-02" max="2040-03" required
+      <input type="month" [value]="date" matInput formControlName="expiration" [min]="date" max="2040-03" required
       pattern="[0-9]{4}-[0-9]{2}">
     </mat-form-field>
 

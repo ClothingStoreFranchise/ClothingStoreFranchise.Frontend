@@ -58,6 +58,11 @@ export class CheckoutDialogComponent implements OnInit {
   get f() { return this.form.controls; }
 
   onSubmit(){
+
+    if (this.form.invalid) {
+      return;
+    }
+
     var order: Order = {
       customerId: this.customer.id,
       address: this.customer.address,
